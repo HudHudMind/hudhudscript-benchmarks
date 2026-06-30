@@ -346,7 +346,7 @@ RUNNERS = {
         "timeout": 600,
     },
     "python": {
-        "cmd": lambda path: ["python3", path],
+        "cmd": lambda path: [sys.executable if os.name == 'nt' else 'python3', path],
         "suffix": ".py",
         "timeout": 600,
     },
@@ -395,7 +395,7 @@ def detect_versions() -> dict:
     versions = {}
     cmds = {
         "hudhud": [str(BINARY), "--version"],
-        "python": ["python3", "--version"],
+        "python": [sys.executable if os.name == 'nt' else 'python3', "--version"],
         "lua": ["lua", "-v"],
         "ruby": ["ruby", "--version"],
         "nodejs": ["node", "--version"],
