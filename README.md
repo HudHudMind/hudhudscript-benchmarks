@@ -181,4 +181,4 @@ These benchmarks were run on a Windows machine to verify cross-platform performa
 | Spectral Norm | 353ms | 219ms | 70ms |
 | Fasta | 128ms | 95ms | 67ms |
 | Reverse-Complement | 718ms | 435ms | 219ms |
-| **Average** | **366ms** | **302ms** | **104ms** |
+| **Average** | **354ms** | **282ms** | **98ms** |
