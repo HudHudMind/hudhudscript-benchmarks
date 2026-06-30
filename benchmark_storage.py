@@ -15,7 +15,20 @@ Do not import Flask or any blueprint here.  Only sqlite3, json, os, fcntl.
 import json
 import os
 import sqlite3
-import fcntl
+import tempfile
+import re
+from datetime import datetime, timezone
+from pathlib import Path
+
+try:
+    import fcntl
+except ImportError:
+    fcntl = None
+
+try:
+    import msvcrt
+except ImportError:
+    msvcrt = None
 import tempfile
 import re
 from datetime import datetime, timezone
@@ -138,16 +151,30 @@ def _acquire_json_lock() -> int:
     """Acquire exclusive lock on the JSON results file. Returns fd."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     fd = os.open(str(RESULTS_LOCK), os.O_CREAT | os.O_RDWR)
-    fcntl.flock(fd, fcntl.LOCK_EX)
+    
+    if fcntl:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+    elif msvcrt:
+        os.lseek(fd, 0, os.SEEK_SET)
+        msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
+        
     return fd
 
 
 def _release_json_lock(fd: int) -> None:
     """Release lock and close fd."""
-    try:
-        fcntl.flock(fd, fcntl.LOCK_UN)
-    except Exception:
-        pass
+    if fcntl:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+        except Exception:
+            pass
+    elif msvcrt:
+        try:
+            os.lseek(fd, 0, os.SEEK_SET)
+            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
+        except Exception:
+            pass
+            
     try:
         os.close(fd)
     except Exception:

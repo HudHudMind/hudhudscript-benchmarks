@@ -1,0 +1,4 @@
+# Bu projede (hudhudscript-benchmarks) hiçbir harici (3rd party) Python kütüphanesi kullanılmamaktadır.
+# Tüm import edilen kütüphaneler (json, os, sqlite3, subprocess, argparse vb.)
+# Python Standart Kütüphanesi'ne (Python Standard Library) aittir.
+# Sadece Python 3.x yüklü olması betikleri çalıştırmak için yeterlidir.
