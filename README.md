@@ -11,16 +11,41 @@ The suite runs a variety of algorithms (sorting, mathematical functions, string 
    ```bash
    python3 run_benchmarks.py
    ```
-   *You can also run specific benchmarks or filter them using command-line arguments (run `python3 run_benchmarks.py --help` for more options).*
+
+### Advanced Benchmarking Options
+The `run_benchmarks.py` script provides several powerful command-line arguments to customize your benchmark runs:
+
+* **Specify run count:** `--runs <N>`
+  Changes how many times each benchmark runs (default is 3).
+  *Example:* `python3 run_benchmarks.py --runs 5`
+* **Filter benchmarks:** `--only <benchmark1,benchmark2>`
+  Runs only specific algorithms.
+  *Example:* `python3 run_benchmarks.py --only fib,fact`
+* **Filter languages:** `--languages <lang1,lang2>`
+  Runs the benchmarks using only the specified languages.
+  *Example:* `python3 run_benchmarks.py --languages python,lua,hudhud`
+* **Skip compilation:** `--no-build`
+  Skips rebuilding the HudHud binary before running (useful if you know it's already compiled).
+* **Skip HudHud:** `--skip-hudhud`
+  Runs benchmarks for all other languages except HudHudScript.
+* **Dry Run:** `--dry-run`
+  Prints what *would* be executed without actually running the benchmarks.
+* **Profiling:**
+  - `--profile`: Automatically generates callgrind and flamegraph profiles after the benchmarks complete.
+  - `--profile-only-slow`: Only generates profiles for benchmarks where HudHud is significantly slower (>6x) than Python.
 
 ### Verifying Correctness
-To ensure that all benchmarks across all languages are calculating the correct mathematical results and matching the "golden values", you can run the correctness verifier:
+To ensure that all benchmarks across all languages are calculating the correct mathematical results and matching the "golden values" (expected outputs), you can run the correctness verifier:
 ```bash
 python3 check_correctness.py
 ```
-* Use `-v` for verbose error details.
-* Use `--strict` if you want the script to exit with an error code (1) upon detecting mismatches or missing results.
-* Use `--json` to output the report in JSON format.
+
+**Correctness Checker Options:**
+* **`-v` or `--verbose`**: Shows detailed information about output mismatches and errors.
+* **`--strict`**: Forces the script to exit with an error code (`1`) if any mismatch or missing result is detected. Great for CI/CD pipelines.
+* **`--allow-incomplete`**: Evaluates correctness but does not fail if some language results are missing or outdated.
+* **`--only <benchmark>`**: Verifies only the specified benchmark(s).
+* **`--json`**: Outputs the verification report in JSON format instead of a terminal table.
 
 ### HudHudScript Auto-Detection
 The script is designed to seamlessly locate the `hudhud` executable for benchmarking. It will search in the following order:
