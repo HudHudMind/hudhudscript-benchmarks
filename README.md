@@ -182,3 +182,4 @@ These benchmarks were run on a Windows machine to verify cross-platform performa
 | Fasta | 128ms | 95ms | 67ms |
 | Reverse-Complement | 718ms | 435ms | 219ms |
 | **Average** | **354ms** | **282ms** | **98ms** |
+| **Success** | **100%** | **100%** | **100%** |
