@@ -74,6 +74,8 @@ The benchmarks were executed on the following hardware and environment to ensure
 
 ## Benchmark Results
 
+> **A Note on Node.js / JavaScript:** In the tables below, the **Node.js** column represents the execution of pure **JavaScript** algorithms running on the **V8 Engine**. We use the `node` CLI runtime as a standard, widely adopted environment to benchmark V8's raw JavaScript execution speed.
+
 Below is a summary of the latest benchmark results extracted from `data/benchmark_results.json`. **All times are in milliseconds (ms), and lower is better.**
 
 | Benchmark | HudHud (ms) | Python (ms) | Lua (ms) | Node.js (ms) | Ruby (ms) | PHP (ms) | Perl (ms) | Raku (ms) | Tcl (ms) |
