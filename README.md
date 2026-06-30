@@ -55,9 +55,22 @@ The script is designed to seamlessly locate the `hudhud` executable for benchmar
 
 ## System Specifications
 The benchmarks were executed on the following hardware and environment to ensure consistency and reliable measurements:
+
+**Hardware & OS:**
 * **OS:** Debian GNU/Linux 12 (bookworm) x86_64 (Linux 6.1.0)
 * **CPU:** Intel(R) Xeon(R) Silver 4114 CPU @ 2.20GHz (40 Cores / 2 Sockets)
 * **RAM:** 32 GB (31 GiB)
+
+**Programming Language Versions:**
+* **HudHudScript:** 0.7.325
+* **Python:** 3.11.2
+* **Lua:** 5.4.4
+* **Node.js:** v22.22.2
+* **Ruby:** 3.1.2
+* **PHP:** 8.2.30
+* **Perl:** 5.36.0
+* **Raku:** 2022.12
+* **Tcl:** 8.6.13
 
 ## Benchmark Results
 
