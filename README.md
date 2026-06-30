@@ -62,7 +62,7 @@ The benchmarks were executed on the following hardware and environment to ensure
 * **RAM:** 32 GB (31 GiB)
 
 **Programming Language Versions:**
-* **HudHudScript:** 0.7.325
+* **HudHudScript:** v0.8.0
 * **Python:** 3.11.2
 * **Lua:** 5.4.4
 * **Node.js:** v22.22.2
