@@ -1,0 +1,3 @@
+proc fib_memo {n} { global memo; if {$n <= 1} { return $n }; if {[info exists memo($n)]} { return $memo($n) }; set res [expr {[fib_memo [expr {$n - 1}]] + [fib_memo [expr {$n - 2}]]}]; set memo($n) $res; return $res }
+set start [clock milliseconds]; set sum 0; for {set i 0} {$i < 10000} {incr i} { array unset memo; array set memo {}; set sum [expr {$sum + [fib_memo 500]}] }
+set end [clock milliseconds]; puts "Sum: $sum"; puts "Time: [expr {$end - $start}]ms"

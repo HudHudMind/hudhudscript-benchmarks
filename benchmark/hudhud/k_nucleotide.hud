@@ -1,0 +1,62 @@
+fn char_to_int(c) {
+    if (c == "A") { return 0; }
+    if (c == "C") { return 1; }
+    if (c == "G") { return 2; }
+    if (c == "T") { return 3; }
+    return 0;
+}
+
+let start = Date.to_millis();
+
+let chars = ["A", "C", "G", "T"];
+let dna = "";
+let seed = 42;
+let idx_loop = 0;
+while (idx_loop < 100000) {
+    seed = (seed * 1103515245 + 12345) % 2147483648;
+    let char_idx = (seed / 65536) % 4;
+    dna = dna + chars[char_idx];
+    idx_loop = idx_loop + 1;
+}
+
+let freq1 = [0, 0, 0, 0];
+let i1 = 0;
+while (i1 < 100000) {
+    let c = char_to_int(dna[i1]);
+    freq1[c] = freq1[c] + 1;
+    i1 = i1 + 1;
+}
+
+let freq2 = [];
+let f2i = 0;
+while (f2i < 16) { freq2.push(0); f2i = f2i + 1; }
+let i2 = 0;
+while (i2 < 100000 - 1) {
+    let c1 = char_to_int(dna[i2]);
+    let c2 = char_to_int(dna[i2 + 1]);
+    let code = c1 * 4 + c2;
+    freq2[code] = freq2[code] + 1;
+    i2 = i2 + 1;
+}
+
+let freq3 = [];
+let f3i = 0;
+while (f3i < 64) { freq3.push(0); f3i = f3i + 1; }
+let i3 = 0;
+while (i3 < 100000 - 2) {
+    let c1 = char_to_int(dna[i3]);
+    let c2 = char_to_int(dna[i3 + 1]);
+    let c3 = char_to_int(dna[i3 + 2]);
+    let code = c1 * 16 + c2 * 4 + c3;
+    freq3[code] = freq3[code] + 1;
+    i3 = i3 + 1;
+}
+
+let unique_count = 0;
+let f1k = 0; while (f1k < 4) { if (freq1[f1k] > 0) { unique_count = unique_count + 1; } f1k = f1k + 1; }
+let f2k = 0; while (f2k < 16) { if (freq2[f2k] > 0) { unique_count = unique_count + 1; } f2k = f2k + 1; }
+let f3k = 0; while (f3k < 64) { if (freq3[f3k] > 0) { unique_count = unique_count + 1; } f3k = f3k + 1; }
+
+let end = Date.to_millis();
+print("Count: " + unique_count);
+print("Time: " + (end - start) + "ms");

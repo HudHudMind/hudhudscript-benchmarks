@@ -1,0 +1,2 @@
+my int $i; my int $j; my int $k; my int $q; my int $idx; my int $m; my int $b;
+my $start = now * 1000; my $s = 0; for 1..1000000 -> $i { $s += $i * $i; }; my $end = now * 1000; say "Sum: " ~ $s; say "Time: " ~ ($end - $start).Int ~ "ms";

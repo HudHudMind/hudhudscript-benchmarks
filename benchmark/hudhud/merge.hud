@@ -1,0 +1,56 @@
+let arr = [];
+for (let i = 1000; i > 0; i = i - 1) {
+    arr.push(i);
+}
+let start = Date.to_millis();
+let n = 1000;
+for (let width = 1; width < n; width = width * 2) {
+    for (let left = 0; left < n; left = left + 2 * width) {
+        let mid = left + width - 1;
+        if (mid < n - 1) {
+            let right = left + 2 * width - 1;
+            if (right >= n) {
+                right = n - 1;
+            }
+            let n1 = mid - left + 1;
+            let n2 = right - mid;
+            let L = [];
+            let R = [];
+            for (let k = 0; k < n1; k = k + 1) {
+                L.push(arr[left + k]);
+            }
+            for (let k = 0; k < n2; k = k + 1) {
+                R.push(arr[mid + 1 + k]);
+            }
+            let i1 = 0;
+            let j1 = 0;
+            let m = left;
+            while (true) {
+                if (!(i1 < n1 && j1 < n2)) {
+                    break;
+                }
+                if (L[i1] <= R[j1]) {
+                    arr[m] = L[i1];
+                    i1 = i1 + 1;
+                } else {
+                    arr[m] = R[j1];
+                    j1 = j1 + 1;
+                }
+                m = m + 1;
+            }
+            for (let ii = i1; ii < n1; ii = ii + 1) {
+                arr[m] = L[ii];
+                m = m + 1;
+            }
+            for (let jj = j1; jj < n2; jj = jj + 1) {
+                arr[m] = R[jj];
+                m = m + 1;
+            }
+        }
+    }
+}
+let end = Date.to_millis();
+print("First: " + arr[0]);
+print("Last: " + arr[n - 1]);
+print("Time: " + (end - start) + "ms");
+

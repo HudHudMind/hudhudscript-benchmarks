@@ -1,0 +1,26 @@
+let coeffs = [];
+let i = 0;
+while (i <= 1000) {
+    coeffs.push(i + 1);
+    i = i + 1;
+}
+fn horner(coeffs, x) {
+    let result = coeffs[1000];
+    let i = 999;
+    while (i >= 0) {
+        result = result * x + coeffs[i];
+        i = i - 1;
+    }
+    return result;
+}
+let start = Date.to_millis();
+let sum = 0.0;
+let k = 0;
+while (k < 100000) {
+    sum = sum + horner(coeffs, 1.5);
+    k = k + 1;
+}
+let end = Date.to_millis();
+print("Sum: " + sum);
+print("Time: " + (end - start) + "ms");
+

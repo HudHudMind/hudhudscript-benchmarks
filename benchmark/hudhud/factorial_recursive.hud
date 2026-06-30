@@ -1,0 +1,12 @@
+fn fact(n) {
+    if (n <= 1) {
+        return 1;
+    }
+    return n * fact(n - 1);
+}
+let start = Date.to_millis();
+let result = fact(150);
+let end = Date.to_millis();
+print("fact(150) = " + result);
+print("Time: " + (end - start) + "ms");
+

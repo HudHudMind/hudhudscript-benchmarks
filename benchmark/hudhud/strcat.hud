@@ -1,0 +1,8 @@
+let s = "";
+let start = Date.to_millis();
+for (let i = 0; i < 50000; i = i + 1) {
+    s = s + "x";
+}
+let end = Date.to_millis();
+print("Length: " + len(s));
+print("Time: " + (end - start) + "ms");

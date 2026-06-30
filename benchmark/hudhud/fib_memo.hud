@@ -1,0 +1,17 @@
+let start = Date.to_millis();
+let sum = 0;
+let i = 0;
+while (i < 10000) {
+    let memo = [0, 1];
+    let j = 2;
+    while (j <= 500) {
+        memo.push(memo[j - 1] + memo[j - 2]);
+        j = j + 1;
+    }
+    sum = sum + memo[500];
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Sum: " + sum);
+print("Time: " + (end - start) + "ms");
+

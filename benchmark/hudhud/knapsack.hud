@@ -1,0 +1,35 @@
+let weights = [];
+let values = [];
+for (let i = 0; i < 50; i = i + 1) {
+    weights.push((i * 7 + 3) % 20 + 1);
+    values.push((i * 13 + 5) % 50 + 10);
+}
+let capacity = 100;
+let start = Date.to_millis();
+let n = 50;
+let dp = [];
+for (let i = 0; i <= n; i = i + 1) {
+    let row = [];
+    for (let j = 0; j <= capacity; j = j + 1) {
+        row.push(0);
+    }
+    dp.push(row);
+}
+for (let i = 1; i <= n; i = i + 1) {
+    for (let w = 0; w <= capacity; w = w + 1) {
+        if (weights[i - 1] <= w) {
+            let incl = values[i - 1] + dp[i - 1][w - weights[i - 1]];
+            if (incl > dp[i - 1][w]) {
+                dp[i][w] = incl;
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        } else {
+            dp[i][w] = dp[i - 1][w];
+        }
+    }
+}
+let end = Date.to_millis();
+print("Max: " + dp[n][capacity]);
+print("Time: " + (end - start) + "ms");
+

@@ -1,0 +1,27 @@
+let s = "";
+for (let i = 0; i < 50000; i = i + 1) {
+    s = s + "a";
+}
+fn is_pal(str) {
+    let left = 0;
+    let right = str.length - 1;
+    while (left < right) {
+        if (str[left] != str[right]) { return false; }
+        left = left + 1;
+        right = right - 1;
+    }
+    return true;
+}
+let start = Date.to_millis();
+let ok = true;
+for (let i = 0; i < 1000; i = i + 1) {
+    ok = is_pal(s);
+}
+let end = Date.to_millis();
+if (ok) {
+    print("Palindrome: true");
+} else {
+    print("Palindrome: false");
+}
+print("Time: " + (end - start) + "ms");
+

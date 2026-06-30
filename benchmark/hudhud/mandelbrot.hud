@@ -1,0 +1,38 @@
+fn mandelbrot(size) {
+    let sum_iters = 0;
+    let y = 0;
+    while (y < size) {
+        let x = 0;
+        while (x < size) {
+            let zr = 0.0;
+            let zi = 0.0;
+            let cr = (2.0 * x / size) - 1.5;
+            let ci = (2.0 * y / size) - 1.0;
+            let escape = 0;
+            let i = 0;
+            while (i < 50) {
+                let tr = zr * zr - zi * zi + cr;
+                let ti = 2.0 * zr * zi + ci;
+                zr = tr;
+                zi = ti;
+                if (zr * zr + zi * zi > 4.0) {
+                    escape = 1;
+                    i = 50;
+                } else {
+                    i = i + 1;
+                }
+            }
+            sum_iters = sum_iters + escape;
+            x = x + 1;
+        }
+        y = y + 1;
+    }
+    return sum_iters;
+}
+
+let start = Date.to_millis();
+let res = mandelbrot(500);
+let end = Date.to_millis();
+
+print("Sum: " + res);
+print("Time: " + (end - start) + "ms");

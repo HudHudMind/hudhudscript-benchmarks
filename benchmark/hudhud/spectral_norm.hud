@@ -1,0 +1,73 @@
+fn eval_A(i, j) {
+    let ii = i * 1.0;
+    let jj = j * 1.0;
+    return 1.0 / (((ii + jj) * (ii + jj + 1.0) / 2.0) + ii + 1.0);
+}
+
+fn eval_A_times_u(u, v, n) {
+    let i = 0;
+    while (i < n) {
+        v[i] = 0.0;
+        let j = 0;
+        while (j < n) {
+            v[i] = v[i] + eval_A(i, j) * u[j];
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+}
+
+fn eval_At_times_u(u, v, n) {
+    let i = 0;
+    while (i < n) {
+        v[i] = 0.0;
+        let j = 0;
+        while (j < n) {
+            v[i] = v[i] + eval_A(j, i) * u[j];
+            j = j + 1;
+        }
+        i = i + 1;
+    }
+}
+
+fn eval_AtA_times_u(u, v, w, n) {
+    eval_A_times_u(u, w, n);
+    eval_At_times_u(w, v, n);
+}
+
+
+
+let start = Date.to_millis();
+let n = 150;
+let u = [];
+let v = [];
+let w = [];
+let idx = 0;
+while (idx < n) {
+    u.push(1.0);
+    v.push(0.0);
+    w.push(0.0);
+    idx = idx + 1;
+}
+
+let iter = 0;
+while (iter < 10) {
+    eval_AtA_times_u(u, v, w, n);
+    eval_AtA_times_u(v, u, w, n);
+    iter = iter + 1;
+}
+
+let vBv = 0.0;
+let vv = 0.0;
+let i = 0;
+while (i < n) {
+    vBv = vBv + u[i] * v[i];
+    vv = vv + v[i] * v[i];
+    i = i + 1;
+}
+
+let res = Math.sqrt(vBv * (1.0 / vv));
+let end = Date.to_millis();
+
+print("Result: " + res);
+print("Time: " + (end - start) + "ms");

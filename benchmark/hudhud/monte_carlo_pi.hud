@@ -1,0 +1,19 @@
+let inside = 0;
+let total = 500000;
+let seed = 12345;
+fn next_random() {
+    seed = (seed * 16807) % 2147483647;
+    return seed / 2147483647.0;
+}
+let start = Date.to_millis();
+for (let i = 0; i < total; i = i + 1) {
+    let x = next_random();
+    let y = next_random();
+    if (x * x + y * y <= 1.0) {
+        inside = inside + 1;
+    }
+}
+let end = Date.to_millis();
+let pi = 4.0 * inside / total;
+print("Pi: " + pi);
+print("Time: " + (end - start) + "ms");

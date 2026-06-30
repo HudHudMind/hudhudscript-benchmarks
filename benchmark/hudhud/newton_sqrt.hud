@@ -1,0 +1,17 @@
+let start = Date.to_millis();
+let sum = 0.0;
+let n = 1;
+while (n <= 10000) {
+    let x = n / 2.0;
+    let i = 0;
+    while (i < 20) {
+        x = (x + n / x) / 2.0;
+        i = i + 1;
+    }
+    sum = sum + x;
+    n = n + 1;
+}
+let end = Date.to_millis();
+print("Sum: " + sum);
+print("Time: " + (end - start) + "ms");
+

@@ -1,0 +1,10 @@
+fn fib(n) {
+    if (n < 2) { return n; }
+    return fib(n - 1) + fib(n - 2);
+}
+let start = Date.to_millis();
+let result = fib(30);
+let end = Date.to_millis();
+print("fib(30) = " + result);
+print("Time: " + (end - start) + "ms");
+

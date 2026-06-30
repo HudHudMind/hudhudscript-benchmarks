@@ -1,0 +1,2 @@
+my int $i; my int $j; my int $k; my int $q; my int $idx; my int $m; my int $b;
+my $start = now * 1000; my $s = ""; for 1..50000 { $s ~= "a"; }; my $end = now * 1000; say "Len: " ~ $s.chars; say "Time: " ~ ($end - $start).Int ~ "ms";

@@ -1,0 +1,6 @@
+venv/
+*.hudb
+*.pyc
+*.lock
+*.db
+benchmark_results.json

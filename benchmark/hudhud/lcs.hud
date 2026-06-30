@@ -1,0 +1,35 @@
+let chars1 = [];
+let chars2 = [];
+for (let i = 0; i < 10; i = i + 1) {
+    chars1.push("abcdefghij");
+    chars2.push("acegikmoqs");
+}
+let s1 = chars1.join("");
+let s2 = chars2.join("");
+let start = Date.to_millis();
+let m = 100;
+let n = 100;
+let dp = [];
+for (let i = 0; i <= m; i = i + 1) {
+    let row = [];
+    for (let j = 0; j <= n; j = j + 1) {
+        row.push(0);
+    }
+    dp.push(row);
+}
+for (let i = 1; i <= m; i = i + 1) {
+    for (let j = 1; j <= n; j = j + 1) {
+        if (s1[i - 1] == s2[j - 1]) {
+            dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+            dp[i][j] = dp[i - 1][j];
+            if (dp[i][j - 1] > dp[i][j]) {
+                dp[i][j] = dp[i][j - 1];
+            }
+        }
+    }
+}
+let end = Date.to_millis();
+print("LCS: " + dp[m][n]);
+print("Time: " + (end - start) + "ms");
+

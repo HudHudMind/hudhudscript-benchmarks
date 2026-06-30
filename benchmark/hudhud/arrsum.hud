@@ -1,0 +1,12 @@
+let arr = [];
+for (let i = 0; i < 10000; i = i + 1) {
+    arr.push(i);
+}
+let sum = 0;
+let start = Date.to_millis();
+for (let i = 0; i < 10000; i = i + 1) {
+    sum = sum + arr[i];
+}
+let end = Date.to_millis();
+print("Sum: " + sum);
+print("Time: " + (end - start) + "ms");

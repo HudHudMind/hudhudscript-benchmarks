@@ -1,0 +1,63 @@
+let arr = [];
+for (let i = 1000; i > 0; i = i - 1) {
+    arr.push(i);
+}
+let start = Date.to_millis();
+let n = arr.length;
+for (let j = n / 2 - 1; j >= 0; j = j - 1) {
+    let idx = j;
+    while (true) {
+        let largest = idx;
+        let left = 2 * idx + 1;
+        let right = 2 * idx + 2;
+        if (left < n) {
+            if (arr[left] > arr[largest]) {
+                largest = left;
+            }
+        }
+        if (right < n) {
+            if (arr[right] > arr[largest]) {
+                largest = right;
+            }
+        }
+        if (largest == idx) {
+            break;
+        }
+        let temp = arr[idx];
+        arr[idx] = arr[largest];
+        arr[largest] = temp;
+        idx = largest;
+    }
+}
+for (let k = n - 1; k > 0; k = k - 1) {
+    let temp = arr[0];
+    arr[0] = arr[k];
+    arr[k] = temp;
+    let idx = 0;
+    while (true) {
+        let largest = idx;
+        let left = 2 * idx + 1;
+        let right = 2 * idx + 2;
+        if (left < k) {
+            if (arr[left] > arr[largest]) {
+                largest = left;
+            }
+        }
+        if (right < k) {
+            if (arr[right] > arr[largest]) {
+                largest = right;
+            }
+        }
+        if (largest == idx) {
+            break;
+        }
+        let temp2 = arr[idx];
+        arr[idx] = arr[largest];
+        arr[largest] = temp2;
+        idx = largest;
+    }
+}
+let end = Date.to_millis();
+print("First: " + arr[0]);
+print("Last: " + arr[n - 1]);
+print("Time: " + (end - start) + "ms");

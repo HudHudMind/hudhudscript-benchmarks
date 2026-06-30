@@ -1,0 +1,72 @@
+fn reverse_complement(seq) {
+    let count_A = 0;
+    let n = seq.length;
+    let i = n - 1;
+    while (i >= 0) {
+        let c = seq[i];
+        let rep = c;
+        if (c == "A") { rep = "T"; }
+        else if (c == "C") { rep = "G"; }
+        else if (c == "G") { rep = "C"; }
+        else if (c == "T") { rep = "A"; }
+        else if (c == "U") { rep = "A"; }
+        else if (c == "M") { rep = "K"; }
+        else if (c == "R") { rep = "Y"; }
+        else if (c == "W") { rep = "W"; }
+        else if (c == "S") { rep = "S"; }
+        else if (c == "Y") { rep = "R"; }
+        else if (c == "K") { rep = "M"; }
+        else if (c == "V") { rep = "B"; }
+        else if (c == "H") { rep = "D"; }
+        else if (c == "D") { rep = "H"; }
+        else if (c == "B") { rep = "V"; }
+        else if (c == "N") { rep = "N"; }
+        else if (c == "a") { rep = "T"; }
+        else if (c == "c") { rep = "G"; }
+        else if (c == "g") { rep = "C"; }
+        else if (c == "t") { rep = "A"; }
+        else if (c == "u") { rep = "A"; }
+        else if (c == "m") { rep = "K"; }
+        else if (c == "r") { rep = "Y"; }
+        else if (c == "w") { rep = "W"; }
+        else if (c == "s") { rep = "S"; }
+        else if (c == "y") { rep = "R"; }
+        else if (c == "k") { rep = "M"; }
+        else if (c == "v") { rep = "B"; }
+        else if (c == "h") { rep = "D"; }
+        else if (c == "d") { rep = "H"; }
+        else if (c == "b") { rep = "V"; }
+        else if (c == "n") { rep = "N"; }
+        
+        if (rep == "A") {
+            count_A = count_A + 1;
+        }
+        i = i - 1;
+    }
+    return count_A;
+}
+
+let start = Date.to_millis();
+
+let seq = [];
+let seed = 42;
+let chars = ["A", "C", "G", "T"];
+let i = 0;
+while (i < 500000) {
+    seed = (seed * 1103515245 + 12345) % 2147483648;
+    let idx = (seed / 65536) % 4;
+    seq.push(chars[idx]);
+    i = i + 1;
+}
+
+let res = 0;
+let k = 0;
+while (k < 10) {
+    res = reverse_complement(seq);
+    k = k + 1;
+}
+
+let end = Date.to_millis();
+
+print("Result: " + res);
+print("Time: " + (end - start) + "ms");

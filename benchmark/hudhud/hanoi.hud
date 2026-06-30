@@ -1,0 +1,12 @@
+fn hanoi(n) {
+    if (n == 1) {
+        return 1;
+    }
+    return hanoi(n - 1) + 1 + hanoi(n - 1);
+}
+let start = Date.to_millis();
+let moves = hanoi(20);
+let end = Date.to_millis();
+print("Moves: " + moves);
+print("Time: " + (end - start) + "ms");
+

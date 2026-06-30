@@ -1,0 +1,27 @@
+let n = 1000;
+let arr = [];
+for (let i = n; i > 0; i = i - 1) {
+    arr.push(i);
+}
+let start = Date.to_millis();
+for (let j = 1; j < n; j = j + 1) {
+    let key = arr[j];
+    let k = j - 1;
+    while (true) {
+        if (k < 0) {
+            break;
+        }
+        if (arr[k] > key) {
+            arr[k + 1] = arr[k];
+            k = k - 1;
+        } else {
+            break;
+        }
+    }
+    arr[k + 1] = key;
+}
+let end = Date.to_millis();
+print("First: " + arr[0]);
+print("Last: " + arr[n - 1]);
+print("Time: " + (end - start) + "ms");
+

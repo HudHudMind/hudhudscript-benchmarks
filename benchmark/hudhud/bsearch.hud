@@ -1,0 +1,27 @@
+let arr = [];
+for (let i = 0; i < 100000; i = i + 1) {
+    arr.push(i * 2);
+}
+let start = Date.to_millis();
+let found = 0;
+for (let j = 0; j < 10000; j = j + 1) {
+    let target = j * 20;
+    let left = 0;
+    let right = 99999;
+    while (left <= right) {
+        let mid = (left + right) / 2;
+        let mid_val = arr[mid];
+        if (mid_val == target) {
+            found = found + 1;
+            break;
+        }
+        if (mid_val < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+}
+let end = Date.to_millis();
+print("Found: " + found);
+print("Time: " + (end - start) + "ms");

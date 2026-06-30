@@ -1,0 +1,47 @@
+let n = 100;
+let adj = [];
+for (let i = 0; i < n; i = i + 1) {
+    let row = [];
+    for (let j = 0; j < n; j = j + 1) {
+        row.push(0);
+    }
+    adj.push(row);
+}
+for (let i = 0; i < n; i = i + 1) {
+    for (let j = 0; j < n; j = j + 1) {
+        if ((i * 3 + j * 7) % 11 == 0) {
+            if (i != j) {
+                adj[i][j] = 1;
+            }
+        }
+    }
+}
+let start = Date.to_millis();
+let visited = [];
+for (let i = 0; i < n; i = i + 1) {
+    visited.push(false);
+}
+let stack = [];
+stack.push(0);
+let count = 0;
+while (true) {
+    if (stack.length == 0) {
+        break;
+    }
+    let node = stack.pop();
+    if (!visited[node]) {
+        visited[node] = true;
+        count = count + 1;
+        for (let neighbor = n - 1; neighbor >= 0; neighbor = neighbor - 1) {
+            if (adj[node][neighbor] == 1) {
+                if (!visited[neighbor]) {
+                    stack.push(neighbor);
+                }
+            }
+        }
+    }
+}
+let end = Date.to_millis();
+print("Visited: " + count);
+print("Time: " + (end - start) + "ms");
+

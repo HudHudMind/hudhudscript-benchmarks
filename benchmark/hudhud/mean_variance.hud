@@ -1,0 +1,27 @@
+let arr = [];
+let i = 0;
+while (i < 1000000) {
+    arr.push(i + 1);
+    i = i + 1;
+}
+let start = Date.to_millis();
+let sum = 0.0;
+i = 0;
+while (i < 1000000) {
+    sum = sum + arr[i];
+    i = i + 1;
+}
+let mean = sum / 1000000.0;
+let sq_diff = 0.0;
+i = 0;
+while (i < 1000000) {
+    let diff = arr[i] * 1.0 - mean;
+    sq_diff = sq_diff + diff * diff;
+    i = i + 1;
+}
+let variance = sq_diff / 1000000.0;
+let end = Date.to_millis();
+print("Mean: " + mean);
+print("Variance: " + variance);
+print("Time: " + (end - start) + "ms");
+

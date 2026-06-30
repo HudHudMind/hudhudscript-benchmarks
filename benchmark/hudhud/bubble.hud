@@ -1,0 +1,20 @@
+let n = 500;
+let arr = [];
+for (let i = n; i > 0; i = i - 1) {
+    arr.push(i);
+}
+let start = Date.to_millis();
+for (let k = 0; k < n; k = k + 1) {
+    for (let j = 0; j < n - 1; j = j + 1) {
+        if (arr[j] > arr[j + 1]) {
+            let temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+        }
+    }
+}
+let end = Date.to_millis();
+print("First: " + arr[0]);
+print("Last: " + arr[n - 1]);
+print("Time: " + (end - start) + "ms");
+

@@ -1,0 +1,23 @@
+let limit = 10000;
+let sieve = [];
+for (let i = 0; i <= limit; i = i + 1) {
+    sieve.push(true);
+}
+sieve[0] = false;
+sieve[1] = false;
+let start = Date.to_millis();
+for (let p = 2; p * p <= limit; p = p + 1) {
+    if (sieve[p]) {
+        for (let multiple = p * p; multiple <= limit; multiple = multiple + p) {
+            sieve[multiple] = false;
+        }
+    }
+}
+let count = 0;
+for (let i = 2; i <= limit; i = i + 1) {
+    if (sieve[i]) { count = count + 1; }
+}
+let end = Date.to_millis();
+print("Primes up to 10000: " + count);
+print("Time: " + (end - start) + "ms");
+

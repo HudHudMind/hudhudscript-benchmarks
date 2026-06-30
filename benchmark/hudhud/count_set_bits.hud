@@ -1,0 +1,15 @@
+let start = Date.to_millis();
+let total = 0;
+for (let n = 1; n <= 100000; n = n + 1) {
+    let x = n;
+    while (x > 0) {
+        if (x % 2 == 1) {
+            total = total + 1;
+        }
+        x = x / 2;
+    }
+}
+let end = Date.to_millis();
+print("Total: " + total);
+print("Time: " + (end - start) + "ms");
+

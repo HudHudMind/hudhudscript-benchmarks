@@ -1,0 +1,24 @@
+let text = "";
+for (let i = 0; i < 1000; i = i + 1) {
+    text = text + "abcdefghij";
+}
+let pattern = "defg";
+let text_len = text.length;
+let pat_len = pattern.length;
+let count = 0;
+let start = Date.to_millis();
+for (let t = 0; t <= text_len - pat_len; t = t + 1) {
+    let matched = true;
+    for (let p = 0; p < pat_len; p = p + 1) {
+        if (text[t + p] != pattern[p]) {
+            matched = false;
+            p = pat_len;
+        }
+    }
+    if (matched) {
+        count = count + 1;
+    }
+}
+let end = Date.to_millis();
+print("Count: " + count);
+print("Time: " + (end - start) + "ms");

@@ -1,0 +1,3 @@
+proc isPal {s} { set l 0; set r [expr {[string length $s] - 1}]; while {$l < $r} { if {[string index $s $l] != [string index $s $r]} { return 0 }; incr l; incr r -1 }; return 1 }
+set start [clock milliseconds]; set res 0; set s "[string repeat a 5000]b[string repeat a 5000]"; for {set i 0} {$i < 10000} {incr i} { set res [isPal $s] }
+set end [clock milliseconds]; puts "IsPal: $res"; puts "Time: [expr {$end - $start}]ms"

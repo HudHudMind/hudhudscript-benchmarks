@@ -1,0 +1,14 @@
+let a = [];
+let b = [];
+for (let i = 0; i < 500000; i = i + 1) {
+    a.push(i + 1);
+    b.push(i + 2);
+}
+let sum = 0;
+let start = Date.to_millis();
+for (let i = 0; i < 500000; i = i + 1) {
+    sum = sum + a[i] * b[i];
+}
+let end = Date.to_millis();
+print("Dot: " + sum);
+print("Time: " + (end - start) + "ms");

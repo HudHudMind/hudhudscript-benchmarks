@@ -1,0 +1,24 @@
+let size = 300;
+let m = [];
+let t = [];
+for (let i = 0; i < size; i = i + 1) {
+    let row_m = [];
+    let row_t = [];
+    for (let j = 0; j < size; j = j + 1) {
+        row_m.push(i + j);
+        row_t.push(0);
+    }
+    m.push(row_m);
+    t.push(row_t);
+}
+let start = Date.to_millis();
+for (let i = 0; i < size; i = i + 1) {
+    for (let j = 0; j < size; j = j + 1) {
+        t[j][i] = m[i][j];
+    }
+}
+let end = Date.to_millis();
+print("T[0][0]: " + t[0][0]);
+print("T[299][299]: " + t[299][299]);
+print("Time: " + (end - start) + "ms");
+
