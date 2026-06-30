@@ -119,3 +119,66 @@ Below is a summary of the latest benchmark results extracted from `data/benchmar
 | **Success** | **100%** | **100%** | **100%** | **100%** | **100%** | **100%** | **100%** | **100%** | **100%** |
 
 *Note: Results were extracted from recent benchmark runs. The test environment specifics may affect exact reproduction timings.*
+
+## Windows Environment Benchmarks
+
+These benchmarks were run on a Windows machine to verify cross-platform performance.
+
+**Configuration:**
+- **OS:** Microsoft Windows 10 Pro (64-bit)
+- **CPU:** 11th Gen Intel(R) Core(TM) i7-11700 @ 2.50GHz
+- **Versions:** HudHud 0.8.0, Node.js v22.22.1, Python 3.11.15
+
+| Benchmark | hudhud | python | nodejs |
+| :--- | :--- | :--- | :--- |
+| Ackermann Function | 46ms | 76ms | 67ms |
+| Array Summation | 31ms | 64ms | 62ms |
+| BFS Graph | 28ms | 105ms | 68ms |
+| Binary Search | 62ms | 93ms | 72ms |
+| Bubble Sort | 55ms | 87ms | 62ms |
+| Collatz Conjecture | 102ms | 150ms | 75ms |
+| Count Set Bits | 128ms | 193ms | 85ms |
+| Cumulative Sum | 47ms | 76ms | 72ms |
+| DFS Graph | 29ms | 58ms | 60ms |
+| Factorial Iterative | 48ms | 93ms | 92ms |
+| Factorial Recursive | 28ms | 59ms | 65ms |
+| Fibonacci Recursive | 215ms | 177ms | 94ms |
+| Fibonacci Iterative | 1056ms | 444ms | 365ms |
+| Fibonacci Memoization | 1243ms | 990ms | 303ms |
+| Euclidean GCD | 38ms | 67ms | 63ms |
+| Geometric Series | 100ms | 145ms | 73ms |
+| Tower of Hanoi | 115ms | 107ms | 68ms |
+| Heap Sort | 32ms | 59ms | 63ms |
+| Insertion Sort | 71ms | 117ms | 68ms |
+| 0/1 Knapsack | 31ms | 61ms | 62ms |
+| LCS | 30ms | 60ms | 77ms |
+| Matrix Multiply | 488ms | 814ms | 97ms |
+| Matrix Transpose | 47ms | 90ms | 82ms |
+| Mean and Variance | 341ms | 321ms | 88ms |
+| Merge Sort | 33ms | 132ms | 66ms |
+| Modular Exponentiation | 40ms | 70ms | 68ms |
+| Monte Carlo Pi | 217ms | 365ms | 92ms |
+| N-Queens | 37ms | 69ms | 63ms |
+| Newton-Raphson Sqrt | 42ms | 105ms | 86ms |
+| Palindrome Check | 1875ms | 1673ms | 190ms |
+| Polynomial Evaluation | 4730ms | 4016ms | 248ms |
+| Power Operation | 1115ms | 603ms | 589ms |
+| Prime Count | 127ms | 190ms | 64ms |
+| Quick Sort | 62ms | 111ms | 66ms |
+| Sieve of Eratosthenes | 29ms | 58ms | 59ms |
+| String Concatenation | 28ms | 88ms | 67ms |
+| String Reverse | 127ms | 91ms | 68ms |
+| Substring Search | 46ms | 62ms | 76ms |
+| Sum of Squares | 85ms | 142ms | 104ms |
+| Vector Dot Product | 123ms | 207ms | 91ms |
+| Binary Trees | 260ms | 132ms | 73ms |
+| Tak Function | 84ms | 84ms | 65ms |
+| Mandelbrot Set | 848ms | 776ms | 81ms |
+| K-Nucleotide | 1159ms | 113ms | 83ms |
+| Duff's Device | 1298ms | 481ms | 142ms |
+| N-Body | 151ms | 134ms | 67ms |
+| Fannkuch-Redux | 159ms | 150ms | 68ms |
+| Spectral Norm | 353ms | 219ms | 70ms |
+| Fasta | 128ms | 95ms | 67ms |
+| Reverse-Complement | 718ms | 435ms | 219ms |
+| **Average** | **366ms** | **302ms** | **104ms** |
