@@ -144,57 +144,57 @@ These benchmarks were run on a Windows machine to verify cross-platform performa
 - **CPU:** 11th Gen Intel(R) Core(TM) i7-11700 @ 2.50GHz
 - **Versions:** HudHud 0.8.0, Node.js v22.22.1, Python 3.11.15
 
-| Benchmark | hudhud | python | nodejs |
-| :--- | :--- | :--- | :--- |
-| [1. Ackermann Function (`ack`)](HUDHUD_SCRIPT_BENCHMARK.md#1-ackermann-function-ack) | 46ms | 76ms | 67ms |
-| [2. Array Summation (`arrsum`)](HUDHUD_SCRIPT_BENCHMARK.md#2-array-summation-arrsum) | 31ms | 64ms | 62ms |
-| [3. Breadth-First Search (`bfs`)](HUDHUD_SCRIPT_BENCHMARK.md#3-breadth-first-search-bfs) | 28ms | 105ms | 68ms |
-| [5. Binary Search (`bsearch`)](HUDHUD_SCRIPT_BENCHMARK.md#5-binary-search-bsearch) | 62ms | 93ms | 72ms |
-| [6. Bubble Sort (`bubble`)](HUDHUD_SCRIPT_BENCHMARK.md#6-bubble-sort-bubble) | 55ms | 87ms | 62ms |
-| [7. Collatz Sequences (`collatz`)](HUDHUD_SCRIPT_BENCHMARK.md#7-collatz-sequences-collatz) | 102ms | 150ms | 75ms |
-| [8. Count Set Bits (`count_set_bits`)](HUDHUD_SCRIPT_BENCHMARK.md#8-count-set-bits-count_set_bits) | 128ms | 193ms | 85ms |
-| [9. Cumulative Sum (`cumulative_sum`)](HUDHUD_SCRIPT_BENCHMARK.md#9-cumulative-sum-cumulative_sum) | 47ms | 76ms | 72ms |
-| [10. Depth-First Search (`dfs`)](HUDHUD_SCRIPT_BENCHMARK.md#10-depth-first-search-dfs) | 29ms | 58ms | 60ms |
-| [12. Iterative Factorial (`fact`)](HUDHUD_SCRIPT_BENCHMARK.md#12-iterative-factorial-fact) | 48ms | 93ms | 92ms |
-| [13. Recursive Factorial (`factorial_recursive`)](HUDHUD_SCRIPT_BENCHMARK.md#13-recursive-factorial-factorial_recursive) | 28ms | 59ms | 65ms |
-| [16. Recursive Fibonacci (`fib`)](HUDHUD_SCRIPT_BENCHMARK.md#16-recursive-fibonacci-fib) | 215ms | 177ms | 94ms |
-| [17. Iterative Fibonacci (`fib_iterative`)](HUDHUD_SCRIPT_BENCHMARK.md#17-iterative-fibonacci-fib_iterative) | 1056ms | 444ms | 365ms |
-| [18. Fibonacci Table Construction (`fib_memo`)](HUDHUD_SCRIPT_BENCHMARK.md#18-fibonacci-table-construction-fib_memo) | 1243ms | 990ms | 303ms |
-| [19. Euclidean Greatest Common Divisor (`gcd`)](HUDHUD_SCRIPT_BENCHMARK.md#19-euclidean-greatest-common-divisor-gcd) | 38ms | 67ms | 63ms |
-| [20. Geometric Series (`geometric_series`)](HUDHUD_SCRIPT_BENCHMARK.md#20-geometric-series-geometric_series) | 100ms | 145ms | 73ms |
-| [21. Tower of Hanoi (`hanoi`)](HUDHUD_SCRIPT_BENCHMARK.md#21-tower-of-hanoi-hanoi) | 115ms | 107ms | 68ms |
-| [22. Heap Sort (`heap_sort`)](HUDHUD_SCRIPT_BENCHMARK.md#22-heap-sort-heap_sort) | 32ms | 59ms | 63ms |
-| [23. Insertion Sort (`insertion_sort`)](HUDHUD_SCRIPT_BENCHMARK.md#23-insertion-sort-insertion_sort) | 71ms | 117ms | 68ms |
-| [25. 0/1 Knapsack (`knapsack`)](HUDHUD_SCRIPT_BENCHMARK.md#25-01-knapsack-knapsack) | 31ms | 61ms | 62ms |
-| [26. Longest Common Subsequence (`lcs`)](HUDHUD_SCRIPT_BENCHMARK.md#26-longest-common-subsequence-lcs) | 30ms | 60ms | 77ms |
-| [28. Matrix Multiplication (`matrix`)](HUDHUD_SCRIPT_BENCHMARK.md#28-matrix-multiplication-matrix) | 488ms | 814ms | 97ms |
-| [29. Matrix Transpose (`matrix_transpose`)](HUDHUD_SCRIPT_BENCHMARK.md#29-matrix-transpose-matrix_transpose) | 47ms | 90ms | 82ms |
-| [30. Mean and Variance (`mean_variance`)](HUDHUD_SCRIPT_BENCHMARK.md#30-mean-and-variance-mean_variance) | 341ms | 321ms | 88ms |
-| [31. Merge Sort (`merge`)](HUDHUD_SCRIPT_BENCHMARK.md#31-merge-sort-merge) | 33ms | 132ms | 66ms |
-| [32. Modular Exponentiation (`modular_exp`)](HUDHUD_SCRIPT_BENCHMARK.md#32-modular-exponentiation-modular_exp) | 40ms | 70ms | 68ms |
-| [33. Monte Carlo Pi (`monte_carlo_pi`)](HUDHUD_SCRIPT_BENCHMARK.md#33-monte-carlo-pi-monte_carlo_pi) | 217ms | 365ms | 92ms |
-| [35. Eight Queens (`n_queens`)](HUDHUD_SCRIPT_BENCHMARK.md#35-eight-queens-n_queens) | 37ms | 69ms | 63ms |
-| [36. Newton Square Roots (`newton_sqrt`)](HUDHUD_SCRIPT_BENCHMARK.md#36-newton-square-roots-newton_sqrt) | 42ms | 105ms | 86ms |
-| [37. Palindrome Check (`palindrome`)](HUDHUD_SCRIPT_BENCHMARK.md#37-palindrome-check-palindrome) | 1875ms | 1673ms | 190ms |
-| [38. Polynomial Evaluation (`polynomial_eval`)](HUDHUD_SCRIPT_BENCHMARK.md#38-polynomial-evaluation-polynomial_eval) | 4730ms | 4016ms | 248ms |
-| [39. Repeated Power (`power`)](HUDHUD_SCRIPT_BENCHMARK.md#39-repeated-power-power) | 1115ms | 603ms | 589ms |
-| [40. Prime Count by Trial Division (`prime_count`)](HUDHUD_SCRIPT_BENCHMARK.md#40-prime-count-by-trial-division-prime_count) | 127ms | 190ms | 64ms |
-| [41. Iterative Quick Sort (`quick`)](HUDHUD_SCRIPT_BENCHMARK.md#41-iterative-quick-sort-quick) | 62ms | 111ms | 66ms |
-| [43. Sieve of Eratosthenes (`sieve`)](HUDHUD_SCRIPT_BENCHMARK.md#43-sieve-of-eratosthenes-sieve) | 29ms | 58ms | 59ms |
-| [45. String Concatenation (`strcat`)](HUDHUD_SCRIPT_BENCHMARK.md#45-string-concatenation-strcat) | 28ms | 88ms | 67ms |
-| [46. String Reverse (`strrev`)](HUDHUD_SCRIPT_BENCHMARK.md#46-string-reverse-strrev) | 127ms | 91ms | 68ms |
-| [47. Naive Substring Search (`substring_search`)](HUDHUD_SCRIPT_BENCHMARK.md#47-naive-substring-search-substring_search) | 46ms | 62ms | 76ms |
-| [48. Sum of Squares (`sum_of_squares`)](HUDHUD_SCRIPT_BENCHMARK.md#48-sum-of-squares-sum_of_squares) | 85ms | 142ms | 104ms |
-| [50. Vector Dot Product (`vector_dot`)](HUDHUD_SCRIPT_BENCHMARK.md#50-vector-dot-product-vector_dot) | 123ms | 207ms | 91ms |
-| [4. Binary Trees (`binary_trees`)](HUDHUD_SCRIPT_BENCHMARK.md#4-binary-trees-binary_trees) | 260ms | 132ms | 73ms |
-| [49. Takeuchi Function (`tak`)](HUDHUD_SCRIPT_BENCHMARK.md#49-takeuchi-function-tak) | 84ms | 84ms | 65ms |
-| [27. Mandelbrot Set (`mandelbrot`)](HUDHUD_SCRIPT_BENCHMARK.md#27-mandelbrot-set-mandelbrot) | 848ms | 776ms | 81ms |
-| [24. K-Nucleotide Frequencies (`k_nucleotide`)](HUDHUD_SCRIPT_BENCHMARK.md#24-k-nucleotide-frequencies-k_nucleotide) | 1159ms | 113ms | 83ms |
-| [11. Duff's Device-Style Copy (`duffs_device`)](HUDHUD_SCRIPT_BENCHMARK.md#11-duffs-device-style-copy-duffs_device) | 1298ms | 481ms | 142ms |
-| [34. N-Body Simulation (`n_body`)](HUDHUD_SCRIPT_BENCHMARK.md#34-n-body-simulation-n_body) | 151ms | 134ms | 67ms |
-| [14. Fannkuch Redux (`fannkuch_redux`)](HUDHUD_SCRIPT_BENCHMARK.md#14-fannkuch-redux-fannkuch_redux) | 159ms | 150ms | 68ms |
-| [44. Spectral Norm (`spectral_norm`)](HUDHUD_SCRIPT_BENCHMARK.md#44-spectral-norm-spectral_norm) | 353ms | 219ms | 70ms |
-| [15. FASTA Generation (`fasta`)](HUDHUD_SCRIPT_BENCHMARK.md#15-fasta-generation-fasta) | 128ms | 95ms | 67ms |
-| [42. Reverse Complement (`revcomp`)](HUDHUD_SCRIPT_BENCHMARK.md#42-reverse-complement-revcomp) | 718ms | 435ms | 219ms |
-| **Average** | **354ms** | **282ms** | **98ms** |
-| **Success** | **100%** | **100%** | **100%** |
+| Benchmark | hudhud | python | nodejs | ruby |
+| :--- | :--- | :--- | :--- | :--- |
+| [1. Ackermann Function (`ack`)](HUDHUD_SCRIPT_BENCHMARK.md#1-ackermann-function-ack) | 47ms | 72ms | 68ms | 153ms |
+| [2. Array Summation (`arrsum`)](HUDHUD_SCRIPT_BENCHMARK.md#2-array-summation-arrsum) | 30ms | 66ms | 64ms | 166ms |
+| [3. Breadth-First Search (`bfs`)](HUDHUD_SCRIPT_BENCHMARK.md#3-breadth-first-search-bfs) | 35ms | 59ms | 64ms | 146ms |
+| [5. Binary Search (`bsearch`)](HUDHUD_SCRIPT_BENCHMARK.md#5-binary-search-bsearch) | 53ms | 92ms | 74ms | 164ms |
+| [6. Bubble Sort (`bubble`)](HUDHUD_SCRIPT_BENCHMARK.md#6-bubble-sort-bubble) | 56ms | 89ms | 67ms | 168ms |
+| [7. Collatz Sequences (`collatz`)](HUDHUD_SCRIPT_BENCHMARK.md#7-collatz-sequences-collatz) | 98ms | 142ms | 82ms | 208ms |
+| [8. Count Set Bits (`count_set_bits`)](HUDHUD_SCRIPT_BENCHMARK.md#8-count-set-bits-count_set_bits) | 140ms | 204ms | 96ms | 314ms |
+| [9. Cumulative Sum (`cumulative_sum`)](HUDHUD_SCRIPT_BENCHMARK.md#9-cumulative-sum-cumulative_sum) | 43ms | 105ms | 77ms | 169ms |
+| [10. Depth-First Search (`dfs`)](HUDHUD_SCRIPT_BENCHMARK.md#10-depth-first-search-dfs) | 31ms | 64ms | 65ms | 142ms |
+| [12. Iterative Factorial (`fact`)](HUDHUD_SCRIPT_BENCHMARK.md#12-iterative-factorial-fact) | 47ms | 108ms | 95ms | 192ms |
+| [13. Recursive Factorial (`factorial_recursive`)](HUDHUD_SCRIPT_BENCHMARK.md#13-recursive-factorial-factorial_recursive) | 26ms | 60ms | 64ms | 143ms |
+| [16. Recursive Fibonacci (`fib`)](HUDHUD_SCRIPT_BENCHMARK.md#16-recursive-fibonacci-fib) | 223ms | 193ms | 70ms | 221ms |
+| [17. Iterative Fibonacci (`fib_iterative`)](HUDHUD_SCRIPT_BENCHMARK.md#17-iterative-fibonacci-fib_iterative) | 1048ms | 446ms | 373ms | 1091ms |
+| [18. Fibonacci Table Construction (`fib_memo`)](HUDHUD_SCRIPT_BENCHMARK.md#18-fibonacci-table-construction-fib_memo) | 1325ms | 981ms | 265ms | 967ms |
+| [19. Euclidean Greatest Common Divisor (`gcd`)](HUDHUD_SCRIPT_BENCHMARK.md#19-euclidean-greatest-common-divisor-gcd) | 38ms | 58ms | 62ms | 150ms |
+| [20. Geometric Series (`geometric_series`)](HUDHUD_SCRIPT_BENCHMARK.md#20-geometric-series-geometric_series) | 96ms | 141ms | 69ms | 219ms |
+| [21. Tower of Hanoi (`hanoi`)](HUDHUD_SCRIPT_BENCHMARK.md#21-tower-of-hanoi-hanoi) | 112ms | 109ms | 64ms | 168ms |
+| [22. Heap Sort (`heap_sort`)](HUDHUD_SCRIPT_BENCHMARK.md#22-heap-sort-heap_sort) | 31ms | 61ms | 61ms | 140ms |
+| [23. Insertion Sort (`insertion_sort`)](HUDHUD_SCRIPT_BENCHMARK.md#23-insertion-sort-insertion_sort) | 70ms | 109ms | 61ms | 154ms |
+| [25. 0/1 Knapsack (`knapsack`)](HUDHUD_SCRIPT_BENCHMARK.md#25-01-knapsack-knapsack) | 30ms | 62ms | 52ms | 138ms |
+| [26. Longest Common Subsequence (`lcs`)](HUDHUD_SCRIPT_BENCHMARK.md#26-longest-common-subsequence-lcs) | 25ms | 52ms | 62ms | 140ms |
+| [28. Matrix Multiplication (`matrix`)](HUDHUD_SCRIPT_BENCHMARK.md#28-matrix-multiplication-matrix) | 390ms | 561ms | 80ms | 420ms |
+| [29. Matrix Transpose (`matrix_transpose`)](HUDHUD_SCRIPT_BENCHMARK.md#29-matrix-transpose-matrix_transpose) | 46ms | 73ms | 67ms | 157ms |
+| [30. Mean and Variance (`mean_variance`)](HUDHUD_SCRIPT_BENCHMARK.md#30-mean-and-variance-mean_variance) | 269ms | 274ms | 87ms | 318ms |
+| [31. Merge Sort (`merge`)](HUDHUD_SCRIPT_BENCHMARK.md#31-merge-sort-merge) | 30ms | 69ms | 65ms | 154ms |
+| [32. Modular Exponentiation (`modular_exp`)](HUDHUD_SCRIPT_BENCHMARK.md#32-modular-exponentiation-modular_exp) | 40ms | 68ms | 66ms | 165ms |
+| [33. Monte Carlo Pi (`monte_carlo_pi`)](HUDHUD_SCRIPT_BENCHMARK.md#33-monte-carlo-pi-monte_carlo_pi) | 193ms | 314ms | 79ms | 388ms |
+| [35. Eight Queens (`n_queens`)](HUDHUD_SCRIPT_BENCHMARK.md#35-eight-queens-n_queens) | 38ms | 70ms | 54ms | 152ms |
+| [36. Newton Square Roots (`newton_sqrt`)](HUDHUD_SCRIPT_BENCHMARK.md#36-newton-square-roots-newton_sqrt) | 40ms | 67ms | 65ms | 175ms |
+| [37. Palindrome Check (`palindrome`)](HUDHUD_SCRIPT_BENCHMARK.md#37-palindrome-check-palindrome) | 1838ms | 1544ms | 184ms | 3331ms |
+| [38. Polynomial Evaluation (`polynomial_eval`)](HUDHUD_SCRIPT_BENCHMARK.md#38-polynomial-evaluation-polynomial_eval) | 4622ms | 4016ms | 261ms | 8819ms |
+| [39. Repeated Power (`power`)](HUDHUD_SCRIPT_BENCHMARK.md#39-repeated-power-power) | 1150ms | 629ms | 594ms | 1384ms |
+| [40. Prime Count by Trial Division (`prime_count`)](HUDHUD_SCRIPT_BENCHMARK.md#40-prime-count-by-trial-division-prime_count) | 121ms | 204ms | 63ms | 182ms |
+| [41. Iterative Quick Sort (`quick`)](HUDHUD_SCRIPT_BENCHMARK.md#41-iterative-quick-sort-quick) | 59ms | 110ms | 69ms | 179ms |
+| [43. Sieve of Eratosthenes (`sieve`)](HUDHUD_SCRIPT_BENCHMARK.md#43-sieve-of-eratosthenes-sieve) | 28ms | 58ms | 58ms | 153ms |
+| [45. String Concatenation (`strcat`)](HUDHUD_SCRIPT_BENCHMARK.md#45-string-concatenation-strcat) | 33ms | 89ms | 61ms | 654ms |
+| [46. String Reverse (`strrev`)](HUDHUD_SCRIPT_BENCHMARK.md#46-string-reverse-strrev) | 124ms | 89ms | 61ms | 645ms |
+| [47. Naive Substring Search (`substring_search`)](HUDHUD_SCRIPT_BENCHMARK.md#47-naive-substring-search-substring_search) | 42ms | 61ms | 60ms | 144ms |
+| [48. Sum of Squares (`sum_of_squares`)](HUDHUD_SCRIPT_BENCHMARK.md#48-sum-of-squares-sum_of_squares) | 78ms | 144ms | 100ms | 263ms |
+| [50. Vector Dot Product (`vector_dot`)](HUDHUD_SCRIPT_BENCHMARK.md#50-vector-dot-product-vector_dot) | 127ms | 186ms | 87ms | 252ms |
+| [4. Binary Trees (`binary_trees`)](HUDHUD_SCRIPT_BENCHMARK.md#4-binary-trees-binary_trees) | 272ms | 137ms | 73ms | 191ms |
+| [49. Takeuchi Function (`tak`)](HUDHUD_SCRIPT_BENCHMARK.md#49-takeuchi-function-tak) | 83ms | 83ms | 63ms | 161ms |
+| [27. Mandelbrot Set (`mandelbrot`)](HUDHUD_SCRIPT_BENCHMARK.md#27-mandelbrot-set-mandelbrot) | 848ms | 764ms | 86ms | 837ms |
+| [24. K-Nucleotide Frequencies (`k_nucleotide`)](HUDHUD_SCRIPT_BENCHMARK.md#24-k-nucleotide-frequencies-k_nucleotide) | 1193ms | 115ms | 83ms | 238ms |
+| [11. Duff's Device-Style Copy (`duffs_device`)](HUDHUD_SCRIPT_BENCHMARK.md#11-duffs-device-style-copy-duffs_device) | 1321ms | 402ms | 141ms | 355ms |
+| [34. N-Body Simulation (`n_body`)](HUDHUD_SCRIPT_BENCHMARK.md#34-n-body-simulation-n_body) | 150ms | 126ms | 70ms | 211ms |
+| [14. Fannkuch Redux (`fannkuch_redux`)](HUDHUD_SCRIPT_BENCHMARK.md#14-fannkuch-redux-fannkuch_redux) | 160ms | 133ms | 61ms | 236ms |
+| [44. Spectral Norm (`spectral_norm`)](HUDHUD_SCRIPT_BENCHMARK.md#44-spectral-norm-spectral_norm) | 356ms | 212ms | 62ms | 256ms |
+| [15. FASTA Generation (`fasta`)](HUDHUD_SCRIPT_BENCHMARK.md#15-fasta-generation-fasta) | 123ms | 100ms | 68ms | 223ms |
+| [42. Reverse Complement (`revcomp`)](HUDHUD_SCRIPT_BENCHMARK.md#42-reverse-complement-revcomp) | 732ms | 431ms | 216ms | 1187ms |
+| **Average** | **362ms** | **288ms** | **101ms** | **544ms** |
+| **Success** | **100%** | **100%** | **100%** | **100%** |
