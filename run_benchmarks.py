@@ -356,7 +356,7 @@ RUNNERS = {
         "timeout": 600,
     },
     "ruby": {
-        "cmd": lambda path: ["ruby", path],
+        "cmd": lambda path: [r"C:\Ruby40-x64\bin\ruby.exe" if os.name == 'nt' else "ruby", path],
         "suffix": ".rb",
         "timeout": 600,
     },
@@ -397,7 +397,7 @@ def detect_versions() -> dict:
         "hudhud": [str(BINARY), "--version"],
         "python": [sys.executable if os.name == 'nt' else 'python3', "--version"],
         "lua": ["lua", "-v"],
-        "ruby": ["ruby", "--version"],
+        "ruby": [r"C:\Ruby40-x64\bin\ruby.exe" if os.name == 'nt' else "ruby", "--version"],
         "nodejs": ["node", "--version"],
         "php": ["php", "--version"],
         "perl": ["perl", "--version"],
