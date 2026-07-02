@@ -8,6 +8,8 @@ Timing boundaries are visible in every listing. Data preparation sits outside th
 
 Every code block below is the complete HudHudScript source from `benchmarks/src/hudhud`. These are neither shortened examples nor reconstructed pseudocode.
 
+> **Integer Division Note:** Several algorithms in this suite (such as Binary Search, Collatz, Heap Sort, Modular Exponentiation, and K-Nucleotide) assume that the `/` operator performs exact integer division (floor division) when given two integers. In HudHudScript, this is the default behavior. For comparisons against languages that return floating-point numbers (like JavaScript or standard Lua), implementations must explicitly use `Math.floor` or equivalent to maintain algorithmic parity.
+
 ## The suite at a glance
 
 | # | Benchmark | Area | What it puts under pressure |
@@ -191,6 +193,9 @@ print("Time: " + (end - start) + "ms");
 **Area:** Allocation
 
 The binary-trees benchmark creates a stretch tree, batches of temporary trees at several depths, and a long-lived tree. It recursively checks the number of nodes in each structure. Most nodes live only briefly, while one tree remains reachable for the duration of the test. The resulting mix is designed to expose recursive construction and traversal, small-array allocation, garbage collection, and the runtime's handling of objects with very different lifetimes.
+
+
+> **Note:** The algorithm intentionally calculates a `check_sum` that is never printed. This forces the interpreter to do the work without allowing future JIT compilers to easily eliminate it as dead code.
 
 Source: `benchmarks/src/hudhud/binary_trees.hud`
 
@@ -571,6 +576,9 @@ print("Time: " + (end - start) + "ms");
 
 Fannkuch Redux enumerates permutations and counts how many prefix reversals are needed to bring the first element back to zero. At `n = 9`, the program tracks both an alternating checksum and the maximum flip count. Small arrays are copied, swapped, and reversed again and again. Its compact implementation creates a large volume of conditional, data-dependent work, which is why Fannkuch has long been useful in cross-language runtime comparisons.
 
+
+> **Note:** This is a simplified, stress-test variant of Fannkuch. It does not compute the full `n!` permutation checksum defined by the Computer Language Benchmarks Game, but rather serves to heavily stress the VM\'s array copying and loop condition handling.
+
 Source: `benchmarks/src/hudhud/fannkuch_redux.hud`
 
 ```hudhud
@@ -676,6 +684,9 @@ print("Time: " + (end - start) + "ms");
 **Area:** Strings / random
 
 The FASTA workload generates synthetic biological sequence data without involving file I/O. It repeats a fixed ALU fragment and chooses characters from a weighted IUB alphabet with a fixed-seed linear congruential generator. The program mixes string indexing and concatenation with floating-point probability thresholds, array lookup, modular random-number arithmetic, and chunk-oriented output logic. Using a fixed seed keeps the generated work reproducible.
+
+
+> **Note:** This is a "FASTA-like" deterministic nucleotide workload. Instead of generating and outputting a standard sequence string, it focuses on the internal mechanics—probability loops, array indexing, and length accounting.
 
 Source: `benchmarks/src/hudhud/fasta.hud`
 
@@ -1183,6 +1194,9 @@ print("Time: " + (end - start) + "ms");
 **Area:** Floating point
 
 The program maps a 500-by-500 grid onto the complex plane. At each point it applies `z = z² + c` for as many as 50 iterations, stopping when the magnitude exceeds two. Some points escape quickly while others consume the full budget, so inner-loop lengths vary across the image. The workload is rich in floating-point multiplication and addition, coordinate conversion, nested loops, and data-dependent exits.
+
+
+> **Note:** Although the variable may be named `sum_iters`, the algorithm actually accumulates the count of escaped points (escape flags), not the raw total of iterations.
 
 Source: `benchmarks/src/hudhud/mandelbrot.hud`
 
@@ -1814,6 +1828,9 @@ print("Time: " + (end - start) + "ms");
 
 One thousand descending integers are sorted with a Lomuto-style partition step. Pending low and high bounds are kept in an explicit array stack, so recursive call cost is replaced by push and pop operations. The chosen pivot and reversed input make partition balance consequential. Indexed comparisons, swaps, stack management, and data-dependent subrange sizes determine the resulting runtime behavior.
 
+
+> **Note:** The input is deliberately ordered in reverse, and the partition uses the last element as a pivot. This intentionally forces the algorithm into its worst-case scenario ($O(N^2)$) with highly unbalanced partitioning, strictly to maximize VM stress.
+
 Source: `benchmarks/src/hudhud/quick.hud`
 
 ```hudhud
@@ -1871,6 +1888,9 @@ print("Time: " + (end - start) + "ms");
 **Area:** Strings / bioinformatics
 
 A deterministic generator first creates a 500,000-character DNA sequence. The reverse-complement function scans from the final character to the first, maps nucleotide and ambiguity codes to their complements, and counts the resulting A characters; this scan runs ten times. A long chain of character comparisons handles the mapping. The benchmark therefore emphasizes reverse indexing, branch-heavy classification, repeated traversal, and large in-memory sequence handling.
+
+
+> **Note:** The sequence generation process happens *inside* the benchmark timer. Thus, the workload measures both the generation phase and the ten reverse scans.
 
 Source: `benchmarks/src/hudhud/revcomp.hud`
 
@@ -1955,6 +1975,9 @@ print("Time: " + (end - start) + "ms");
 **Area:** Number theory
 
 The sieve begins with a boolean array representing the integers through 10,000. For each value still marked prime, it clears multiples starting at `p²`; a final pass counts the surviving entries. The algorithm shares elimination work across candidates rather than testing each number independently. Array allocation and mutation, arithmetic index progression, nested loops, and predictable prime checks make up the workload.
+
+
+> **Note:** The initial array allocation setup occurs *outside* the benchmark timer. The measured workload consists purely of the marking and counting loops.
 
 Source: `benchmarks/src/hudhud/sieve.hud`
 
