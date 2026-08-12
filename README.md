@@ -200,10 +200,101 @@ Below is a summary of the latest benchmark results extracted from `data/benchmar
 
 These benchmarks were run on a Windows machine to verify cross-platform performance.
 
+**Programming Language Versions:**
+* **HudHudScript:** v0.8.219
+* **Python:** 3.11.15
+* **Node.js:** v22.22.1
+
 **Configuration:**
 - **OS:** Microsoft Windows 10 Pro (64-bit)
 - **CPU:** 11th Gen Intel(R) Core(TM) i7-11700 @ 2.50GHz
 - **Versions:** HudHud 0.8.219, Node.js v22.22.1, Python 3.11.15
+
+| Benchmark              |     Hudhud |     Python |   Node.js |
+| ---------------------- | ---------: | ---------: | --------: |
+| Ackermann Function     |       58ms |      100ms |      92ms |
+| AVL Insert             |     2284ms |     1316ms |     176ms |
+| Array Summation        |       40ms |       75ms |  **85ms** |
+| BFS Graph              |       40ms |       76ms |  **90ms** |
+| Binary Search          |       74ms |      126ms |     100ms |
+| Bubble Sort            |       60ms |  **125ms** |      90ms |
+| Collatz Conjecture     |       85ms |  **216ms** |      90ms |
+| Count Set Bits         |      125ms |  **326ms** |     100ms |
+| Cumulative Sum         |       50ms |  **101ms** |      99ms |
+| DFS Graph              |       35ms |   **78ms** |  **91ms** |
+| Factorial Iterative    |       68ms |  **150ms** | **142ms** |
+| Factorial Recursive    |       35ms |   **76ms** |  **85ms** |
+| Fibonacci Recursive    |  **359ms** |  **308ms** |     100ms |
+| Fibonacci Iterative    |     1015ms |      700ms |     578ms |
+| Fibonacci Memoization  | **2240ms** | **1550ms** |     466ms |
+| Euclidean GCD          |       50ms |  **100ms** |      88ms |
+| Geometric Series       |       85ms |  **224ms** |     100ms |
+| Tower of Hanoi         |      150ms |      150ms |      90ms |
+| Heap Sort              |       35ms |   **91ms** |  **84ms** |
+| Insertion Sort         |       98ms |      160ms |      85ms |
+| KMP Search             |     1800ms |     2250ms |     260ms |
+| 0/1 Knapsack           |       34ms |       66ms |  **76ms** |
+| LCS                    |       37ms |   **76ms** |  **85ms** |
+| Matrix Multiply        |  **400ms** |      816ms |     115ms |
+| Matrix Transpose       |       50ms |  **100ms** |      85ms |
+| Mean and Variance      |  **266ms** |  **399ms** |     115ms |
+| Merge Sort             |       40ms |       76ms |  **85ms** |
+| Modular Exponentiation |       50ms |       91ms |      90ms |
+| Monte Carlo Pi         |  **234ms** |  **491ms** |     101ms |
+| Number Parse           |  **550ms** |     1165ms |     176ms |
+| N-Queens               |       42ms |   **91ms** |      76ms |
+| Newton-Raphson Sqrt    |       40ms |   **90ms** |  **90ms** |
+| Palindrome Check       |  **950ms** |     2292ms |     257ms |
+| Polynomial Evaluation  |     1926ms |     5940ms |     334ms |
+| Power Operation        |      883ms |      966ms |    1090ms |
+| Prime Count            |      125ms |  **216ms** |     100ms |
+| Quick Sort             |       76ms |  **175ms** |     108ms |
+| Sieve of Eratosthenes  |       50ms |  **100ms** | **100ms** |
+| String Concatenation   |       50ms |  **150ms** | **109ms** |
+| String Reverse         |       50ms |       85ms | **109ms** |
+| Substring Search       |       50ms |  **100ms** | **109ms** |
+| Sum of Squares         |       91ms |  **235ms** |     176ms |
+| Vector Dot Product     |      150ms |  **316ms** |     135ms |
+| Binary Trees           |  **415ms** |      224ms |     116ms |
+| Tak Function           |      158ms |      150ms |     110ms |
+| Mandelbrot Set         |     1225ms |     1366ms |     135ms |
+| JSON Serialize         |      100ms |      100ms |     109ms |
+| K-Nucleotide           |      210ms |      200ms |     150ms |
+| Duff's Device          |      840ms |      650ms |     115ms |
+| N-Body                 |      174ms |  **239ms** |     116ms |
+| Fannkuch-Redux         |      191ms |  **250ms** |     100ms |
+| Spectral Norm          |  **326ms** |  **391ms** |     115ms |
+| Fasta                  |      165ms |      160ms |     110ms |
+| Radix Sort             |  **392ms** |      966ms |     187ms |
+| RK4 Pendulum           |  **450ms** |     1750ms |     184ms |
+| Reverse-Complement     | **1275ms** |      734ms |     383ms |
+| Object Churn           |  **316ms** |  **340ms** |     110ms |
+| Method Dispatch        |  **500ms** |  **325ms** |     110ms |
+| Closure Chain          |  **439ms** |  **200ms** |      98ms |
+| Higher-Order Pipeline  |  **874ms** |  **626ms** |     176ms |
+| Sort by Comparator     |      240ms |  **284ms** |     134ms |
+| String Pipeline        |      210ms |  **342ms** |     125ms |
+| Linked List            |      134ms |      232ms |     124ms |
+| Union-Find             |  **590ms** |  **726ms** |     176ms |
+| Hash Probe             |      137ms |      250ms |     126ms |
+| Exception Ladder       |      190ms |      190ms |     340ms |
+| Floyd-Warshall         |  **216ms** |      500ms |     100ms |
+| Game of Life           |     1926ms |     2400ms |     150ms |
+| String Sort            |      160ms |      160ms |     110ms |
+| Simpson Integration    |      541ms |      859ms |     100ms |
+| Word Count             |      258ms |  **326ms** |     150ms |
+| Trie Dictionary        |      316ms |  **424ms** |     175ms |
+| Miller-Rabin           |       50ms |  **110ms** | **110ms** |
+| Task Scheduler         |      110ms |  **266ms** |     100ms |
+| Mini VM                |       84ms |  **216ms** |      90ms |
+| Dijkstra               |  **450ms** |  **460ms** |     150ms |
+| LZW Compress           |      166ms |  **341ms** |     125ms |
+| Pi Digits              |       50ms |       84ms | **100ms** |
+| FFT                    |  **624ms** |     1600ms |     134ms |
+| LU Decomposition       |  **451ms** |      859ms |     116ms |
+| **Average**            |  **374ms** |  **520ms** | **150ms** |
+| **Success Rate**       |   **100%** |   **100%** |  **100%** |
+
 
 
 ## Kali Linux Benchmarks
