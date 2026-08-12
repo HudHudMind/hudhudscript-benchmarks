@@ -408,7 +408,7 @@ BENCHMARKS = {
 
 # ── Source loader ───────────────────────────────────────────────
 
-SOURCE_DIR = SCRIPT_DIR / "benchmarks" / "src"
+SOURCE_DIR = SCRIPT_DIR / "benchmark" / "src"
 LANG_SUFFIXES = {
     "hudhud": ".hud",
     "python": ".py",
@@ -446,7 +446,7 @@ RUNNERS = {
         "timeout": 600,
     },
     "python": {
-        "cmd": lambda path: ["python3", path],
+        "cmd": lambda path: [sys.executable, path],
         "suffix": ".py",
         "timeout": 600,
     },
@@ -495,7 +495,7 @@ def detect_versions() -> dict:
     versions = {}
     cmds = {
         "hudhud": [str(BINARY), "--version"],
-        "python": ["python3", "--version"],
+        "python": [sys.executable, "--version"],
         "lua": ["lua", "-v"],
         "ruby": ["ruby", "--version"],
         "nodejs": ["node", "--version"],
