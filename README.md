@@ -63,7 +63,7 @@ These benchmarks were executed on a Debian Server machine to evaluate execution 
 * **RAM:** 32 GB (31 GiB)
 
 **Programming Language Versions:**
-* **HudHudScript:** v0.8.0
+* **HudHudScript:** v0.8.219
 * **Python:** 3.11.2
 * **Lua:** 5.4.4
 * **Node.js:** v22.22.2
