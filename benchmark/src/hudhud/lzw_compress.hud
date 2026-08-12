@@ -1,0 +1,70 @@
+let M = 400000;
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+let syms = [];
+let i = 0;
+while (i < M) {
+    if (i >= 20) {
+        if (ri(10) < 4) {
+            let start = i - 20;
+            let j = 0;
+            while (j < 20) {
+                syms.push(syms[start + j]);
+                j = j + 1;
+            }
+            i = i + 20;
+        } else {
+            syms.push(ri(4));
+            i = i + 1;
+        }
+    } else {
+        syms.push(ri(4));
+        i = i + 1;
+    }
+}
+
+let dict_size = 4096;
+let dict = [];
+i = 0;
+while (i < dict_size * 4) {
+    dict.push(0);
+    i = i + 1;
+}
+
+let next_code = 5;
+let output = [];
+let cur = syms[0] + 1;
+i = 1;
+
+let start = Date.to_millis();
+while (i < syms.length) {
+    let s = syms[i];
+    let cand = dict[cur * 4 + s];
+    if (cand != 0) {
+        cur = cand;
+    } else {
+        output.push(cur);
+        if (next_code < dict_size) {
+            dict[cur * 4 + s] = next_code;
+            next_code = next_code + 1;
+        }
+        cur = s + 1;
+    }
+    i = i + 1;
+}
+output.push(cur);
+
+let out_count = output.length;
+let sum = 0;
+i = 0;
+while (i < out_count) {
+    sum = (sum + output[i] * i) % 1000003;
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Result: " + out_count + "_" + sum);
+print("Time: " + (end - start) + "ms");

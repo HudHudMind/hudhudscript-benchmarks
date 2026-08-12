@@ -1,0 +1,54 @@
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+fn gen(depth) {
+    if (depth == 7) { return ri(100000); }
+    let node = {};
+    if (ri(4) == 0) { node["a"] = ri(100000); } else { node["a"] = gen(depth + 1); }
+    if (ri(4) == 0) { node["b"] = ri(100000); } else { node["b"] = gen(depth + 1); }
+    if (ri(4) == 0) { node["c"] = ri(100000); } else { node["c"] = gen(depth + 1); }
+    node["s"] = "x" + ri(1000);
+    return node;
+}
+
+fn is_leaf(node) {
+    if (node == null) { return true; }
+    let t = typeof(node);
+    return t == "number" || t == "string";
+}
+
+fn count_nodes(node) {
+    if (is_leaf(node)) { return 0; }
+    return 1 + count_nodes(node["a"]) + count_nodes(node["b"]) + count_nodes(node["c"]);
+}
+
+fn serialize(node) {
+    if (typeof(node) == "number") { return node + ""; }
+    let parts = [];
+    parts.push("{\"a\":");
+    parts.push(serialize(node["a"]));
+    parts.push(",\"b\":");
+    parts.push(serialize(node["b"]));
+    parts.push(",\"c\":");
+    parts.push(serialize(node["c"]));
+    parts.push(",\"s\":\"");
+    parts.push(node["s"]);
+    parts.push("\"}");
+    return parts.join("");
+}
+
+let tree = gen(0);
+let nc = count_nodes(tree);
+let start = Date.to_millis();
+let total = 0;
+let i = 0;
+while (i < 50) {
+    total = total + serialize(tree).length;
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Result: " + (total % 1000003) + "_" + nc);
+print("Time: " + (end - start) + "ms");

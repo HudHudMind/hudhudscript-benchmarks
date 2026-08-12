@@ -4,3 +4,5 @@ venv/
 *.lock
 *.db
 benchmark_results.json
+__pycache__
+profiles/

@@ -1,0 +1,38 @@
+let N = 100000;
+let seed = 12345;
+let acc = 0;
+let start = Date.to_millis();
+
+let head = 0;
+let i = 0;
+while (i < N) {
+    seed = (seed * 16807) % 2147483647;
+    let node = { value: seed % 10000, next: head };
+    head = node;
+    i = i + 1;
+}
+
+let prev = 0;
+let cur = head;
+let count = N;
+while (count > 0) {
+    let nxt = cur.next;
+    cur.next = prev;
+    prev = cur;
+    cur = nxt;
+    count = count - 1;
+}
+
+let pos = 0;
+let walk = prev;
+let cnt = N;
+while (cnt > 0) {
+    acc = (acc + walk.value * pos) % 1000003;
+    pos = pos + 1;
+    walk = walk.next;
+    cnt = cnt - 1;
+}
+
+let end = Date.to_millis();
+print("Result: " + acc);
+print("Time: " + (end - start) + "ms");

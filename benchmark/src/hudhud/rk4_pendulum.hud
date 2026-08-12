@@ -1,0 +1,18 @@
+let theta = 1.0;
+let omega = 0.0;
+let dt = 0.001;
+let start = Date.to_millis();
+let i = 0;
+while (i < 1000000) {
+    let k1t = omega; let k1o = 0.0 - Math.sin(theta);
+    let k2t = omega + 0.5 * dt * k1o; let k2o = 0.0 - Math.sin(theta + 0.5 * dt * k1t);
+    let k3t = omega + 0.5 * dt * k2o; let k3o = 0.0 - Math.sin(theta + 0.5 * dt * k2t);
+    let k4t = omega + dt * k3o; let k4o = 0.0 - Math.sin(theta + dt * k3t);
+    theta = theta + (dt / 6.0) * (k1t + 2.0 * k2t + 2.0 * k3t + k4t);
+    omega = omega + (dt / 6.0) * (k1o + 2.0 * k2o + 2.0 * k3o + k4o);
+    i = i + 1;
+}
+let end = Date.to_millis();
+let result = theta + omega;
+print("Result: " + result);
+print("Time: " + (end - start) + "ms");

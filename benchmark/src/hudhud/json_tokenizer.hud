@@ -1,0 +1,85 @@
+let R = 20000;
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+let parts = [];
+let i = 0;
+while (i < R) {
+    let id = ri(100000);
+    let tag = ri(1000);
+    let score_int = ri(1000);
+    let score_frac = ri(100);
+    parts.push("{\"id\":" + id + ",\"tag\":\"w" + tag + "\",\"ok\":true,\"score\":" + score_int + "." + score_frac + "}");
+    if (i < R - 1) { parts.push(","); }
+    i = i + 1;
+}
+parts.push("]");
+let line = "[";
+i = 0;
+while (i < parts.length) { line = line + parts[i]; i = i + 1; }
+parts = [];
+
+let structural = 0;
+let strings = 0;
+let numbers = 0;
+let keywords = 0;
+let pos = 0;
+let len = line.length;
+
+let start = Date.to_millis();
+while (pos < len) {
+    let c = line[pos];
+    if (c == "{") {
+        structural = structural + 1;
+        pos = pos + 1;
+    } else if (c == "}") {
+        structural = structural + 1;
+        pos = pos + 1;
+    } else if (c == "[") {
+        structural = structural + 1;
+        pos = pos + 1;
+    } else if (c == "]") {
+        structural = structural + 1;
+        pos = pos + 1;
+    } else if (c == ":") {
+        structural = structural + 1;
+        pos = pos + 1;
+    } else if (c == ",") {
+        structural = structural + 1;
+        pos = pos + 1;
+    } else if (c == "\"") {
+        strings = strings + 1;
+        pos = pos + 1;
+        while (pos < len) {
+            if (line[pos] == "\"") { break; }
+            pos = pos + 1;
+        }
+        pos = pos + 1;
+    } else {
+        let is_kw = 0;
+        if (c == "t") { is_kw = 1; }
+        if (c == "f") { is_kw = 1; }
+        if (c == "n") { is_kw = 1; }
+        if (is_kw == 1) {
+            keywords = keywords + 1;
+            pos = pos + 4;
+            if (c == "f") { pos = pos + 1; }
+            if (c == "n") { pos = pos + 1; }
+        } else {
+            numbers = numbers + 1;
+            while (pos < len) {
+                let d = line[pos];
+                if (d == ",") { break; }
+                if (d == "}") { break; }
+                if (d == "]") { break; }
+                pos = pos + 1;
+            }
+        }
+    }
+}
+let end = Date.to_millis();
+print("Result: " + structural + "_" + strings + "_" + numbers + "_" + keywords);
+print("Time: " + (end - start) + "ms");

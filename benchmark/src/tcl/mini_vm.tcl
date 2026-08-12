@@ -1,0 +1,4 @@
+set I 300000;set acc 0;set c $I;set start [clock milliseconds]
+while {$c>0} {set op [expr {$c%10}]
+ if {$op==0} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==1} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==2} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==3} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==4} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==5} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==6} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==7} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} elseif {$op==8} {set acc [expr {($acc*3+$c)%1000003}];incr c -1} else {set acc [expr {($acc*3+$c)%1000003}];incr c -1}}
+set end [clock milliseconds];puts "Result: $acc";puts "Time: [expr {$end-$start}]ms"

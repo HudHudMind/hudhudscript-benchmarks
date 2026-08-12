@@ -1,0 +1,48 @@
+let n = 200;
+let A = [];
+let i = 0;
+while (i < n) {
+    let row = [];
+    let j = 0;
+    while (j < n) {
+        let v = ((i * 31 + j * 17) % 100 + 1) * 1.0;
+        if (i == j) {
+            v = v + 1000.0;
+        }
+        row.push(v);
+        j = j + 1;
+    }
+    A.push(row);
+    i = i + 1;
+}
+
+let start = Date.to_millis();
+let k = 0;
+while (k < n) {
+    let i2 = k + 1;
+    while (i2 < n) {
+        let f = A[i2][k] / A[k][k];
+        let j = 0;
+        while (j < n) {
+            A[i2][j] = A[i2][j] - f * A[k][j];
+            j = j + 1;
+        }
+        A[i2][k] = f;
+        i2 = i2 + 1;
+    }
+    k = k + 1;
+}
+
+let sum = 0.0;
+i = 0;
+while (i < n) {
+    sum = sum + A[i][i];
+    i = i + 1;
+}
+let avg = sum / (n * 1.0);
+let scaled = avg * 1000.0;
+let rnd = scaled + 0.5;
+let result = rnd - rnd % 1.0;
+let end = Date.to_millis();
+print("Result: " + result);
+print("Time: " + (end - start) + "ms");

@@ -1,0 +1,39 @@
+let line = "";
+let seed = 12345;
+let j = 0;
+while (j < 40) {
+    seed = (seed * 16807) % 2147483647;
+    let field_num = (seed % 1000) + 100;
+    line = line + "f" + field_num;
+    if (j < 39) { line = line + ","; }
+    j = j + 1;
+}
+
+let R = 10000;
+let sum_plen = 0;
+let sum_idx = 0;
+let sum_sub = 0;
+let start = Date.to_millis();
+let r = 0;
+while (r < R) {
+    let parts = line.split(",");
+    let k = 0;
+    while (k < parts.length) {
+        sum_plen = sum_plen + parts.length;
+        let p = parts[k];
+        sum_idx = sum_idx + p.indexOf("f");
+        if (p.length >= 4) {
+            let sub = p.substring(1, 3);
+            sum_sub = sum_sub + sub.length;
+        }
+        k = k + 1;
+    }
+    r = r + 1;
+}
+let m_plen = sum_plen % 1000003;
+let m_idx = sum_idx % 1000003;
+let m_sub = sum_sub % 1000003;
+let acc = (m_plen + m_idx + m_sub) % 1000003;
+let end = Date.to_millis();
+print("Result: " + acc);
+print("Time: " + (end - start) + "ms");

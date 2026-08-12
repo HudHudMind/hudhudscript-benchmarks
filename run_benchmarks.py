@@ -37,7 +37,6 @@ import subprocess
 import sys
 import tempfile
 import time
-import shutil
 import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
@@ -57,25 +56,12 @@ DATA_DIR = SCRIPT_DIR / "data"
 
 
 def find_binary() -> Path:
-    """Find the hudhud binary: check adjacent repo dirs, then system PATH."""
-    # 1. Check parent directory repositories
-    for repo_name in ("hudhud-script", "hudhudscript"):
-        repo_dir = SCRIPT_DIR.parent / repo_name
-        for profile in ("release", "release-prof"):
-            path = repo_dir / "target" / profile / "hudhud"
-            path_exe = path.with_suffix(".exe")
-            if path.exists() and os.access(path, os.X_OK):
-                return path
-            if path_exe.exists() and os.access(path_exe, os.X_OK):
-                return path_exe
-
-    # 2. Check system PATH (covers /usr/bin, /usr/local/bin, Windows PATH)
-    system_hudhud = shutil.which("hudhud")
-    if system_hudhud:
-        return Path(system_hudhud)
-
-    # Fallback default
-    return HHS_REPO / "target" / "release" / "hudhud"
+    """Find the hudhud binary: release only (no silent fallback)."""
+    path = HHS_REPO / "target" / "release" / "hudhud"
+    if path.exists() and os.access(path, os.X_OK):
+        return path
+    # No fallback — if release is missing/broken, caller handles the error
+    return path
 
 
 def get_binary_profile(binary_path: Path) -> str:
@@ -105,6 +91,7 @@ BENCHMARKS = {
         "title": "Ackermann Function",
         "desc": "m=3, n=6",
     },
+    "avl_insert": {"title":"AVL Insert","slug":"avl_insert","desc":"Arena-based AVL insert 100k keys + inorder checksum","file":"avl_insert","timeout":30},
     "arrsum": {
         "title": "Array Summation",
         "desc": "Sum 10_000 integers",
@@ -179,6 +166,7 @@ BENCHMARKS = {
         "title": "Insertion Sort",
         "desc": "1000 integers",
     },
+    "kmp_search": {"title":"KMP Search","slug":"kmp_search","desc":"KMP failure table + search, 20 patterns over 500k text","file":"kmp_search","timeout":30},
     "knapsack": {
         "title": "0/1 Knapsack",
         "desc": "50 items, capacity 100",
@@ -211,6 +199,7 @@ BENCHMARKS = {
         "title": "Monte Carlo Pi",
         "desc": "Estimate Pi with 500_000 random points",
     },
+    "number_parse": {"title":"Number Parse","slug":"number_parse","desc":"Hand-rolled integer parser over 200k numeric strings","file":"number_parse","timeout":30},
     "n_queens": {
         "title": "N-Queens",
         "desc": "n=8, count all solutions",
@@ -276,6 +265,7 @@ BENCHMARKS = {
         "title": "Mandelbrot Set",
         "desc": "500x500 complex plane",
     },
+    "json_serialize": {"title":"JSON Serialize","slug":"json_serialize","desc":"Hand-rolled JSON serializer over deterministic nested dict tree, 50 rounds","file":"json_serialize","timeout":30},
     "k_nucleotide": {
         "title": "K-Nucleotide",
         "desc": "100k string 1,2,3-mer freq",
@@ -300,15 +290,119 @@ BENCHMARKS = {
         "title": "Fasta",
         "desc": "Fasta sequence generation (n=50k)",
     },
+    "radix_sort": {
+        "title": "Radix Sort",
+        "slug": "radix_sort",
+        "desc": "LSD radix sort base-10, 200k integers (non-comparison class)",
+        "file": "radix_sort",
+        "timeout": 30,
+    },
+    "rk4_pendulum": {"title":"RK4 Pendulum","slug":"rk4_pendulum","desc":"RK4 pendulum integration, 1M steps (sin only)","file":"rk4_pendulum","timeout":60},
     "revcomp": {
         "title": "Reverse-Complement",
         "desc": "Reverse complement 500k DNA string",
+    },
+    "object_churn": {
+        "title": "Object Churn",
+        "desc": "500k object allocations with property access",
+    },
+    "method_dispatch": {
+        "title": "Method Dispatch",
+        "desc": "Polymorphic virtual dispatch, ~900k calls",
+    },
+    "closure_chain": {
+        "title": "Closure Chain",
+        "desc": "150k closures with upvalue mutation",
+    },
+    "higher_order": {
+        "title": "Higher-Order Pipeline",
+        "desc": "map/filter/reduce pipeline, 2000 rounds",
+    },
+    "sort_by_comparator": {
+        "title": "Sort by Comparator",
+        "desc": "Quicksort with comparator function, 20000 items",
+    },
+    "string_pipeline": {
+        "title": "String Pipeline",
+        "desc": "Split/substring/indexOf chain, 10k rounds",
+    },
+    "linked_list": {
+        "title": "Linked List",
+        "desc": "100k node list reverse + traverse",
+    },
+    "union_find": {
+        "title": "Union-Find",
+        "desc": "Disjoint set with union by size, 200k/400k ops",
+    },
+    "hash_probe": {
+        "title": "Hash Probe",
+        "desc": "Open-addressing hash table, 40k/80k/20k ops",
+    },
+    "exception_ladder": {
+        "title": "Exception Ladder",
+        "desc": "3-frame throw/catch unwind, 200k iterations",
+    },
+    "floyd_warshall": {
+        "title": "Floyd-Warshall",
+        "desc": "All-pairs shortest path, n=150",
+    },
+    "game_of_life": {
+        "title": "Game of Life",
+        "desc": "Conway's Game of Life, 96x96 torus, 100 gens",
+    },
+    "string_sort": {
+        "title": "String Sort",
+        "desc": "Merge sort on 20000 strings",
+    },
+    "simpson_integration": {
+        "title": "Simpson Integration",
+        "desc": "Numerical integration, N=2M slices",
+    },
+    "word_count": {
+        "title": "Word Count",
+        "desc": "Native dict frequency counting, 500k words",
+    },
+    "trie_dict": {
+        "title": "Trie Dictionary",
+        "desc": "Arena-based trie, 20k words insert+lookup",
+    },
+    "miller_rabin": {
+        "title": "Miller-Rabin",
+        "desc": "Deterministic primality test, 2000 numbers",
+    },
+    "task_scheduler": {
+        "title": "Task Scheduler",
+        "desc": "Richards-inspired round-robin scheduler, 300k ticks",
+    },
+    "mini_vm": {
+        "title": "Mini VM",
+        "desc": "If-else dispatch chain, 300k iterations",
+    },
+    "dijkstra": {
+        "title": "Dijkstra",
+        "desc": "Binary heap shortest path, n=20000·6 edges",
+    },
+    "lzw_compress": {
+        "title": "LZW Compress",
+        "desc": "LZW dictionary compression, 400k symbols",
+    },
+    "pidigits": {
+        "title": "Pi Digits",
+        "desc": "Machin formula (K10), 600 digits",
+    },
+    "fft": {
+        "title": "FFT",
+        "desc": "Cooley-Tukey FFT, N=4096 × 50 iterations",
+    },
+    "lu_decomposition": {
+        "title": "LU Decomposition",
+        "desc": "Doolittle LU, n=200",
     },
 }
 
 # ── Source loader ───────────────────────────────────────────────
 
-SOURCE_DIR = SCRIPT_DIR / "benchmark"
+SOURCE_DIR = SCRIPT_DIR / "benchmarks" / "src"
 LANG_SUFFIXES = {
     "hudhud": ".hud",
     "python": ".py",
@@ -346,7 +440,7 @@ RUNNERS = {
         "timeout": 600,
     },
     "python": {
-        "cmd": lambda path: [sys.executable if os.name == 'nt' else 'python3', path],
+        "cmd": lambda path: ["python3", path],
         "suffix": ".py",
         "timeout": 600,
     },
@@ -356,7 +450,7 @@ RUNNERS = {
         "timeout": 600,
     },
     "ruby": {
-        "cmd": lambda path: [r"C:\Ruby40-x64\bin\ruby.exe" if os.name == 'nt' else "ruby", path],
+        "cmd": lambda path: ["ruby", path],
         "suffix": ".rb",
         "timeout": 600,
     },
@@ -395,9 +489,9 @@ def detect_versions() -> dict:
     versions = {}
     cmds = {
         "hudhud": [str(BINARY), "--version"],
-        "python": [sys.executable if os.name == 'nt' else 'python3', "--version"],
+        "python": ["python3", "--version"],
         "lua": ["lua", "-v"],
-        "ruby": [r"C:\Ruby40-x64\bin\ruby.exe" if os.name == 'nt' else "ruby", "--version"],
+        "ruby": ["ruby", "--version"],
         "nodejs": ["node", "--version"],
         "php": ["php", "--version"],
         "perl": ["perl", "--version"],
@@ -483,30 +577,52 @@ def ensure_binary() -> bool:
     return False
 
 
-def run_language(bench_name: str, lang: str, runs: int) -> dict:
-    """Run a single benchmark for a single language, N times."""
-    runner = RUNNERS.get(lang)
-    if not runner:
-        return {"language": lang, "error": f"Unknown language: {lang}"}
+# ── G0: Pure statistics helpers (testable without process runner) ──
 
-    try:
-        code = benchmark_source(bench_name, lang)
-        source_hash = hashlib.sha256(code.encode()).hexdigest()[:12]
-    except (KeyError, FileNotFoundError) as e:
-        return {"language": lang, "error": str(e)}
-    env = os.environ.copy()
-    env["RUST_MIN_STACK"] = "8388608"
-    env["PATH"] = str(BINARY.parent) + ":" + env.get("PATH", "")
+def compute_median(values: list) -> float | None:
+    """Compute median preserving .5 for even-length lists."""
+    if not values:
+        return None
+    sv = sorted(values)
+    n = len(sv)
+    if n % 2 == 1:
+        return float(sv[n // 2])
+    return (sv[n // 2 - 1] + sv[n // 2]) / 2.0
 
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=runner["suffix"], delete=False, encoding="utf-8", dir="/tmp"
-    ) as f:
-        f.write(code)
-        tmp_path = f.name
 
-    results = []
-    try:
-        for run_num in range(1, runs + 1):
+def compute_mad(values: list, median_val: float) -> float | None:
+    """Compute median absolute deviation from the given median."""
+    if not values:
+        return None
+    devs = sorted(abs(v - median_val) for v in values)
+    n = len(devs)
+    if n % 2 == 1:
+        return float(devs[n // 2])
+    return (devs[n // 2 - 1] + devs[n // 2]) / 2.0
+
+
+def compute_p95_nearest_rank(values: list) -> float | None:
+    """p95 via nearest-rank method: ceil(0.95 * n) - 1."""
+    import math
+    if not values:
+        return None
+    sv = sorted(values)
+    n = len(sv)
+    idx = max(0, min(math.ceil(0.95 * n) - 1, n - 1))
+    return float(sv[idx])
+
+
+def _make_default_runner(code: str, runner: dict, env: dict, golden, bench_name: str, lang: str):
+    """G0: default process runner factory — returns _run_once callable."""
+    from check_correctness import SKIPPED_RESULTS, _extract_result, _values_match
+    def _run_once() -> dict:
+        """Execute the benchmark once, return run dict."""
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=runner["suffix"], delete=False, encoding="utf-8", dir="/tmp"
+        ) as f:
+            f.write(code)
+            tmp_path = f.name
+        try:
             start = time.time()
             try:
                 proc = subprocess.run(
@@ -519,59 +635,180 @@ def run_language(bench_name: str, lang: str, runs: int) -> dict:
                 )
                 elapsed = round((time.time() - start) * 1000)
                 ok = proc.returncode == 0
+                # G0: non-empty stderr → FAIL
+                if ok and proc.stderr and proc.stderr.strip():
+                    ok = False
+                # Empty stdout → FAIL
+                if ok and not (proc.stdout and proc.stdout.strip()):
+                    ok = False
+                    proc.stderr = (proc.stderr or "") + "[FAIL: empty stdout]"
                 is_skipped = False
+                if ok and (bench_name, lang) in SKIPPED_RESULTS:
+                    ok = False
+                    is_skipped = True
                 if ok and proc.stdout:
-                    from check_correctness import GOLDEN, SKIPPED_RESULTS, _extract_result, _values_match
-                    golden = GOLDEN.get(bench_name)
                     if golden is not None:
-                        if (bench_name, lang) in SKIPPED_RESULTS:
+                        result_lines = [l for l in proc.stdout.splitlines() if l.strip().startswith("Result:")]
+                        if len(result_lines) > 1:
                             ok = False
-                            is_skipped = True
+                            proc.stderr = (proc.stderr or "") + f"[FAIL: {len(result_lines)} Result: lines (expected 1)]"
                         else:
                             val = _extract_result(proc.stdout, bench_name)
-                            if val is not None and not _values_match(val, golden, bench_name, lang):
+                            if val is None:
+                                ok = False
+                                proc.stderr = (proc.stderr or "") + "[FAIL: could not extract result from stdout]"
+                            elif not _values_match(val, golden, bench_name, lang):
                                 ok = False
                                 proc.stderr = (proc.stderr or "") + f"[GOLDEN mismatch: expected={golden} got={val}]"
-                results.append({
-                    "run": run_num,
+                return {
                     "ms": elapsed,
                     "ok": ok,
                     "skipped": is_skipped,
                     "stdout": proc.stdout[:100000],
                     "stderr": proc.stderr[:1000] if ok else (proc.stderr or "")[:1000],
-                })
+                }
             except subprocess.TimeoutExpired:
-                results.append({
-                    "run": run_num,
-                    "ms": runner["timeout"] * 1000,
-                    "ok": False,
-                    "error": "timeout",
-                })
+                return {"ms": runner["timeout"] * 1000, "ok": False, "error": "timeout"}
             except Exception as e:
-                results.append({
-                    "run": run_num,
-                    "ms": 0,
-                    "ok": False,
-                    "error": str(e),
-                })
-    finally:
-        try:
-            os.unlink(tmp_path)
-        except OSError:
-            pass
+                return {"ms": 0, "ok": False, "error": str(e)}
+        finally:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+    return _run_once
+
+
+def _canonical_result(lang: str, source_hash: str, ok: bool, ranked: bool,
+                     results: list, warmup_results: list,
+                     warmup_count: int, completed_warmup_count: int,
+                     measured_run_count: int, completed_measured_run_count: int,
+                     selected_statistic: str, selected_ms, median_ms, p95_ms,
+                     mad_ms, min_ms, max_ms, **extra) -> dict:
+    """G0: single canonical result schema for ALL exit paths."""
+    r = {
+        "language": lang,
+        "source_hash": source_hash,
+        "ok": ok,
+        "ranked": ranked,
+        "results": results,
+        "warmup_results": warmup_results,
+        "warmup_count": warmup_count,
+        "completed_warmup_count": completed_warmup_count,
+        "measured_run_count": measured_run_count,
+        "completed_measured_run_count": completed_measured_run_count,
+        "selected_statistic": selected_statistic,
+        "selected_ms": selected_ms,
+        "median_ms": median_ms,
+        "p95_ms": p95_ms,
+        "p95_method": "nearest-rank",
+        "mad_ms": mad_ms,
+        "min_ms": min_ms,
+        "max_ms": max_ms,
+    }
+    r.update(extra)
+    return r
+
+
+def run_language(bench_name: str, lang: str, runs: int, warmups: int = 0, *, preflight: bool = True, statistic: str = "median", _runner_factory=None) -> dict:
+    """Run a single benchmark for a single language, N times.
+
+    Preflight (if enabled): one correctness-only run before timing.
+    statistic: "median" | "average" | "min" | "max" — determines selected_ms.
+    _runner_factory: injectable factory for testing; returns callable for _run_once.
+    Returns dict with 'ranked' field.
+    """
+    runner = RUNNERS.get(lang)
+    if not runner:
+        return _canonical_result(lang, "", False, False, [], [], 0, 0, 0, 0,
+                                 statistic, None, None, None, None, None, None,
+                                 status="unknown", error=f"Unknown language: {lang}")
+
+    try:
+        code = benchmark_source(bench_name, lang)
+        source_hash = hashlib.sha256(code.encode()).hexdigest()[:12]
+    except (KeyError, FileNotFoundError) as e:
+        return _canonical_result(lang, "", False, False, [], [], 0, 0, 0, 0,
+                                 statistic, None, None, None, None, None, None,
+                                 status="missing", error=str(e))
+
+    env = os.environ.copy()
+    env["RUST_MIN_STACK"] = "8388608"
+    env["PATH"] = str(BINARY.parent) + ":" + env.get("PATH", "")
+
+    from check_correctness import GOLDEN, SKIPPED_RESULTS, _extract_result, _values_match
+    golden = GOLDEN.get(bench_name)
+
+    if _runner_factory is not None:
+        _run_once = _runner_factory()
+    else:
+        _run_once = _make_default_runner(code, runner, env, golden, bench_name, lang)
+
+    # ── Preflight: one correctness run before timing ──
+    if preflight:
+        pf = _run_once()
+        if not pf["ok"]:
+            # Preflight failed — no timing runs, ranked=false
+            return _canonical_result(
+                lang, source_hash, False, False,
+                [pf], [], 0, 0, 0, 0,
+                statistic, None, None, None, None, None, None,
+                preflight_failed=True, skipped=pf.get("skipped", False))
+
+    # ── Warmup runs (not measured) ──
+    warmup_results = []
+    for w in range(warmups):
+        wr = _run_once()
+        wr["warmup"] = w + 1
+        warmup_results.append(wr)
+        if not wr["ok"]:
+            # G0: warmup failure invalidates the batch — preserve warmup_results
+            return _canonical_result(
+                lang, source_hash, False, False,
+                [wr], warmup_results, warmups, len(warmup_results),
+                0, 0,
+                statistic, None, None, None, None, None, None,
+                warmup_failed=True)
+
+    # ── Timing runs ──
+    results = []
+    for run_num in range(1, runs + 1):
+        r = _run_once()
+        r["run"] = run_num
+        results.append(r)
 
     ok_runs = [r["ms"] for r in results if r.get("ok")]
     skipped_runs = [r for r in results if r.get("skipped")]
     is_skipped = len(skipped_runs) > 0
-    avg = round(sum(ok_runs) / len(ok_runs)) if ok_runs else None
-    return {
-        "language": lang,
-        "source_hash": source_hash,
-        "results": results,
-        "avg_ms": avg,
-        "ok": len(ok_runs) > 0,
-        "skipped": is_skipped,
-    }
+    all_ok = len(ok_runs) == runs and not is_skipped
+
+    # ── Statistics (use pure helpers for testability) ──
+    avg = round(sum(ok_runs) / len(ok_runs)) if all_ok else None
+    median_ms = None
+    p95_ms = None
+    mad_ms = None
+    min_ms = None
+    max_ms = None
+    if all_ok and ok_runs:
+        median_ms = compute_median(ok_runs)
+        p95_ms = compute_p95_nearest_rank(ok_runs)
+        mad_ms = compute_mad(ok_runs, median_ms)
+        min_ms = min(ok_runs)
+        max_ms = max(ok_runs)
+
+    # ── Selected statistic ──
+    if all_ok and ok_runs:
+        stat_map = {"median": median_ms, "average": avg, "min": min_ms, "max": max_ms}
+        selected_ms = stat_map.get(statistic, median_ms)
+    else:
+        selected_ms = None
+
+    return _canonical_result(
+        lang, source_hash, all_ok, all_ok,
+        results, warmup_results, warmups, len(warmup_results),
+        runs, len(results),
+        statistic, selected_ms, median_ms, p95_ms, mad_ms, min_ms, max_ms,
+        avg_ms=avg, skipped=is_skipped)
 
 
 def load_existing_results() -> list:
@@ -593,6 +830,28 @@ def save_benchmark_result(execution_id: int, entry: dict):
     bstorage.record_benchmark_result(execution_id, entry)
 
 
+def classify_unranked_cells(
+    all_results: list[dict],
+    skipped_results: dict[tuple[str, str], str],
+) -> tuple[list[str], list[str]]:
+    """Split unranked cells into explicitly accepted skips and real failures."""
+    accepted_skips = []
+    unexpected_fails = []
+    for entry in all_results:
+        benchmark = entry["benchmark"]
+        for language_result in entry.get("languages", []):
+            if language_result.get("ranked", False):
+                continue
+            language = language_result["language"]
+            cell_key = (benchmark, language)
+            cell_name = f"{benchmark}/{language}"
+            if language_result.get("skipped") and cell_key in skipped_results:
+                accepted_skips.append(cell_name)
+            else:
+                unexpected_fails.append(cell_name)
+    return accepted_skips, unexpected_fails
+
+
 # ── Display helpers ───────────────────────────────────────────────
 
 
@@ -610,6 +869,29 @@ def fmt_ms(ms: float | None) -> str:
     if ms is None:
         return f"{GRAY}  N/A{NC}"
     return f"{ms:5.0f}ms"
+
+
+def build_profile_command(
+    python_executable: str,
+    profile_script: Path,
+    targets: list[str],
+    *,
+    telemetry: bool = False,
+    deep_profile: bool = False,
+    profile_arch: str = "auto",
+    no_build: bool = False,
+) -> list[str]:
+    """Import shared implementation from profiling_tools."""
+    from profiling_tools import build_profile_command as _bpc
+    return _bpc(
+        python_executable=python_executable,
+        profile_script=profile_script,
+        targets=targets,
+        telemetry=telemetry,
+        deep_profile=deep_profile,
+        profile_arch=profile_arch,
+        no_build=no_build,
+    )
 
 
 # ── Main ──────────────────────────────────────────────────────────
@@ -630,8 +912,17 @@ def main():
         """,
     )
     parser.add_argument(
-        "--runs", type=int, default=3,
-        help="Her benchmark için çalıştırma sayısı (varsayılan: 3)",
+        "--runs", type=int, default=7,
+        help="Her benchmark için measured çalıştırma sayısı (varsayılan: 7)",
+    )
+    parser.add_argument(
+        "--warmups", type=int, default=2,
+        help="Her benchmark için ısınma çalıştırması (measured'a girmez, varsayılan: 2)",
+    )
+    parser.add_argument(
+        "--statistic", type=str, default="median",
+        choices=["median", "average", "min", "max"],
+        help="Özet istatistik (varsayılan: median)",
     )
     parser.add_argument(
         "--only", type=str, default=None,
@@ -662,10 +953,58 @@ def main():
         help="--profile gibi ama sadece H/P > 6x benchmark'lar için",
     )
     parser.add_argument(
+        "--telemetry", action="store_true",
+        help="Normal benchmarktan sonra Cargo telemetry feature'lı ayrı profiling çalıştır",
+    )
+    parser.add_argument(
+        "--deep-profile", action="store_true",
+        help="Normal benchmarktan sonra tam profiler paketini çalıştır (telemetry dahil)",
+    )
+    parser.add_argument(
+        "--profile-arch",
+        choices=("auto", "x86_64", "aarch64", "generic"),
+        default="auto",
+        help="Yerel profiling mimarisi (varsayılan: auto)",
+    )
+    parser.add_argument(
         "--expected-tag", type=str, default=None,
         help="Beklenen HudHud version tag'i (binary ile uyuşmazsa abort)",
     )
+    parser.add_argument(
+        "--official", action="store_true",
+        help="Resmî mod: eksik kaynakta abort, tüm tekrarlar başarılı olmalı, --allow-incomplete ile override",
+    )
+    parser.add_argument(
+        "--allow-incomplete", action="store_true",
+        help="Eksik kaynak/FAIL durumunda abort etme, ranked=false olarak devam et",
+    )
+    parser.add_argument(
+        "--hudhud-binary", type=str, default=None,
+        help="Kullanılacak hudhud binary'sinin absolute path'i (varsayılan: auto-detect)",
+    )
+    parser.add_argument(
+        "--output-dir", type=str, default=None,
+        help="Timing/profiling artifact'larının yazılacağı absolute dizin (varsayılan: auto)",
+    )
     args = parser.parse_args()
+
+    # ── G0: --hudhud-binary override ──
+    global BINARY
+    if args.hudhud_binary:
+        custom_binary = Path(args.hudhud_binary)
+        if not custom_binary.exists():
+            print(f"{RED}✗  --hudhud-binary: {custom_binary} bulunamadı{NC}")
+            sys.exit(1)
+        if not os.access(custom_binary, os.X_OK):
+            print(f"{RED}✗  --hudhud-binary: {custom_binary} çalıştırılabilir değil{NC}")
+            sys.exit(1)
+        BINARY = custom_binary
+        print(f"{GREEN}✓  Custom binary: {BINARY}{NC}")
+    # ── G0: --output-dir override ──
+    output_dir_override = None
+    if args.output_dir:
+        output_dir_override = Path(args.output_dir)
+        output_dir_override.mkdir(parents=True, exist_ok=True)
 
     # ── Determine benchmarks to run ──
     if args.only:
@@ -714,10 +1053,12 @@ def main():
     # ── Build / version-check hudhud ──
     if "hudhud" in langs:
         if args.no_build:
-            # Even with --no-build, warn if binary is stale but continue.
             expected = get_cargo_version()
             actual = get_binary_version(BINARY) if BINARY.exists() else "missing"
             if actual != expected:
+                if args.official:
+                    print(f"{RED}✗  Resmî mod: --no-build ile binary mismatch (binary={actual}, Cargo.toml={expected}) — abort.{NC}")
+                    sys.exit(1)
                 print(f"{YELLOW}⚠  --no-build: binary={actual}, Cargo.toml={expected} — devam ediliyor{NC}")
             else:
                 print(f"{GREEN}✓  Binary v{actual} — Cargo.toml ile eşleşiyor{NC}")
@@ -725,6 +1066,23 @@ def main():
             if not ensure_binary():
                 print(f"\n{RED}HudHud binary derlenemedi. --skip-hudhud ile devam edebilirsiniz.{NC}")
                 sys.exit(1)
+
+    # ── Source matrix pre-check ──
+    if args.official and not args.allow_incomplete:
+        missing = []
+        for b in bench_keys:
+            for l in langs:
+                try:
+                    benchmark_source(b, l)
+                except (KeyError, FileNotFoundError):
+                    missing.append(f"{b}/{l}")
+        if missing:
+            print(f"{RED}✗  Resmî mod: {len(missing)} eksik kaynak — abort.{NC}")
+            for m in missing:
+                print(f"     {m}")
+            print(f"   İpucu: --allow-incomplete ile devam edebilirsiniz (ranked=false).")
+            sys.exit(1)
+        print(f"{GREEN}✓  Kaynak matrisi tam ({len(bench_keys)} × {len(langs)} = {len(bench_keys)*len(langs)} hücre){NC}\n")
 
     # ── Detect versions ──
     print(f"{CYAN}══ Dil versiyonları tespit ediliyor...{NC}")
@@ -808,15 +1166,21 @@ def main():
             lang_results = []
             for lang in langs:
                 if lang not in LANG_SUFFIXES:
-                    print(f"  {GRAY}{lang:>8s}: bilinmeyen dil, atlanıyor{NC}")
+                    lang_results.append({"language": lang, "ranked": False, "status": "unknown", "error": "unknown language"})
+                    print(f"  {GRAY}{lang:>8s}: bilinmeyen dil{NC}")
                     continue
+
                 source_path = SOURCE_DIR / lang / f"{bench_key}{LANG_SUFFIXES[lang]}"
                 if not source_path.exists():
-                    print(f"  {GRAY}{lang:>8s}: kod yok, atlanıyor{NC}")
+                    lang_results.append(_canonical_result(
+                        lang, "", False, False, [], [], 0, 0, 0, 0,
+                        "median", None, None, None, None, None, None,
+                        status="missing", error=f"source not found: {source_path}"))
+                    print(f"  {RED}{lang:>8s}: kaynak yok → ranked=false{NC}")
                     continue
 
                 print(f"  {lang:>8s} ", end="", flush=True)
-                res = run_language(bench_key, lang, args.runs)
+                res = run_language(bench_key, lang, args.runs, args.warmups, statistic=args.statistic)
                 lang_results.append(res)
 
                 # Print per-run results inline
@@ -829,17 +1193,21 @@ def main():
                     else:
                         run_indicators.append(f"{RED}✗{NC}")
                 runs_str = " ".join(run_indicators)
-                avg_str = fmt_ms(res["avg_ms"])
+                stat_val = res.get("selected_ms")
+                stat_str = fmt_ms(stat_val)
                 if res.get("skipped"):
                     status = f"{YELLOW}SKIP{NC}"
                 else:
-                    status = status_icon(res["ok"], res["avg_ms"])
-                print(f"{runs_str}  → avg {avg_str} {status}")
+                    status = status_icon(res["ok"], stat_val)
+                print(f"{runs_str}  → {args.statistic} {stat_str} {status}")
 
             bench_elapsed = time.time() - bench_start
             bench_entry = {
                 "timestamp": datetime.now(timezone.utc).astimezone().isoformat(),
                 "benchmark": bench_key,
+                "execution_id": exec_id,
+                "binary_path": str(BINARY),
+                "binary_sha256": binary_sha,
                 "versions": versions,
                 "languages": lang_results,
             }
@@ -859,10 +1227,30 @@ def main():
         last_error = str(e)[:1000]
         print(f"\n{RED}✗  Hata: {e}{NC}")
     finally:
+        # ── Semantic post-run check ──
+        # Execution status must never be "completed" when a recorded cell is an
+        # unexpected FAIL, even for an exploratory/non-official invocation.
+        if not last_error:
+            from check_correctness import SKIPPED_RESULTS
+            accepted_skips, unexpected_fails = classify_unranked_cells(
+                all_results, SKIPPED_RESULTS
+            )
+            if accepted_skips:
+                print(f"\n{GREEN}✓  {len(accepted_skips)} accepted SKIP: {', '.join(accepted_skips)}{NC}")
+            if unexpected_fails:
+                last_error = f"Run FAILED: {len(unexpected_fails)} unexpected unranked cells: {', '.join(unexpected_fails[:10])}"
+                print(f"\n{RED}✗  Koşu BAŞARISIZ — {len(unexpected_fails)} beklenmeyen hücre ranked=false{NC}")
+                for fc in unexpected_fails[:15]:
+                    print(f"     {fc}")
+                if len(unexpected_fails) > 15:
+                    print(f"     ... ve {len(unexpected_fails) - 15} hücre daha")
+
         # Finalize execution
         bstorage.finalize_execution(exec_id, error=last_error)
         if last_error:
             print(f"{YELLOW}Execution ID {exec_id} · status=partial/failed{NC}")
+            if args.official:
+                sys.exit(1)
         else:
             final = bstorage.get_execution(exec_id)
             print(f"{GREEN}Execution ID {exec_id} · status={final['status']}{NC}")
@@ -912,29 +1300,30 @@ def main():
         bench_title = BENCHMARKS.get(bench_key, {}).get("title", bench_key)
         row = fmt_cell(bench_title[:bench_width - 1], bench_width)
 
-        ok_langs = [x for x in entry["languages"] if x["ok"] and x["avg_ms"] is not None]
-        best_ms = min((x["avg_ms"] for x in ok_langs), default=None)
+        ok_langs = [x for x in entry["languages"] if x["ok"] and x.get("selected_ms") is not None]
+        best_ms = min((x.get("selected_ms", x.get("avg_ms")) for x in ok_langs), default=None)
 
         for lang in langs:
             lr = next((x for x in entry["languages"] if x["language"] == lang), None)
             total_runs += 1
-            if lr and lr["ok"] and lr["avg_ms"] is not None:
+            sel_ms = lr.get("selected_ms") if lr else None
+            if sel_ms is None and lr:
+                sel_ms = lr.get("avg_ms")
+            if lr and lr.get("ok") and sel_ms is not None:
                 total_ok += 1
                 lang_totals[lang]["ok"] += 1
-                lang_totals[lang]["total_ms"] += lr["avg_ms"]
+                lang_totals[lang]["total_ms"] += sel_ms
                 lang_totals[lang]["count"] += 1
-                if lr["avg_ms"] == best_ms and best_ms is not None:
-                    cell = fmt_cell(f"{lr['avg_ms']:>5.0f}ms", lang_width, GREEN)
+                if sel_ms == best_ms and best_ms is not None:
+                    cell = fmt_cell(f"{sel_ms:>5.0f}ms", lang_width, GREEN)
                 else:
-                    ratio = lr["avg_ms"] / best_ms if best_ms else 0
+                    ratio = sel_ms / best_ms if best_ms else 0
                     color = RED if ratio >= 5 else (YELLOW if ratio >= 2 else "")
-                    cell = fmt_cell(f"{lr['avg_ms']:>5.0f}ms", lang_width, color)
+                    cell = fmt_cell(f"{sel_ms:>5.0f}ms", lang_width, color)
             elif lr and lr.get("skipped"):
-                total_runs += 1
                 lang_totals[lang]["skip"] += 1
                 cell = fmt_cell("  SKIP", lang_width, YELLOW)
-            elif lr and not lr["ok"]:
-                total_ok += 1  # counted as run, but failed
+            elif lr and not lr.get("ok") and lr.get("ok") is not None:
                 lang_totals[lang]["fail"] += 1
                 cell = fmt_cell("  FAIL", lang_width, RED)
             else:
@@ -976,7 +1365,7 @@ def main():
     print()
 
     # ── Otomatik profiling ────────────────────────────────────────────
-    if args.profile or args.profile_only_slow:
+    if args.profile or args.profile_only_slow or args.telemetry or args.deep_profile:
         # Flamegraph için perf izni kontrolü
         sysctl_conf = Path("/etc/sysctl.conf")
         has_paranoid = False
@@ -1007,7 +1396,7 @@ def main():
                            and any(l["language"] == "hudhud" for l in r.get("languages", []))]
                 if h_times:
                     last = h_times[-1]
-                    langs_map = {l["language"]: l.get("avg_ms", 0) for l in last.get("languages", [])}
+                    langs_map = {l["language"]: l.get("selected_ms", l.get("avg_ms", 0)) for l in last.get("languages", [])}
                     h, p = langs_map.get("hudhud", 0), langs_map.get("python", 1)
                     if p > 0 and (h / p) > 6:
                         slow.append(bk)
@@ -1019,8 +1408,19 @@ def main():
             only_arg = ",".join(profile_targets)
             print(f"\n  {CYAN}▸ Profiling başlıyor: {only_arg}{NC}")
             profile_script = SCRIPT_DIR / "profile_benchmarks.py"
-            cmd = [_sys.executable, str(profile_script), "--only", only_arg]
-            _sp.run(cmd, cwd=str(SCRIPT_DIR))
+            cmd = build_profile_command(
+                _sys.executable,
+                profile_script,
+                profile_targets,
+                telemetry=args.telemetry,
+                deep_profile=args.deep_profile,
+                profile_arch=args.profile_arch,
+                no_build=args.no_build,
+            )
+            profile_result = _sp.run(cmd, cwd=str(SCRIPT_DIR))
+            if (args.telemetry or args.deep_profile) and profile_result.returncode != 0:
+                print(f"{RED}✗ Profiling pipeline başarısız (rc={profile_result.returncode}).{NC}")
+                sys.exit(profile_result.returncode or 1)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,79 @@
+let G = 96;
+let T = 100;
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+let a = [];
+let b = [];
+let i = 0;
+while (i < G) {
+    let ra = [];
+    let rb = [];
+    let j = 0;
+    while (j < G) {
+        let v = 0;
+        if (ri(100) < 35) { v = 1; }
+        ra.push(v);
+        rb.push(0);
+        j = j + 1;
+    }
+    a.push(ra);
+    b.push(rb);
+    i = i + 1;
+}
+
+let start = Date.to_millis();
+let t = 0;
+while (t < T) {
+    let i2 = 0;
+    while (i2 < G) {
+        let j = 0;
+        while (j < G) {
+            let nbr = 0;
+            let di = -1;
+            while (di <= 1) {
+                let dj = -1;
+                while (dj <= 1) {
+                    if (!(di == 0 && dj == 0)) {
+                        let ni = (i2 + di + G) % G;
+                        let nj = (j + dj + G) % G;
+                        nbr = nbr + a[ni][nj];
+                    }
+                    dj = dj + 1;
+                }
+                di = di + 1;
+            }
+            let alive = a[i2][j];
+            if (alive == 1 && (nbr == 2 || nbr == 3)) {
+                b[i2][j] = 1;
+            } else if (alive == 0 && nbr == 3) {
+                b[i2][j] = 1;
+            } else {
+                b[i2][j] = 0;
+            }
+            j = j + 1;
+        }
+        i2 = i2 + 1;
+    }
+    let tmp = a;
+    a = b;
+    b = tmp;
+    t = t + 1;
+}
+
+let alive = 0;
+i = 0;
+while (i < G) {
+    let j = 0;
+    while (j < G) {
+        alive = alive + a[i][j];
+        j = j + 1;
+    }
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Result: " + alive);
+print("Time: " + (end - start) + "ms");

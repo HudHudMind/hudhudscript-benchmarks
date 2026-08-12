@@ -1,0 +1,16 @@
+let chars = [];
+for (let i = 0; i < 50000; i = i + 1) {
+    chars.push("a");
+}
+let s = chars.join("");
+let start = Date.to_millis();
+
+let rev_chars = [];
+for (let j = s.length - 1; j >= 0; j = j - 1) {
+    rev_chars.push(s[j]);
+}
+let rev = rev_chars.join("");
+
+let end = Date.to_millis();
+print("Len: " + rev.length);
+print("Time: " + (end - start) + "ms");

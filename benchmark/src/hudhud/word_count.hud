@@ -1,0 +1,49 @@
+let M = 500000;
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+let dict = [];
+let i = 0;
+while (i < 2000) {
+    dict.push("w" + i);
+    i = i + 1;
+}
+
+let counts = {};
+i = 0;
+while (i < 2000) {
+    counts[dict[i]] = 0;
+    i = i + 1;
+}
+
+let start = Date.to_millis();
+i = 0;
+while (i < M) {
+    let w = dict[ri(2000)];
+    counts[w] = counts[w] + 1;
+    i = i + 1;
+}
+
+let max_count = 0;
+let max_word = "";
+i = 0;
+while (i < 2000) {
+    let w = dict[i];
+    let v = counts[w];
+    if (max_count == 0) {
+        max_count = v;
+        max_word = w;
+    } else {
+        if (v > max_count) {
+            max_count = v;
+            max_word = w;
+        }
+    }
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Result: " + max_count + "_" + max_word);
+print("Time: " + (end - start) + "ms");

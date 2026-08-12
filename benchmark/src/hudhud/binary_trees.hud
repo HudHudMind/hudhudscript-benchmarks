@@ -1,0 +1,50 @@
+fn bottom_up_tree(depth) {
+    if (depth > 0) {
+        return [bottom_up_tree(depth - 1), bottom_up_tree(depth - 1)];
+    } else {
+        return [];
+    }
+}
+
+fn item_check(tree) {
+    if (tree.length > 0) {
+        return 1 + item_check(tree[0]) + item_check(tree[1]);
+    } else {
+        return 1;
+    }
+}
+
+let start = Date.to_millis();
+let max_depth = 12;
+let min_depth = 4;
+let stretch_depth = max_depth + 1;
+
+let stretch_tree = bottom_up_tree(stretch_depth);
+let check = item_check(stretch_tree);
+
+let long_lived_tree = bottom_up_tree(max_depth);
+
+let depth = min_depth;
+while (depth <= max_depth) {
+    let iterations = 1;
+    let shift = max_depth - depth + min_depth;
+    let s = 0;
+    while (s < shift) {
+        iterations = iterations * 2;
+        s = s + 1;
+    }
+    
+    let check_sum = 0;
+    let i = 0;
+    while (i < iterations) {
+        check_sum = check_sum + item_check(bottom_up_tree(depth));
+        i = i + 1;
+    }
+    depth = depth + 2;
+}
+
+let long_lived_check = item_check(long_lived_tree);
+let end = Date.to_millis();
+
+print("Result: " + check + "_" + long_lived_check);
+print("Time: " + (end - start) + "ms");

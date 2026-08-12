@@ -1,0 +1,97 @@
+let N = 4096;
+let PI = 3.141592653589793;
+
+let re = [];
+let im = [];
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+let i = 0;
+while (i < N) {
+    re.push(0.5*Math.sin(i*0.31)+Math.sin(i*0.017));
+    im.push(0.0);
+    i = i + 1;
+}
+
+let bit_rev = [];
+i = 0;
+while (i < N) {
+    let rev = 0;
+    let bits = 12;
+    let j = 0;
+    let pow2 = 1;
+    while (j < bits) {
+        rev = (rev * 2) + ((i - (i % pow2)) / pow2) % 2;
+        pow2 = pow2 * 2;
+        j = j + 1;
+    }
+    bit_rev.push(rev);
+    i = i + 1;
+}
+
+let R = 50;
+let final_sum = 0.0;
+
+let start = Date.to_millis();
+
+let r = 0;
+while (r < R) {
+    let cre = [];
+    let cim = [];
+    i = 0;
+    while (i < N) {
+        let br = bit_rev[i];
+        cre.push(re[br]);
+        cim.push(im[br]);
+        i = i + 1;
+    }
+
+    let step = 2;
+    while (step <= N) {
+        let half = step / 2;
+        let angle = (-2.0 * PI) / (step * 1.0);
+        let w_re = Math.cos(angle);
+        let w_im = Math.sin(angle);
+        let k = 0;
+        while (k < N) {
+            let wr = 1.0;
+            let wi = 0.0;
+            let m = 0;
+            while (m < half) {
+                let ei = k + m;
+                let oi = k + m + half;
+                let t_re = wr * cre[oi] - wi * cim[oi];
+                let t_im = wr * cim[oi] + wi * cre[oi];
+                cre[oi] = cre[ei] - t_re;
+                cim[oi] = cim[ei] - t_im;
+                cre[ei] = cre[ei] + t_re;
+                cim[ei] = cim[ei] + t_im;
+                let nwr = wr;
+                wr = nwr * w_re - wi * w_im;
+                wi = nwr * w_im + wi * w_re;
+                m = m + 1;
+            }
+            k = k + step;
+        }
+        step = step * 2;
+    }
+
+    let sum = 0.0;
+    i = 0;
+    while (i < N) {
+        sum = sum + cre[i] * cre[i] + cim[i] * cim[i];
+        i = i + 1;
+    }
+    final_sum = sum;
+    r = r + 1;
+}
+
+let scaled = final_sum + 0.5;
+let result = scaled - scaled % 1;
+
+let end = Date.to_millis();
+print("Result: " + result);
+print("Time: " + (end - start) + "ms");

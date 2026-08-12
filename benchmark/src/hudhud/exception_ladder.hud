@@ -1,0 +1,29 @@
+fn f3(i) {
+    if (i % 7 == 0) {
+        throw "boom";
+    }
+    return i * 2;
+}
+fn f2(i) {
+    return f3(i);
+}
+fn f1(i) {
+    return f2(i);
+}
+
+let N = 200000;
+let acc = 0;
+let caught = 0;
+let start = Date.to_millis();
+let i = 1;
+while (i <= N) {
+    try {
+        acc = (acc + f1(i)) % 1000003;
+    } catch (e) {
+        caught = caught + 1;
+    }
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Result: " + acc + "_" + caught);
+print("Time: " + (end - start) + "ms");

@@ -15,27 +15,13 @@ Do not import Flask or any blueprint here.  Only sqlite3, json, os, fcntl.
 import json
 import os
 import sqlite3
-import tempfile
-import re
-from datetime import datetime, timezone
-from pathlib import Path
-
-try:
-    import fcntl
-except ImportError:
-    fcntl = None
-
-try:
-    import msvcrt
-except ImportError:
-    msvcrt = None
+import fcntl
 import tempfile
 import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
-DATA_DIR.mkdir(parents=True, exist_ok=True)
 DB_PATH = DATA_DIR / "reviews.db"
 RESULTS_FILE = DATA_DIR / "benchmark_results.json"
 RESULTS_LOCK = DATA_DIR / "benchmark_results.json.lock"
@@ -75,22 +61,6 @@ def ensure_benchmark_schema(conn: sqlite3.Connection) -> None:
 
     # 1. New tables
     conn.executescript("""
-        CREATE TABLE IF NOT EXISTS benchmark_runs (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            benchmark TEXT NOT NULL,
-            timestamp TEXT NOT NULL,
-            versions_json TEXT
-        );
-
-        CREATE TABLE IF NOT EXISTS benchmark_run_results (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            run_id INTEGER NOT NULL REFERENCES benchmark_runs(id) ON DELETE CASCADE,
-            language TEXT NOT NULL,
-            avg_ms REAL,
-            ok INTEGER NOT NULL,
-            results_json TEXT
-        );
-
         CREATE TABLE IF NOT EXISTS benchmark_tag_counters (
             version_tag     TEXT PRIMARY KEY,
             last_run_number INTEGER NOT NULL
@@ -151,30 +121,16 @@ def _acquire_json_lock() -> int:
     """Acquire exclusive lock on the JSON results file. Returns fd."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     fd = os.open(str(RESULTS_LOCK), os.O_CREAT | os.O_RDWR)
-    
-    if fcntl:
-        fcntl.flock(fd, fcntl.LOCK_EX)
-    elif msvcrt:
-        os.lseek(fd, 0, os.SEEK_SET)
-        msvcrt.locking(fd, msvcrt.LK_LOCK, 1)
-        
+    fcntl.flock(fd, fcntl.LOCK_EX)
     return fd
 
 
 def _release_json_lock(fd: int) -> None:
     """Release lock and close fd."""
-    if fcntl:
-        try:
-            fcntl.flock(fd, fcntl.LOCK_UN)
-        except Exception:
-            pass
-    elif msvcrt:
-        try:
-            os.lseek(fd, 0, os.SEEK_SET)
-            msvcrt.locking(fd, msvcrt.LK_UNLCK, 1)
-        except Exception:
-            pass
-            
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+    except Exception:
+        pass
     try:
         os.close(fd)
     except Exception:
@@ -418,7 +374,12 @@ def finalize_execution(execution_id: int, error: str | None = None) -> dict:
         completed = row["completed_benchmark_count"]
         finished = datetime.now(timezone.utc).astimezone().isoformat()
 
-        if completed == 0:
+        if error is not None and error != "":
+            # A semantically invalid full matrix is failed, not completed or
+            # partial.  "partial" is reserved for executions that stopped
+            # before recording every selected benchmark.
+            status = "partial" if 0 < completed < expected else "failed"
+        elif completed == 0:
             status = "failed"
         elif completed >= expected:
             status = "completed"

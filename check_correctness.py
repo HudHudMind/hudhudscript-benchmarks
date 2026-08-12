@@ -38,6 +38,7 @@ LANG_ORDER = ["python", "hudhud", "lua", "ruby", "nodejs", "php", "perl", "raku"
 
 GOLDEN: dict[str, int | float | str | None] = {
     # int / exact
+    "avl_insert": "20_963739",
     "ack": 509,
     "arrsum": 49995000,
     "bfs": 10,
@@ -51,9 +52,11 @@ GOLDEN: dict[str, int | float | str | None] = {
     "hanoi": 1048575,
     "sieve": 1229,
     "prime_count": 9592,
+    "number_parse": 311916,
     "n_queens": 92,
     "tak": 7,
     "mandelbrot": 150726,
+    "kmp_search": 618,
     "k_nucleotide": 84,
     "duffs_device": 1,
     "fannkuch_redux": "7605_21",
@@ -80,15 +83,18 @@ GOLDEN: dict[str, int | float | str | None] = {
     # string / çoklu değer
     "bubble": "1/500",
     "heap_sort": "1/1000",
+    "json_serialize": "498550_272",
     "insertion_sort": "1/1000",
     "merge": "1/1000",
+    "rk4_pendulum": -0.985908259,
     "quick": "1/1000",
+    "radix_sort": "6/999998_995501",
     "matrix": "1113775/-2216375",
     "matrix_transpose": "0/598",
     "palindrome": "true",
     "binary_trees": "16383_8191",
     "strcat": "50000",
-    "strrev": "50000",
+    "strrev": "a/50000",
     "substring_search": "1000",
     "vector_dot": "41666916667000000",
 
@@ -98,6 +104,30 @@ GOLDEN: dict[str, int | float | str | None] = {
     # golden yok (skip — benchmark kodu hatalı veya sonuç belirsiz)
     "knapsack": 802,  # max value for 50 items, capacity 100
     "lcs": 50,
+    "object_churn": 125006,
+    "method_dispatch": 411571,
+    "closure_chain": 674325,
+    "higher_order": 995995,
+    "sort_by_comparator": "439731_488147",
+    "string_pipeline": 799952,
+    "linked_list": 888228,
+    "union_find": 3890,
+    "hash_probe": "3092_772_148285",
+    "exception_ladder": "782861_28571",
+    "floyd_warshall": "22500_476321",
+    "game_of_life": 922,
+    "string_sort": 706547,
+    "simpson_integration": 1863.3333333333273,
+    "word_count": "315_w653",
+    "trie_dict": "62581_20584",
+    "miller_rabin": 192,
+    "task_scheduler": "300000_299793_98000",
+    "mini_vm": 716130,
+    "dijkstra": 520219,
+    "lzw_compress": "77492_842207",
+    "pidigits": "2668_6766940513",
+    "fft": 10426929,
+    "lu_decomposition": 1010093,
 }
 
 # Main benchmark files must produce exact BigInt results. Approximation variants
@@ -110,14 +140,13 @@ NONDETERMINISTIC: set[str] = set()
 
 # Benchmarks needing wider epsilon tolerance (e.g. Monte Carlo)
 RELAXED_EPSILON: dict[str, float] = {
-    "monte_carlo_pi": 0.03,  # 500k points, ~6-sigma statistical tolerance
+    "monte_carlo_pi": 0.03,
+    "rk4_pendulum": 1e-6,  # 500k points, ~6-sigma statistical tolerance
 }
 
-# Expected skips for runtimes without native exact integer support for these
-# bignum benchmarks. The benchmark source is still run, but correctness does
-# not count the language as wrong for lacking BigInt semantics.
-SKIPPED_RESULTS: dict[tuple[str, str], str] = {
-}
+# Explicitly accepted runtime/cell skips.  HudHud v0.8.100 fixed the former
+# kmp_search compiler bug, so the active 80×9 matrix currently permits no skips.
+SKIPPED_RESULTS: dict[tuple[str, str], str] = {}
 
 
 def _scientific_to_decimal(s: str):
@@ -255,64 +284,19 @@ def _values_match(got_val, golden, slug: str = "", lang: str = "") -> bool:
 
 
 def _extract_result(stdout: str, slug: str) -> str | None:
-    """Extract result value from stdout using known patterns."""
+    """Extract result value from stdout.
+
+    All benchmarks use a single ``Result: ...`` line (§5.3).
+    Multiple-Result: detection happens upstream in run_benchmarks.py.
+    """
     if not stdout:
         return None
 
-    patterns = [
-        # "Key: Value" patterns
-        (r"Result:\s*(\S.*)", 1),
-        (r"Max steps:\s*(\d+)", 1),
-        (r"Sum:\s*(.+)", 1),
-        (r"Total:\s*(.+)", 1),
-        (r"Visited:\s*(\d+)", 1),
-        (r"Found:\s*(\d+)", 1),
-        (r"Moves:\s*(\d+)", 1),
-        (r"Max:\s*(\d+)", 1),
-        (r"LCS:\s*(\d+)", 1),
-        (r"Solutions:\s*(\d+)", 1),
-        (r"Palindrome:\s*(\w+)", 1),
-        (r"Primes(?:\s+up\s+to\s+\d+)?:\s*(\d+)", 1),
-        (r"L(?:en(?:gth)?):\s*(\d+)", 1),
-        (r"Count:\s*(\d+)", 1),
-        (r"Dot:\s*(\d+)", 1),
-        (r"Pi:\s*([\d.]+)", 1),
-    ]
-    for pat, group in patterns:
-        m = re.search(pat, stdout)
-        if m:
-            return m.group(group).strip()
-
-    # Multi-value patterns
-    m = re.search(r"First:\s*(\d+).*Last:\s*(\d+)", stdout, re.DOTALL)
+    m = re.search(r"^Result:\s*(.+)$", stdout, re.MULTILINE)
     if m:
-        return f"{m.group(1)}/{m.group(2)}"
+        return m.group(1).strip()
 
-    m = re.search(r"Last:\s*(\d+)", stdout)
-    if m:
-        return m.group(1)
-
-    m = re.search(r"Mean:\s*([\d.]+).*Variance:\s*([\d.]+)", stdout, re.DOTALL)
-    if m:
-        return f"{round(float(m.group(1)),1)}/{round(float(m.group(2)),1)}"
-
-    m = re.search(r"Result\[0\]\[0\]:\s*(\d+).*Result\[\d+\]\[\d+\]:\s*(-?\d+)", stdout, re.DOTALL)
-    if m:
-        return f"{m.group(1)}/{m.group(2)}"
-
-    m = re.search(r"T\[0\]\[0\]:\s*(\d+).*T\[\d+\]\[\d+\]:\s*(\d+)", stdout, re.DOTALL)
-    if m:
-        return f"{m.group(1)}/{m.group(2)}"
-
-    # "fact(N) = X" or "fib(N) = X" — capture entire big number
-    m = re.search(r"(?:fact|fib)\(\d+\)\s*=\s*(\S+)", stdout)
-    if m:
-        return m.group(1)
-
-    # "X computed" (message-only benchmarks like factorial)
-    if "computed" in stdout.lower():
-        return "computed"
-
+    # No Result: line found — benchmark output is non-conformant
     return None
 
 

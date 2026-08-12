@@ -1,0 +1,56 @@
+fn quicksort(a, low, high, cmp) {
+    let stack = [];
+    stack.push(low);
+    stack.push(high);
+    while (stack.length > 0) {
+        let h = stack.pop();
+        let l = stack.pop();
+        if (l >= h) { continue; }
+        let pivot = a[(l + h) / 2];
+        let i2 = l;
+        let j2 = h;
+        while (i2 <= j2) {
+            while (cmp(a[i2], pivot) < 0) { i2 = i2 + 1; }
+            while (cmp(a[j2], pivot) > 0) { j2 = j2 - 1; }
+            if (i2 <= j2) {
+                let t = a[i2]; a[i2] = a[j2]; a[j2] = t;
+                i2 = i2 + 1; j2 = j2 - 1;
+            }
+        }
+        if (l < j2) { stack.push(l); stack.push(j2); }
+        if (i2 < h) { stack.push(i2); stack.push(h); }
+    }
+}
+
+fn cmp_asc(a, b) { return a - b; }
+fn cmp_desc(a, b) { return b - a; }
+
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+let N = 20000;
+let arr = [];
+let i = 0;
+while (i < N) {
+    arr.push(ri(1000000));
+    i = i + 1;
+}
+let start = Date.to_millis();
+let copy1 = [];
+i = 0; while (i < N) { copy1.push(arr[i]); i = i + 1; }
+quicksort(copy1, 0, N - 1, cmp_asc);
+let c1 = 0;
+i = 0; while (i < N) { c1 = (c1 + copy1[i] * (i % 7)) % 1000003; i = i + 1; }
+
+let copy2 = [];
+i = 0; while (i < N) { copy2.push(arr[i]); i = i + 1; }
+quicksort(copy2, 0, N - 1, cmp_desc);
+let c2 = 0;
+i = 0; while (i < N) { c2 = (c2 + copy2[i] * (i % 7)) % 1000003; i = i + 1; }
+
+let end = Date.to_millis();
+print("Result: " + c1 + "_" + c2);
+print("Time: " + (end - start) + "ms");

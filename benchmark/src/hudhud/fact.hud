@@ -1,0 +1,11 @@
+let result = 1;
+let n = 10000;
+let start = Date.to_millis();
+while (n > 1) {
+    result = result * n;
+    n = n - 1;
+}
+let end = Date.to_millis();
+print("Result: " + result);
+print("Time: " + (end - start) + "ms");
+

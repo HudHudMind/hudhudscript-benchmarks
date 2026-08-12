@@ -1,0 +1,94 @@
+fn fannkuch(n) {
+    let p = []; let q = []; let s = [];
+    let i = 0;
+    while (i < n) {
+        p.push(i);
+        q.push(i);
+        s.push(i);
+        i = i + 1;
+    }
+    
+    let sign = 1;
+    let maxflips = 0;
+    let sumflips = 0;
+    
+    while (true) {
+        let q1 = p[0];
+        if (q1 != 0) {
+            let j = 1;
+            while (j < n) {
+                q[j] = p[j];
+                j = j + 1;
+            }
+            let flips = 1;
+            while (true) {
+                let qq = q[q1];
+                if (qq == 0) {
+                    break;
+                }
+                q[q1] = q1;
+                if (q1 >= 3) {
+                    let a = 1;
+                    let b = q1 - 1;
+                    while (a < b) {
+                        let temp = q[a];
+                        q[a] = q[b];
+                        q[b] = temp;
+                        a = a + 1;
+                        b = b - 1;
+                    }
+                }
+                q1 = qq;
+                flips = flips + 1;
+            }
+            if (flips > maxflips) {
+                maxflips = flips;
+            }
+            sumflips = sumflips + sign * flips;
+        }
+        
+        if (sign == 1) {
+            let temp2 = p[1];
+            p[1] = p[0];
+            p[0] = temp2;
+            sign = -1;
+        } else {
+            let temp3 = p[1];
+            p[1] = p[2];
+            p[2] = temp3;
+            sign = 1;
+            let k = 2;
+            let broken = false;
+            while (k < n) {
+                s[k] = s[k] - 1;
+                if (s[k] != 0) {
+                    broken = true;
+                    break;
+                }
+                s[k] = k;
+                let t = p[0];
+                let m = 0;
+                while (m <= k) {
+                    if (m < k) {
+                        p[m] = p[m + 1];
+                    } else {
+                        p[m] = t;
+                    }
+                    m = m + 1;
+                }
+                k = k + 1;
+            }
+            if (!broken) {
+                break;
+            }
+        }
+    }
+    return sumflips + "_" + maxflips;
+}
+
+let start = Date.to_millis();
+let res = fannkuch(9);
+let end = Date.to_millis();
+
+print("Result: " + res);
+print("Time: " + (end - start) + "ms");

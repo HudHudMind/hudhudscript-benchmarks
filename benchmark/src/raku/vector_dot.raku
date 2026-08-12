@@ -1,0 +1,2 @@
+my @v1 = 1..500000; my @v2 = 2..500001; my $start = now * 1000; my $s = 0;
+for 0..499999 -> $i { $s += @v1[$i] * @v2[$i]; }; my $end = now * 1000; say "Result: " ~ $s; say "Time: " ~ ($end - $start).Int ~ "ms";

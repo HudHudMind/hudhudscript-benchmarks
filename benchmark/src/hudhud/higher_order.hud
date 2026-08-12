@@ -1,0 +1,21 @@
+let base = [];
+let i = 0;
+while (i < 1000) {
+    base.push(i);
+    i = i + 1;
+}
+
+let R = 2000;
+let acc = 0;
+let start = Date.to_millis();
+let r = 0;
+while (r < R) {
+    let d = base.map((x) => { return x * 2 + 1; });
+    let f = d.filter((x) => { return x % 3 != 0; });
+    let s = f.reduce((acc2, x) => { return acc2 + x; }, 0);
+    acc = (acc + s + f.length) % 1000003;
+    r = r + 1;
+}
+let end = Date.to_millis();
+print("Result: " + acc);
+print("Time: " + (end - start) + "ms");

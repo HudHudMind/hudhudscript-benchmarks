@@ -1,0 +1,57 @@
+let seed = 42;
+fn rng() {
+    seed = (seed * 1103515245 + 12345) % 2147483648;
+    return ((seed - (seed % 65536)) / 65536) % 4;
+}
+let chars = "ACGT";
+let ta = [];
+let i = 0;
+while (i < 500000) { ta.push(chars[rng()]); i = i + 1; }
+let text = ta.join("");
+
+let patterns = [];
+i = 0;
+while (i < 15) {
+    let sp = (seed * 16807) % 499000;
+    seed = (seed * 16807) % 2147483647;
+    let pl = 5 + (seed % 11);
+    patterns.push(text.substring(sp, sp + pl));
+    i = i + 1;
+}
+i = 0;
+while (i < 5) {
+    patterns.push("QQQQQ" + ((seed * 16807) % 10));
+    seed = (seed * 16807) % 2147483647;
+    i = i + 1;
+}
+
+let start = Date.to_millis();
+let total = 0;
+let pi = 0;
+while (pi < 20) {
+    let pat = patterns[pi];
+    let m = pat.length;
+    let fail = [];
+    let k = 0;
+    while (k < m) { fail.push(0); k = k + 1; }
+    let j = 0;
+    i = 1;
+    while (i < m) {
+        while (j > 0 && pat[i] != pat[j]) { j = fail[j - 1]; }
+        if (pat[i] == pat[j]) { j = j + 1; }
+        fail[i] = j;
+        i = i + 1;
+    }
+    j = 0;
+    i = 0;
+    while (i < text.length) {
+        while (j > 0 && text[i] != pat[j]) { j = fail[j - 1]; }
+        if (text[i] == pat[j]) { j = j + 1; }
+        if (j == m) { total = total + 1; j = fail[j - 1]; }
+        i = i + 1;
+    }
+    pi = pi + 1;
+}
+let end = Date.to_millis();
+print("Result: " + total);
+print("Time: " + (end - start) + "ms");

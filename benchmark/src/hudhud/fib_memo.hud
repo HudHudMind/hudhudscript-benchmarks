@@ -1,0 +1,22 @@
+let start = Date.to_millis();
+let sum = 0;
+let i = 0;
+fn fib(n, memo) {
+    if (n <= 1) { return n; }
+    if (memo[n] != 0) { return memo[n]; }
+    memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
+    return memo[n];
+}
+while (i < 10000) {
+    let memo = [];
+    let j = 0;
+    while (j <= 500) {
+        memo.push(0);
+        j = j + 1;
+    }
+    sum = sum + fib(500, memo);
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Result: " + sum);
+print("Time: " + (end - start) + "ms");

@@ -1,0 +1,39 @@
+class Shape { public fn score() { return 0; } }
+class A extends Shape {
+    public fn score() { return self.v * 2; }
+}
+class B extends Shape {
+    public fn score() { return self.v * 3 + 1; }
+}
+class C extends Shape {
+    public fn score() { return self.v * 5 - 2; }
+}
+
+let shapes = [];
+let i = 0;
+while (i < 3000) {
+    let r = i % 3;
+    let obj = 0;
+    if (r == 0) { obj = new A(); }
+    else if (r == 1) { obj = new B(); }
+    else { obj = new C(); }
+    obj.v = i % 97;
+    shapes.push(obj);
+    i = i + 1;
+}
+
+let P = 300;
+let acc = 0;
+let start = Date.to_millis();
+let round = 0;
+while (round < P) {
+    let j = 0;
+    while (j < 3000) {
+        acc = (acc + shapes[j].score()) % 1000003;
+        j = j + 1;
+    }
+    round = round + 1;
+}
+let end = Date.to_millis();
+print("Result: " + acc);
+print("Time: " + (end - start) + "ms");

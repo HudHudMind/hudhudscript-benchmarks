@@ -1,0 +1,56 @@
+let N = 20000;
+let arr = [];
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+let idx = 0;
+while (idx < N) {
+    let v = ri(100000);
+    arr.push("w" + v);
+    idx = idx + 1;
+}
+
+fn merge_sort(a) {
+    let sz = a.length;
+    if (sz <= 1) { return a; }
+    let md = sz / 2;
+    let L = [];
+    let p = 0;
+    while (p < md) { L.push(a[p]); p = p + 1; }
+    let R = [];
+    p = md;
+    while (p < sz) { R.push(a[p]); p = p + 1; }
+    L = merge_sort(L);
+    R = merge_sort(R);
+    let res = [];
+    let pi = 0;
+    let qi = 0;
+    while (pi < L.length) {
+        if (qi >= R.length) { break; }
+        if (L[pi] <= R[qi]) {
+            res.push(L[pi]);
+            pi = pi + 1;
+        } else {
+            res.push(R[qi]);
+            qi = qi + 1;
+        }
+    }
+    while (pi < L.length) { res.push(L[pi]); pi = pi + 1; }
+    while (qi < R.length) { res.push(R[qi]); qi = qi + 1; }
+    return res;
+}
+
+let start = Date.to_millis();
+let sorted = merge_sort(arr);
+let acc = 0;
+let q = 0;
+while (q < N) {
+    acc = (acc + sorted[q].length * (q % 13)) % 1000003;
+    q = q + 1;
+}
+let end = Date.to_millis();
+print("Result: " + acc);
+print("Time: " + (end - start) + "ms");

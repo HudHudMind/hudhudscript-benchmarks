@@ -1,0 +1,1 @@
+my $start = now * 1000; my $s = 0; for 1..1000000 -> $i { $s += $i * $i; }; my $end = now * 1000; say "Result: " ~ $s; say "Time: " ~ ($end - $start).Int ~ "ms";

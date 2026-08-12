@@ -1,0 +1,72 @@
+let n = 150;
+let INF = 999999999;
+let dist = [];
+let i = 0;
+while (i < n) {
+    let row = [];
+    let j = 0;
+    while (j < n) {
+        if (i == j) { row.push(0); } else { row.push(INF); }
+        j = j + 1;
+    }
+    dist.push(row);
+    i = i + 1;
+}
+
+let seed = 12345;
+fn ri(m) {
+    seed = (seed * 16807) % 2147483647;
+    return seed % m;
+}
+
+i = 0;
+while (i < n) {
+    let j = 0;
+    while (j < 4) {
+        let t = (i * 7 + j * 13 + 1) % n;
+        if (t != i) {
+            dist[i][t] = 1 + ((i + j) % 50);
+        }
+        j = j + 1;
+    }
+    i = i + 1;
+}
+
+let start = Date.to_millis();
+let k = 0;
+while (k < n) {
+    let i2 = 0;
+    while (i2 < n) {
+        let dik = dist[i2][k];
+        if (dik != INF) {
+            let j = 0;
+            while (j < n) {
+                let nd = dik + dist[k][j];
+                if (nd < dist[i2][j]) {
+                    dist[i2][j] = nd;
+                }
+                j = j + 1;
+            }
+        }
+        i2 = i2 + 1;
+    }
+    k = k + 1;
+}
+
+let reach = 0;
+let sum = 0;
+i = 0;
+while (i < n) {
+    let j = 0;
+    while (j < n) {
+        if (dist[i][j] < INF) {
+            reach = reach + 1;
+            sum = sum + dist[i][j];
+        }
+        j = j + 1;
+    }
+    i = i + 1;
+}
+let end = Date.to_millis();
+print("Result: " + reach + "_" + (sum % 1000003));
+print("Time: " + (end - start) + "ms");

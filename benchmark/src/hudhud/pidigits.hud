@@ -1,0 +1,66 @@
+// Pi digits — Machin: π = 16*arctan(1/5) - 4*arctan(1/239)
+// HudHud native BigInt. D=600. Golden: 2668_6766940513
+
+let D = 600;
+let GUARD = 5;
+let SCALE = D + 10;
+
+fn arctan_inv(x) {
+    let res = 0;
+
+    // term = 10^SCALE // x
+    let term = 1;
+    for (let i = 0; i < SCALE; i = i + 1) {
+        term = term * 10;
+    }
+    term = term / x;
+
+    let x2 = x * x;
+    let sign = 1;
+    let k = 0;
+
+    while (true) {
+        let divisor = 2 * k + 1;
+        let t_k = term / divisor;
+        if (t_k == 0) { break; }
+
+        if (sign > 0) {
+            res = res + t_k;
+        } else {
+            res = res - t_k;
+        }
+        sign = 0 - sign;
+        term = term / x2;
+        k = k + 1;
+    }
+
+    return res;
+}
+
+let start = Date.to_millis();
+
+let a5 = arctan_inv(5);
+let a239 = arctan_inv(239);
+let pi = 16 * a5 - 4 * a239;
+
+// Convert to string, pad to D+10, take first D digits
+let s = pi + "";
+if (s.length < D + 10) {
+    let pad = "";
+    for (let i = 0; i < (D + 10 - s.length); i = i + 1) {
+        pad = pad + "0";
+    }
+    s = pad + s;
+}
+s = s.substring(0, D);
+
+// Sum digits and last 10
+let ds = 0;
+for (let i = 0; i < D; i = i + 1) {
+    ds = ds + toNumber(s[i]);
+}
+let lt = s.substring(D - 10, D);
+
+let end = Date.to_millis();
+print("Result: " + ds + "_" + lt);
+print("Time: " + (end - start) + "ms");

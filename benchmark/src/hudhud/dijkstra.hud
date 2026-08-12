@@ -1,0 +1,57 @@
+let n = 20000;
+let seed = 12345;
+fn ri(m) { seed = (seed * 16807) % 2147483647; return seed % m; }
+
+let eto = []; let ew = []; let deg = []; let start_ofs = [];
+let i = 0; while (i < n) { deg.push(0); start_ofs.push(0); i = i + 1; }
+
+i = 0;
+while (i < n) {
+    eto.push((i + 1) % n); ew.push(1 + ri(9)); deg[i] = deg[i] + 1;
+    i = i + 1;
+}
+
+i = 0;
+while (i < n) {
+    let j = 0;
+    while (j < 5) { let t = ri(n); eto.push(t); ew.push(1 + ri(99)); deg[i] = deg[i] + 1; j = j + 1; }
+    i = i + 1;
+}
+
+let offset = 0; i = 0; while (i < n) { start_ofs[i] = offset; offset = offset + deg[i]; i = i + 1; }
+
+let hd = []; let hn = []; let hsz = 0;
+fn hp(d, nd) { if (hsz < hn.length) { hn[hsz] = nd; hd[hsz] = d; } else { hn.push(nd); hd.push(d); } let i2 = hsz; hsz = hsz + 1;
+    while (i2 > 0) { let p = (i2 - 1) / 2; if (hd[p] <= hd[i2]) { break; }
+        let t = hd[i2]; hd[i2] = hd[p]; hd[p] = t; t = hn[i2]; hn[i2] = hn[p]; hn[p] = t; i2 = p; } }
+fn hpop() { if (hsz == 0) { return -1; } let r = hn[0]; hsz = hsz - 1;
+    hn[0] = hn[hsz]; hd[0] = hd[hsz]; let i2 = 0;
+    while (true) { let l = 2 * i2 + 1; let r2 = 2 * i2 + 2; let s = i2;
+        if (l < hsz && hd[l] < hd[s]) { s = l; }
+        if (r2 < hsz && hd[r2] < hd[s]) { s = r2; }
+        if (s == i2) { break; }
+        let t = hd[i2]; hd[i2] = hd[s]; hd[s] = t; t = hn[i2]; hn[i2] = hn[s]; hn[s] = t; i2 = s; }
+    return r; }
+
+let INF = 999999999; let dist = []; i = 0; while (i < n) { dist.push(INF); i = i + 1; }
+let visited = []; i = 0; while (i < n) { visited.push(0); i = i + 1; }
+dist[0] = 0; hp(0, 0);
+
+let start = Date.to_millis();
+while (hsz > 0) {
+    let u = hpop();
+    if (u < 0) { break; }
+    if (visited[u] == 1) { continue; }
+    visited[u] = 1;
+    let d = dist[u];
+    let base = start_ofs[u]; let k = 0;
+    while (k < deg[u]) {
+        let v = eto[base + k]; let w = ew[base + k]; let nd = d + w;
+        if (nd < dist[v]) { dist[v] = nd; hp(nd, v); }
+        k = k + 1;
+    }
+}
+let sum = 0; i = 0; while (i < n) { sum = sum + dist[i]; i = i + 1; }
+let end = Date.to_millis();
+print("Result: " + (sum % 1000003));
+print("Time: " + (end - start) + "ms");

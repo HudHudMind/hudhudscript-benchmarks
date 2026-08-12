@@ -1,0 +1,15 @@
+let start = Date.to_millis();
+
+let N = 500000;
+let acc = 0;
+let i = 0;
+while (i < N) {
+    let p = { x: i, y: i * 2, z: 0 };
+    p.z = p.x + p.y;
+    acc = (acc + p.z) % 1000003;
+    i = i + 1;
+}
+
+let end = Date.to_millis();
+print("Result: " + acc);
+print("Time: " + (end - start) + "ms");
