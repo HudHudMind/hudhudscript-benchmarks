@@ -59,7 +59,15 @@ def _interleave_runs(warmup: int, measured: int) -> list[str]:
     return order
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-HHS_REPO = SCRIPT_DIR.parent / "hudhud-script"
+
+def _find_hhs_repo() -> Path:
+    for name in ("hudhudscript", "hudhud-script"):
+        p = SCRIPT_DIR.parent / name
+        if p.exists():
+            return p
+    return SCRIPT_DIR.parent / "hudhudscript"
+
+HHS_REPO = _find_hhs_repo()
 BENCH_DIR = SCRIPT_DIR / "benchmark"
 OUTPUT_FILE = HHS_REPO / "docs" / "PERFORMANCE_BASELINE_CURRENT.md"
 
