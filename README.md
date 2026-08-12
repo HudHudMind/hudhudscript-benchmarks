@@ -4,6 +4,13 @@ This repository contains the official benchmark suite for **HudHudScript v0.8.0*
 
 The suite runs a variety of algorithms (sorting, mathematical functions, string manipulation, and classical benchmark problems) across all languages, tracking and storing the average execution times.
 
+All binaries of hudhud built by using run_benchmarks.py script and the following command is used. If any of the benchmarks of HudHudScript does not seem right please kepp this in mind.
+
+```bash
+cargo build --release -p hudhudscript-cli --bin hudhud
+```
+
+
 ## How to Run
 
 1. Ensure that you have Python 3 installed, along with any other language runtimes you wish to benchmark (e.g., `lua`, `node`, `ruby`, `php`, `perl`, `tclsh`).
@@ -197,3 +204,102 @@ These benchmarks were run on a Windows machine to verify cross-platform performa
 - **OS:** Microsoft Windows 10 Pro (64-bit)
 - **CPU:** 11th Gen Intel(R) Core(TM) i7-11700 @ 2.50GHz
 - **Versions:** HudHud 0.8.219, Node.js v22.22.1, Python 3.11.15
+
+
+## Kali Linux Benchmarks
+
+**Configuration:**
+- **OS:** Kali 2026.1 Linux kali 6.0.0-kali6-amd64
+- **CPU:** Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz
+- **Versions:** HudHud 0.8.219, Node.js v22.22.0, Python 3.13.12
+
+
+* **HudHudScript:** hudhud 0.8.219
+* **Python:** Python 3.13.12
+* **Node.js:** v22.22.0
+
+| Benchmark              |    hudhud |    python |    nodejs |
+| ---------------------- | --------: | --------: | --------: |
+| Ackermann Function     |      18ms |      28ms |     108ms |
+| AVL Insert             |    2069ms |    1075ms |     194ms |
+| Array Summation        |       6ms |      12ms |     112ms |
+| BFS Graph              |       5ms |      12ms |     112ms |
+| Binary Search          |      29ms |      53ms |     117ms |
+| Bubble Sort            |      25ms |      50ms |     143ms |
+| Collatz Conjecture     |      43ms |     136ms |     114ms |
+| Count Set Bits         |      90ms |     217ms |     118ms |
+| Cumulative Sum         |      21ms |      34ms |     124ms |
+| DFS Graph              |       5ms |      12ms |     107ms |
+| Factorial Iterative    |      20ms |      41ms |     124ms |
+| Factorial Recursive    |       5ms |      11ms |     110ms |
+| Fibonacci Recursive    |     235ms |     125ms |     122ms |
+| Fibonacci Iterative    |     846ms |     452ms |     526ms |
+| Fibonacci Memoization  |    1930ms |    1310ms |     427ms |
+| Euclidean GCD          |      11ms |      20ms |     116ms |
+| Geometric Series       |      48ms |     135ms |     125ms |
+| Tower of Hanoi         |     103ms |      62ms |     111ms |
+| Heap Sort              |       7ms |      13ms |     110ms |
+| Insertion Sort         |      56ms |      90ms |     111ms |
+| KMP Search             |    1665ms |    1926ms |     307ms |
+| 0/1 Knapsack           |       5ms |      17ms |     101ms |
+| LCS                    |       9ms |      13ms |     100ms |
+| Matrix Multiply        |     324ms |     720ms |     131ms |
+| Matrix Transpose       |      15ms |      29ms |     112ms |
+| Mean and Variance      |     183ms |     271ms |     134ms |
+| Merge Sort             |       7ms |      14ms |     102ms |
+| Modular Exponentiation |      12ms |      27ms |     110ms |
+| Monte Carlo Pi         |     159ms |     292ms |     124ms |
+| Number Parse           |     471ms |     840ms |     207ms |
+| N-Queens               |      13ms |      26ms |     106ms |
+| Newton-Raphson Sqrt    |      11ms |      22ms |     106ms |
+| Palindrome Check       |     872ms |    1722ms |     302ms |
+| Polynomial Evaluation  |    2204ms |    5320ms |     326ms |
+| Power Operation        |     750ms |     603ms |     659ms |
+| Prime Count            |      72ms |     104ms |     112ms |
+| Quick Sort             |      33ms |      74ms |     118ms |
+| Sieve of Eratosthenes  |       5ms |      11ms |     107ms |
+| String Concatenation   |       6ms |      41ms |     111ms |
+| String Reverse         |      11ms |      16ms |     113ms |
+| Substring Search       |       6ms |      16ms |     124ms |
+| Sum of Squares         |      38ms |     113ms |     154ms |
+| Vector Dot Product     |      85ms |     154ms |     145ms |
+| Binary Trees           |     206ms |      76ms |     117ms |
+| Tak Function           |      60ms |      36ms |     106ms |
+| Mandelbrot Set         |     920ms |     634ms |     129ms |
+| JSON Serialize         |      31ms |      17ms |     109ms |
+| K-Nucleotide           |     128ms |      69ms |     133ms |
+| Duff's Device          |     703ms |     404ms |     129ms |
+| N-Body                 |     108ms |      69ms |     110ms |
+| Fannkuch-Redux         |     110ms |      81ms |     107ms |
+| Spectral Norm          |     221ms |     153ms |     107ms |
+| Fasta                  |      78ms |      51ms |     104ms |
+| Radix Sort             |     269ms |     568ms |     180ms |
+| RK4 Pendulum           |     307ms |     954ms |     156ms |
+| Reverse-Complement     |     900ms |     395ms |     315ms |
+| Object Churn           |     184ms |     155ms |     103ms |
+| Method Dispatch        |     302ms |     145ms |     112ms |
+| Closure Chain          |     266ms |      75ms |     103ms |
+| Higher-Order Pipeline  |     529ms |     315ms |     203ms |
+| Sort by Comparator     |     143ms |      89ms |     145ms |
+| String Pipeline        |     140ms |     180ms |     127ms |
+| Linked List            |      75ms |     102ms |     119ms |
+| Union-Find             |     415ms |     460ms |     166ms |
+| Hash Probe             |      71ms |     130ms |     133ms |
+| Exception Ladder       |     106ms |      64ms |     196ms |
+| Floyd-Warshall         |     172ms |     320ms |     131ms |
+| Game of Life           |    1603ms |    1875ms |     173ms |
+| String Sort            |      92ms |      56ms |     135ms |
+| Simpson Integration    |     392ms |     498ms |     115ms |
+| Word Count             |     162ms |     175ms |     152ms |
+| Trie Dictionary        |     192ms |     190ms |     178ms |
+| Miller-Rabin           |      12ms |      26ms |     119ms |
+| Task Scheduler         |      83ms |     142ms |     111ms |
+| Mini VM                |      37ms |     104ms |     113ms |
+| Dijkstra               |     405ms |     288ms |     149ms |
+| LZW Compress           |      94ms |     193ms |     138ms |
+| Pi Digits              |       7ms |      12ms |     102ms |
+| FFT                    |     578ms |    1285ms |     137ms |
+| LU Decomposition       |     318ms |     579ms |     148ms |
+| **Average**            | **287ms** | **340ms** | **152ms** |
+| **Success Rate**       |  **100%** |  **100%** |  **100%** |
+
