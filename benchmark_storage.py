@@ -91,6 +91,23 @@ def ensure_benchmark_schema(conn: sqlite3.Connection) -> None:
             UNIQUE (version_tag, run_number),
             CHECK (status IN ('running', 'completed', 'partial', 'failed'))
         );
+
+        CREATE TABLE IF NOT EXISTS benchmark_runs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            benchmark TEXT NOT NULL,
+            timestamp TEXT NOT NULL,
+            versions_json TEXT,
+            execution_id INTEGER REFERENCES benchmark_executions(id) ON DELETE CASCADE
+        );
+
+        CREATE TABLE IF NOT EXISTS benchmark_run_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            run_id INTEGER NOT NULL REFERENCES benchmark_runs(id) ON DELETE CASCADE,
+            language TEXT NOT NULL,
+            avg_ms REAL,
+            ok INTEGER NOT NULL,
+            results_json TEXT
+        );
     """)
 
     # Indexes for new tables (IF NOT EXISTS)
