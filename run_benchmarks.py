@@ -35,6 +35,11 @@ import json
 import os
 import subprocess
 import sys
+
+if sys.stdout.encoding.lower() != 'utf-8':
+    sys.stdout.reconfigure(encoding='utf-8')
+if sys.stderr.encoding.lower() != 'utf-8':
+    sys.stderr.reconfigure(encoding='utf-8')
 import tempfile
 import time
 import hashlib
@@ -57,7 +62,8 @@ DATA_DIR = SCRIPT_DIR / "data"
 
 def find_binary() -> Path:
     """Find the hudhud binary: release only (no silent fallback)."""
-    path = HHS_REPO / "target" / "release" / "hudhud"
+    exe_name = "hudhud.exe" if os.name == "nt" else "hudhud"
+    path = HHS_REPO / "target" / "release" / exe_name
     if path.exists() and os.access(path, os.X_OK):
         return path
     # No fallback — if release is missing/broken, caller handles the error
