@@ -193,8 +193,90 @@ These benchmarks were executed on an Ubuntu Desktop machine (current host) to ev
 
 Below is a summary of the latest benchmark results extracted from `data/benchmark_results.json`. **All times are in milliseconds (ms), and lower is better.**
 
-
-*Note: Ubuntu results were extracted from recent benchmark runs on this machine.*
+| Benchmark | Hudhud | Python | Ruby | PHP | Perl | Lua | Node.js |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Ackermann Function | 20ms | 31ms | 57ms | 14ms | 36ms | 7ms | 34ms |
+| AVL Insert | 2156ms | 1662ms | 837ms | 637ms | 2543ms | 744ms | 109ms |
+| Array Summation | 5ms | 12ms | 54ms | 11ms | 7ms | 2ms | 29ms |
+| BFS Graph | 6ms | 12ms | 52ms | 11ms | 8ms | 2ms | 31ms |
+| Binary Search | 39ms | 67ms | 71ms | 23ms | 43ms | 19ms | 36ms |
+| Bubble Sort | 28ms | 64ms | 72ms | 18ms | 60ms | 10ms | 34ms |
+| Collatz Conjecture | 51ms | 150ms | 106ms | 41ms | 101ms | 42ms | 33ms |
+| Count Set Bits | 99ms | 255ms | 145ms | 86ms | 203ms | 123ms | 37ms |
+| Cumulative Sum | 20ms | 40ms | 67ms | 20ms | 24ms | 7ms | 39ms |
+| DFS Graph | 5ms | 12ms | 62ms | 12ms | 7ms | 2ms | 30ms |
+| Factorial Iterative | 22ms | 41ms | 93ms | 1247ms | 4259ms | 1128ms | 51ms |
+| Factorial Recursive | 5ms | 10ms | 50ms | 11ms | 7ms | 2ms | 33ms |
+| Fibonacci Recursive | 250ms | 247ms | 134ms | 55ms | 429ms | 117ms | 41ms |
+| Fibonacci Iterative | 985ms | 630ms | 1848ms | 7457ms | 35219ms | 11500ms | 338ms |
+| Fibonacci Memoization | 2235ms | 1507ms | 1487ms | 2413ms | 12770ms | 5191ms | 208ms |
+| Euclidean GCD | 11ms | 21ms | 57ms | 14ms | 22ms | 6ms | 33ms |
+| Geometric Series | 54ms | 152ms | 164ms | 33ms | 64ms | 25ms | 43ms |
+| Tower of Hanoi | 115ms | 103ms | 86ms | 39ms | 166ms | 40ms | 34ms |
+| Heap Sort | 7ms | 13ms | 52ms | 12ms | 9ms | 2ms | 34ms |
+| Insertion Sort | 70ms | 126ms | 73ms | 23ms | 54ms | 20ms | 32ms |
+| KMP Search | 1811ms | 2484ms | 3009ms | 547ms | 2509ms | 1990ms | 226ms |
+| 0/1 Knapsack | 6ms | 16ms | 88ms | 18ms | 8ms | 2ms | 33ms |
+| LCS | 7ms | 14ms | 54ms | 13ms | 9ms | 3ms | 33ms |
+| Matrix Multiply | 391ms | 1028ms | 574ms | 190ms | 383ms | 258ms | 58ms |
+| Matrix Transpose | 17ms | 42ms | 72ms | 21ms | 30ms | 12ms | 38ms |
+| Mean and Variance | 231ms | 326ms | 198ms | 88ms | 298ms | 58ms | 72ms |
+| Merge Sort | 11ms | 16ms | 54ms | 12ms | 8ms | 3ms | 33ms |
+| Modular Exponentiation | 13ms | 36ms | 63ms | 18ms | 26ms | 14ms | 41ms |
+| Monte Carlo Pi | 190ms | 414ms | 210ms | 69ms | 216ms | 74ms | 52ms |
+| Number Parse | 574ms | 1191ms | 730ms | 317ms | 746ms | 634ms | 120ms |
+| N-Queens | 15ms | 37ms | 57ms | 14ms | 14ms | 5ms | 32ms |
+| Newton-Raphson Sqrt | 12ms | 28ms | 73ms | 15ms | 22ms | 5ms | 36ms |
+| Palindrome Check | 1143ms | 3103ms | 5188ms | 967ms | 3221ms | 3836ms | 205ms |
+| Polynomial Evaluation | 2419ms | 7153ms | 12211ms | 1352ms | 6280ms | 2009ms | 258ms |
+| Power Operation | 925ms | 684ms | 2260ms | 11552ms | 51255ms | 17365ms | 420ms |
+| Prime Count | 89ms | 150ms | 124ms | 39ms | 115ms | 61ms | 36ms |
+| Quick Sort | 39ms | 103ms | 105ms | 21ms | 52ms | 16ms | 49ms |
+| Sieve of Eratosthenes | 6ms | 11ms | 59ms | 11ms | 8ms | 2ms | 30ms |
+| String Concatenation | 6ms | 17ms | 57ms | 13ms | 7ms | 85ms | 35ms |
+| String Reverse | 12ms | 20ms | 64ms | 13ms | 16ms | 9ms | 34ms |
+| Substring Search | 6ms | 14ms | 65ms | 10ms | 8ms | 4ms | 34ms |
+| Sum of Squares | 43ms | 130ms | 159ms | 25ms | 42ms | 10ms | 87ms |
+| Vector Dot Product | 99ms | 217ms | 145ms | 58ms | 118ms | 35ms | 71ms |
+| Binary Trees | 231ms | 150ms | 128ms | 59ms | 288ms | 188ms | 47ms |
+| Tak Function | 73ms | 60ms | 72ms | 25ms | 125ms | 23ms | 36ms |
+| Mandelbrot Set | 1013ms | 1372ms | 986ms | 266ms | 2109ms | 354ms | 54ms |
+| JSON Serialize | 33ms | 20ms | 75ms | 16ms | 28ms | 19ms | 41ms |
+| K-Nucleotide | 151ms | 95ms | 153ms | 34ms | 67ms | 39ms | 69ms |
+| Duff's Device | 710ms | 632ms | 342ms | 164ms | 578ms | 218ms | 38ms |
+| N-Body | 116ms | 125ms | 141ms | 55ms | 125ms | 45ms | 33ms |
+| Fannkuch-Redux | 130ms | 157ms | 176ms | 52ms | 213ms | 52ms | 36ms |
+| Spectral Norm | 252ms | 265ms | 229ms | 72ms | 295ms | 78ms | 37ms |
+| Fasta | 98ms | 79ms | 148ms | 37ms | 91ms | 32ms | 35ms |
+| Radix Sort | 328ms | 821ms | 365ms | 196ms | 757ms | 264ms | 84ms |
+| RK4 Pendulum | 477ms | 1389ms | 759ms | 257ms | 795ms | 337ms | 81ms |
+| Reverse-Complement | 1002ms | 614ms | 1333ms | 259ms | 1348ms | 495ms | 246ms |
+| Object Churn | 213ms | 194ms | 167ms | 60ms | 261ms | 109ms | 33ms |
+| Method Dispatch | 366ms | 195ms | 155ms | 62ms | 198ms | 71ms | 36ms |
+| Closure Chain | 292ms | 101ms | 118ms | 50ms | 141ms | 40ms | 37ms |
+| Higher-Order Pipeline | 597ms | 428ms | 376ms | 215ms | 285ms | 353ms | 97ms |
+| Sort by Comparator | 150ms | 137ms | 119ms | 50ms | 138ms | 57ms | 54ms |
+| String Pipeline | 145ms | 247ms | 190ms | 49ms | 117ms | 135ms | 55ms |
+| Linked List | 77ms | 129ms | 106ms | 135ms | 84ms | 36ms | 47ms |
+| Union-Find | 503ms | 649ms | 282ms | 207ms | 613ms | 202ms | 86ms |
+| Hash Probe | 89ms | 165ms | 98ms | 44ms | 108ms | 37ms | 43ms |
+| Exception Ladder | 105ms | 83ms | 101ms | 34ms | 91ms | 39ms | 93ms |
+| Floyd-Warshall | 167ms | 449ms | 218ms | 82ms | 231ms | 74ms | 39ms |
+| Game of Life | 1724ms | 2500ms | 1378ms | 513ms | 1705ms | 753ms | 88ms |
+| String Sort | 104ms | 86ms | 150ms | 41ms | 155ms | 94ms | 50ms |
+| Simpson Integration | 508ms | 762ms | 539ms | 129ms | 757ms | 185ms | 36ms |
+| Word Count | 186ms | 211ms | 197ms | 53ms | 128ms | 56ms | 53ms |
+| Trie Dictionary | 226ms | 359ms | 219ms | 127ms | 271ms | 271ms | 96ms |
+| Miller-Rabin | 13ms | 31ms | 59ms | 14ms | 17ms | 9ms | 38ms |
+| Task Scheduler | 68ms | 181ms | 103ms | 36ms | 95ms | 99ms | 42ms |
+| Mini VM | 46ms | 125ms | 88ms | 27ms | 66ms | 27ms | 33ms |
+| Dijkstra | 382ms | 394ms | 247ms | 181ms | 398ms | 131ms | 77ms |
+| LZW Compress | 105ms | 242ms | 113ms | 56ms | 155ms | 132ms | 49ms |
+| Pi Digits | 5ms | 11ms | 51ms | 27ms | 71ms | 55ms | 28ms |
+| FFT | 656ms | 1618ms | 587ms | 172ms | 889ms | 327ms | 56ms |
+| LU Decomposition | 359ms | 800ms | 443ms | 134ms | 326ms | 288ms | 53ms |
+| **Average** | **324ms** | **478ms** | **527ms** | **394ms** | **1694ms** | **640ms** | **68ms** |
+| **Success Rate** | **100%** | **100%** | **100%** | **100%** | **100%** | **100%** | **100%** |
 
 ## Windows Environment Benchmarks
 
