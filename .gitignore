@@ -6,3 +6,4 @@ venv/
 benchmark_results.json
 __pycache__
 profiles/
+data/
