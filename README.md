@@ -1,5 +1,7 @@
 # HudHudScript Benchmarks (v0.8.219)
 
+Benchmark repository of https://github.com/HudHudMind/hudhudscript
+
 This repository contains the official benchmark suite for **HudHudScript v0.8.0**, comparing its execution performance against several popular programming languages including Python, Lua, Node.js, Ruby, PHP, and Perl.
 
 The suite runs a variety of algorithms (sorting, mathematical functions, string manipulation, and classical benchmark problems) across all languages, tracking and storing the average execution times.
