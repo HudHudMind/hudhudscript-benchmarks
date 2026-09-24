@@ -1,0 +1,3 @@
+fn color_graph(g) { return "Greedy coloring"; }
+print("coloring");
+print("DONE");

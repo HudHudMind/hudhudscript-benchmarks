@@ -1,0 +1,3 @@
+fn rand_int(min, max) { return min + (Math.random() * (max - min)); }
+print("Math.random needed");
+print("DONE");

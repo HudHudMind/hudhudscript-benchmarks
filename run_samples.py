@@ -86,14 +86,44 @@ def load_samples() -> dict:
     }
 
 
+def find_samples_recursively(base_dir: Path, include_archive: bool = False) -> dict:
+    """Belirtilen dizin altındaki tüm .hud ve .hudhud dosyalarını recursive olarak bulur."""
+    samples = {}
+    if not base_dir.exists():
+        return samples
+
+    for ext in ("*.hud", "*.hudhud"):
+        for file_path in sorted(base_dir.rglob(ext)):
+            rel = file_path.relative_to(base_dir)
+            parts = rel.parts
+            if not include_archive and "_archive" in parts:
+                continue
+            tier = parts[0] if len(parts) > 1 else "root"
+            name = str(rel).replace("\\", "/")
+            samples[name] = {
+                "title": file_path.name,
+                "feature": f"Dosya: {name}",
+                "tier": tier,
+                "mode": "run",
+                "file_path": file_path,
+            }
+    return samples
+
+
 def verify_sample(binary: Path, name: str, meta: dict, engine: str = None, backend: str = None, timeout: int = 60):
     """Tek bir sample'ı çalıştırır / doğrular."""
     mode = meta.get("mode", "run")
     subcmd = "run" if mode == "run" else "check"
+    file_path = meta.get("file_path")
+    created_temp = False
 
-    with tempfile.NamedTemporaryFile(suffix=".hud", delete=False, mode="w", encoding="utf-8") as f:
-        f.write(meta["hudhud"])
-        tmp_path = f.name
+    if file_path:
+        target_path = str(file_path)
+    else:
+        with tempfile.NamedTemporaryFile(suffix=".hud", delete=False, mode="w", encoding="utf-8") as f:
+            f.write(meta.get("hudhud", ""))
+            target_path = f.name
+            created_temp = True
 
     env = os.environ.copy()
     env["RUST_MIN_STACK"] = "8388608"
@@ -103,49 +133,61 @@ def verify_sample(binary: Path, name: str, meta: dict, engine: str = None, backe
         cmd += ["--engine", engine]
         if backend:
             cmd += ["--backend", backend]
-    cmd.append(tmp_path)
+    cmd.append(target_path)
 
     start = time.perf_counter()
     try:
+        run_cwd = str(file_path.parent if file_path else HHS_REPO)
         proc = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
             timeout=timeout,
-            cwd=str(HHS_REPO),
+            cwd=run_cwd,
             env=env,
         )
         ms = round((time.perf_counter() - start) * 1000)
 
-        if mode == "run":
-            ok = proc.returncode == 0 and "DONE" in proc.stdout
+        if file_path:
+            ok = proc.returncode == 0
         else:
-            ok = proc.returncode == 0 and "Syntax OK" in (proc.stdout + proc.stderr)
+            if mode == "run":
+                ok = proc.returncode == 0 and "DONE" in proc.stdout
+            else:
+                ok = proc.returncode == 0 and "Syntax OK" in (proc.stdout + proc.stderr)
 
-        return ok, ms, proc.stdout[:2000], proc.stderr[:1000]
+        err_msg = proc.stderr.strip() if proc.returncode != 0 else ""
+        return ok, ms, proc.stdout[:2000], err_msg[:1000]
     except subprocess.TimeoutExpired:
         return False, timeout * 1000, "", f"Zaman aşımı ({timeout}s)"
     except Exception as e:
         return False, 0, "", str(e)
     finally:
-        try:
-            os.unlink(tmp_path)
-        except OSError:
-            pass
+        if created_temp:
+            try:
+                os.unlink(target_path)
+            except OSError:
+                pass
 
 
 def main():
     parser = argparse.ArgumentParser(
         description="HudHudScript Language Feature Sample Runner (Profiling Olmadan)"
     )
+    parser.add_argument("-r", "--recursive", action="store_true",
+                        help="Örnek dosyalarını diskten recursive olarak tara ve çalıştır (varsayılan: ../hudhud-script/examples)")
+    parser.add_argument("--dir", default=None,
+                        help="Recursive taranacak özel dizin yolu (belirtilirse otomatik recursive moduna geçer)")
+    parser.add_argument("--include-archive", action="store_true",
+                        help="_archive klasöründeki eski/arşivlenmiş dosyaları da dahil et")
     parser.add_argument("--engine", choices=["vm", "jit"], default=None,
                         help="Kullanılacak yürütme motoru (vm | jit). Boş bırakılırsa varsayılan motor kullanılır.")
     parser.add_argument("--backend", default=None,
                         help="JIT backend seçimi (örn: cranelift, gccjit, llvm)")
     parser.add_argument("--only", default="",
-                        help="Virgülle ayrılmış spesifik sample adları (örn: variables,arithmetic)")
+                        help="Virgülle ayrılmış arama filtreleri (örn: variables, hello, 01-basics)")
     parser.add_argument("--tier", default="",
-                        help="Filtrelenecek seviye (core, extended, experimental, future)")
+                        help="Filtrelenecek seviye / alt dizin (örn: core, 01-basics, 02-sop)")
     parser.add_argument("--mode", choices=["run", "check"], default="",
                         help="Filtrelenecek mod (run | check)")
     parser.add_argument("--timeout", type=int, default=60,
@@ -161,12 +203,25 @@ def main():
         print(f"{GRAY}  Derlemek için: cargo build --release --manifest-path ../hudhud-script/Cargo.toml -p hudhudscript-cli --bin hudhud{NC}")
         sys.exit(1)
 
-    samples = load_samples()
+    is_recursive = args.recursive or (args.dir is not None)
+    if is_recursive:
+        target_dir = Path(args.dir).resolve() if args.dir else (HHS_REPO / "examples")
+        if not target_dir.exists():
+            print(f"{RED}✗ Belirtilen dizin bulunamadı: {target_dir}{NC}")
+            sys.exit(1)
+        samples = find_samples_recursively(target_dir, include_archive=args.include_archive)
+        if not samples:
+            print(f"{YELLOW}Belirtilen dizinde .hud / .hudhud dosyası bulunamadı: {target_dir}{NC}")
+            sys.exit(1)
+    else:
+        target_dir = None
+        samples = load_samples()
+
     names = list(samples.keys())
 
     if args.only:
-        filter_names = [n.strip() for n in args.only.split(",") if n.strip()]
-        names = [n for n in names if n in filter_names]
+        filter_terms = [n.strip().lower() for n in args.only.split(",") if n.strip()]
+        names = [n for n in names if any(term in n.lower() for term in filter_terms)]
         if not names:
             print(f"{RED}Belirtilen filtreyle eşleşen sample bulunamadı: {args.only}{NC}")
             sys.exit(1)
@@ -181,8 +236,11 @@ def main():
     if args.backend:
         engine_desc += f" --backend {args.backend}"
 
+    source_desc = f"Disk (Recursive): {target_dir}" if is_recursive else "Dahili Özellik Suite'i (33 test)"
+
     print(f"\n{BOLD}{CYAN}═══════════════════════════════════════════════════════════════{NC}")
     print(f"{BOLD}HudHudScript Dil Özelliği Sample Runner (Profilingsiz){NC}")
+    print(f"Kaynak: {source_desc}")
     print(f"Binary: {GREEN}{binary.name}{NC} ({binary})")
     print(f"Motor:  {CYAN}{engine_desc.strip()}{NC}")
     print(f"Toplam: {len(names)} sample çalıştırılacak")

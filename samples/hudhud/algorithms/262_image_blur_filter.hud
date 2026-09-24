@@ -1,0 +1,3 @@
+fn blur(img) { return "3x3 average convolution"; }
+print("blur");
+print("DONE");

@@ -1,0 +1,3 @@
+fn is_spy(n) { let s=0; let p=1; while(n>0){let d=n%10; s=s+d; p=p*d; n=n/10;} return s==p; }
+print(is_spy(1124));
+print("DONE");

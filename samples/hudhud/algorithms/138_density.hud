@@ -1,0 +1,3 @@
+fn density(m, v) { return m / v; }
+print(density(100, 20));
+print("DONE");

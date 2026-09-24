@@ -1,0 +1,3 @@
+fn TreeNode(v) { return { val: v, left: null, right: null }; }
+print("BinaryTree Node");
+print("DONE");

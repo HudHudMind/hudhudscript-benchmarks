@@ -1,0 +1,3 @@
+fn voltage(i, r) { return i * r; }
+print(voltage(2, 50));
+print("DONE");

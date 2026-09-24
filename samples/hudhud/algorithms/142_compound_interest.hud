@@ -1,0 +1,3 @@
+fn ci(p, r, t) { let amt = p; for(let i=0; i<t; i=i+1){amt = amt + (amt * r / 100);} return amt - p; }
+print(ci(1000, 5, 2));
+print("DONE");

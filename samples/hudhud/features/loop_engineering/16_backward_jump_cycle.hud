@@ -1,0 +1,65 @@
+// 16_backward_jump_cycle.hud — Multi-step loop with >32 instructions in basic block and backward jump gate
+let history = [];
+let final_total = 0;
+
+loop BackwardCycleLoop {
+    step init {
+        result.cycle = 0;
+        result.max_cycles = 3;
+        result.total = 0;
+        gate start_gate {
+            when true -> compute_heavy
+            else -> finish
+        }
+    }
+
+    step compute_heavy {
+        // Heavy instruction block (>32 instructions with allocations and arithmetic)
+        let s0 = "chunk_";
+        let s1 = s0 + "alpha_";
+        let s2 = s1 + "beta_";
+        let s3 = s2 + "gamma_";
+        let s4 = s3 + "delta_";
+        let s5 = s4 + "omega";
+
+        let v1 = result.total + 10;
+        let v2 = v1 * 2;
+        let v3 = v2 + 3;
+        let v4 = v3 * 2;
+        let v5 = v4 + 5;
+        let v6 = v5 * 2;
+
+        let arr = [];
+        arr.push(v1);
+        arr.push(v2);
+        arr.push(v3);
+        arr.push(v4);
+        arr.push(v5);
+        arr.push(v6);
+
+        result.total = v6 % 1000;
+        final_total = result.total;
+        result.cycle = result.cycle + 1;
+        history.push("CYCLE_" + result.cycle + "_" + s5.length);
+
+        gate cycle_eval {
+            // Backward jump to compute_heavy until max_cycles reached
+            when result.cycle < result.max_cycles -> compute_heavy
+            else -> finish
+        }
+    }
+
+    step finish {
+        history.push("DONE_ALL");
+        gate to_end {
+            when true -> done
+            else -> fail
+        }
+    }
+}
+
+run loop BackwardCycleLoop;
+
+print("History: " + history.join(" -> "));
+print("Total Computed: " + final_total);
+print("DONE");

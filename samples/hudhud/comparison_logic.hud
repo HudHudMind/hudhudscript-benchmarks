@@ -1,0 +1,8 @@
+let t = 0;
+for (let i = 0; i < 100000; i = i + 1) {
+    if (i > 10 && i < 99990) { t = t + 1; }
+    if (i < 5 || i % 2 == 0) { t = t + 1; }
+    if (!(i == 7)) { t = t + 1; }
+}
+print("t=" + t);
+print("DONE");

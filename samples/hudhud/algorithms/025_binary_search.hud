@@ -1,0 +1,3 @@
+fn bsearch(arr, x) { let l=0; let r=arr.length-1; while(l<=r){let m=(l+r)/2; if(arr[m]==x){return m;} if(arr[m]<x){l=m+1;}else{r=m-1;}} return -1; }
+print(bsearch([1,2,3,4,5], 4));
+print("DONE");

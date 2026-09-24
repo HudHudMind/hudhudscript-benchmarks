@@ -1,0 +1,3 @@
+fn is_arm(n) { let s=0; let t=n; while(t>0){let d=t%10; s=s+(d*d*d); t=t/10;} return s==n; }
+print(is_arm(153));
+print("DONE");

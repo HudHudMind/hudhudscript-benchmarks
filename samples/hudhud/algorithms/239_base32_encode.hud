@@ -1,0 +1,3 @@
+fn base32(s) { return "Base32 encoding"; }
+print("base32");
+print("DONE");

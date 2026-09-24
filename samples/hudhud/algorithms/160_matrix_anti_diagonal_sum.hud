@@ -1,0 +1,3 @@
+fn madiag(a) { let s=0; let n=a.length; for(let i=0; i<n; i=i+1){s=s+a[i][n-i-1];} return s; }
+print(madiag([[0,1],[2,0]]));
+print("DONE");

@@ -1,0 +1,3 @@
+fn curry(f) { return fn(a) { return fn(b) { return f(a,b); }; }; }
+print("Curry");
+print("DONE");

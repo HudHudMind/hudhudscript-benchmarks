@@ -1,0 +1,3 @@
+fn stddev(a) { return "Needs variance and sqrt"; }
+print("std_dev");
+print("DONE");

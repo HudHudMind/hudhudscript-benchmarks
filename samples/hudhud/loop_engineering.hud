@@ -1,0 +1,12 @@
+let f = "/tmp/hh_sample_le.txt";
+let n = 0;
+for (let i = 0; i < 500; i = i + 1) {
+    file.write(f, "line1\nline2\nline3\n");
+    let c1 = fs.read(f);
+    fs.patch_apply(f, "line2", "LINE_TWO");
+    let c2 = fs.read(f);
+    n = n + c2.length;
+    file.delete(f);
+}
+print("n=" + n);
+print("DONE");

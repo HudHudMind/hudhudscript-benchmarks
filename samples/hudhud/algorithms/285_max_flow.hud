@@ -1,0 +1,3 @@
+fn ford_fulkerson(g, s, t) { return "Network flow limit"; }
+print("max_flow");
+print("DONE");

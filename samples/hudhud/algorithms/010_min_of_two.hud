@@ -1,0 +1,3 @@
+fn min2(a, b) { if (a < b) { return a; } return b; }
+print(min2(10, 20));
+print("DONE");

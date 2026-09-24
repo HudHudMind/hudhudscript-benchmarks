@@ -1,0 +1,11 @@
+let base = [];
+for (let i = 0; i < 1000; i = i + 1) { base.push(i); }
+let total = 0;
+for (let r = 0; r < 2000; r = r + 1) {
+    let doubled = base.map((x) => { return x * 2; });
+    let evens = base.filter((x) => { return x % 2 == 0; });
+    let sum = base.reduce((acc, x) => { return acc + x; }, 0);
+    total = total + doubled.length + evens.length + sum;
+}
+print("total=" + total);
+print("DONE");

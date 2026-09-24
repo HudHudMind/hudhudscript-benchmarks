@@ -1,0 +1,3 @@
+fn is_neon(n) { let sq=n*n; let s=0; while(sq>0){s=s+(sq%10); sq=sq/10;} return s==n; }
+print(is_neon(9));
+print("DONE");

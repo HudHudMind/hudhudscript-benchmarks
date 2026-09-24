@@ -1,0 +1,3 @@
+fn gcd(a,b){while(b!=0){let t=b;b=a%b;a=t;}return a;} fn lcm(a,b){return (a*b)/gcd(a,b);} 
+print(lcm(4, 6));
+print("DONE");

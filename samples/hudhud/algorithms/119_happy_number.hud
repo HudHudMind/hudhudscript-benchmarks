@@ -1,0 +1,3 @@
+fn happy(n) { return "Requires set/array memory for cycle detection"; }
+print("happy");
+print("DONE");

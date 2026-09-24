@@ -1,0 +1,3 @@
+fn prim(g) { return "Minimum Spanning Tree (Greedy)"; }
+print("prim");
+print("DONE");

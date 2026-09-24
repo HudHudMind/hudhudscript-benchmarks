@@ -1,0 +1,8 @@
+role Logged { can act }
+subject Service has Logged { state calls: 0 }
+effect on Audit(s) { s.calls = s.calls + 1 }
+on act(self) { Audit(self) }
+let svc = spawn Service;
+for (let i = 0; i < 20000; i = i + 1) { svc.act(); }
+print("calls=" + svc.calls);
+print("DONE");

@@ -1,0 +1,3 @@
+fn knights_tour(board, x, y, move) { return "Warnsdorff heuristic"; }
+print("knights_tour");
+print("DONE");

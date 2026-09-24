@@ -1,0 +1,3 @@
+fn Node(v) { return { val: v, next: null }; }
+print("LinkedList Node");
+print("DONE");

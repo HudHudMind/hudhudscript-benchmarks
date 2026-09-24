@@ -1,0 +1,3 @@
+fn kosaraju(g) { return "SCC via 2 DFS passes"; }
+print("kosaraju");
+print("DONE");

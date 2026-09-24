@@ -1,0 +1,3 @@
+fn ascii(c) { return "Requires charCodeAt equivalent in stdlib"; }
+print(ascii("A"));
+print("DONE");

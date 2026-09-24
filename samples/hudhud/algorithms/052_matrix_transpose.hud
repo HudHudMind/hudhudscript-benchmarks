@@ -1,0 +1,3 @@
+fn trans(m) { let r=[]; for(let i=0; i<m[0].length; i=i+1){let row=[]; for(let j=0; j<m.length; j=j+1){row.push(m[j][i]);} r.push(row);} return r; }
+print(trans([[1,2]]));
+print("DONE");

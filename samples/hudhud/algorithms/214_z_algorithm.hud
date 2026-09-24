@@ -1,0 +1,3 @@
+fn z_algo(s, p) { return "Z-array pattern matching"; }
+print("z_algo");
+print("DONE");

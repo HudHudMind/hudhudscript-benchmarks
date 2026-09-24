@@ -1,0 +1,3 @@
+fn perim_rect(w, h) { return 2 * (w + h); }
+print(perim_rect(4, 5));
+print("DONE");

@@ -1,0 +1,3 @@
+fn life_step(board) { return "Compute next generation"; }
+print("conways_life");
+print("DONE");

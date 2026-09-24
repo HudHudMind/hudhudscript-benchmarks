@@ -1,0 +1,3 @@
+fn sa_cube(a) { return 6 * a * a; }
+print(sa_cube(3));
+print("DONE");

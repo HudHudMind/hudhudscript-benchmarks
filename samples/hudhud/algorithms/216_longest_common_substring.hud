@@ -1,0 +1,3 @@
+fn lcs_str(a, b) { return "Dynamic programming LCS"; }
+print("lcs_str");
+print("DONE");

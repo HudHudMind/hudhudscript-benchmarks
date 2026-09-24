@@ -1,0 +1,73 @@
+// 15_state_machine.hud — Finite State Machine (FSM) via Loop Engineering
+// Demonstrates State Pattern: INIT -> INVENTORY_CHECK -> PAYMENT -> FULFILLMENT -> COMPLETED
+
+loop OrderFSM {
+    // State 1: IDLE / INIT
+    step state_idle {
+        result.order_id = 1001;
+        result.stock = 5;
+        result.qty = 2;
+        result.balance = 200;
+        result.price = 45;
+        result.state = "INIT";
+        print("State: INIT | Order: " + result.order_id);
+
+        gate to_inventory {
+            when result.order_id > 0 -> state_inventory
+            else -> state_rejected
+        }
+    }
+
+    // State 2: INVENTORY CHECK
+    step state_inventory {
+        result.state = "INVENTORY_VERIFIED";
+        print("State: INVENTORY | Available Stock: " + result.stock);
+
+        gate to_payment {
+            when result.stock >= result.qty -> state_payment
+            else -> state_rejected
+        }
+    }
+
+    // State 3: PAYMENT PROCESSING
+    step state_payment {
+        let total_cost = result.qty * result.price;
+        result.balance = result.balance - total_cost;
+        result.stock = result.stock - result.qty;
+        result.state = "PAID";
+        print("State: PAYMENT | Cost: " + total_cost + " | Remaining Balance: " + result.balance);
+
+        gate to_fulfillment {
+            when result.balance >= 0 -> state_fulfillment
+            else -> state_rejected
+        }
+    }
+
+    // State 4: FULFILLMENT & SHIPPING
+    step state_fulfillment {
+        result.state = "COMPLETED";
+        result.tracking_id = "TRK-8921";
+        print("State: FULFILLED | Tracking: " + result.tracking_id);
+
+        gate to_done {
+            when true -> done
+            else -> state_rejected
+        }
+    }
+
+    // State 5: REJECTED / FAILURE STATE
+    step state_rejected {
+        result.state = "FAILED";
+        print("State: REJECTED");
+
+        gate to_fail {
+            when true -> fail
+            else -> done
+        }
+    }
+}
+
+run loop OrderFSM;
+
+print("State Machine Execution Complete!");
+print("DONE");

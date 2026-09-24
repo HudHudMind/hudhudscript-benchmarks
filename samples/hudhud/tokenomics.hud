@@ -1,0 +1,6 @@
+let c = tokenomics.session_cost();
+let s = 0;
+for (let i = 0; i < 50000; i = i + 1) { s = s + i; }
+print("s=" + s);
+print("cost_read=ok");
+print("DONE");

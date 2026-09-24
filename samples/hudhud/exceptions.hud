@@ -1,0 +1,8 @@
+let caught = 0;
+for (let i = 0; i < 50000; i = i + 1) {
+    try { if (i % 2 == 0) { throw "boom"; } }
+    catch (err) { caught = caught + 1; }
+    finally { caught = caught + 0; }
+}
+print("caught=" + caught);
+print("DONE");

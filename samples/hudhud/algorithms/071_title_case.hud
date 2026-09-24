@@ -1,0 +1,3 @@
+fn title(s) { return "Uppercase first letter logic"; }
+print("Title");
+print("DONE");

@@ -1,0 +1,4 @@
+let s = 0;
+for (let i = 1; i < 100000; i = i + 1) { s = s + (i * 2 + 3 - i / 2) % 7; }
+print("s=" + s);
+print("DONE");

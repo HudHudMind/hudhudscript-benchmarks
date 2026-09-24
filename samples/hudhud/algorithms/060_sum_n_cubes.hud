@@ -1,0 +1,3 @@
+fn sumn3(n) { let s=n*(n+1)/2; return s*s; }
+print(sumn3(10));
+print("DONE");

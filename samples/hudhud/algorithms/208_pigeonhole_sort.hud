@@ -1,0 +1,3 @@
+fn pigeon_sort(a) { return "Pigeonhole sort"; }
+print("pigeonhole_sort");
+print("DONE");

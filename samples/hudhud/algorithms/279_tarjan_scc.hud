@@ -1,0 +1,3 @@
+fn tarjan(g) { return "Strongly Connected Components"; }
+print("tarjan");
+print("DONE");

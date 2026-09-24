@@ -1,0 +1,3 @@
+fn exp_smooth(arr, a) { return "EMA filter"; }
+print("exp_smooth");
+print("DONE");

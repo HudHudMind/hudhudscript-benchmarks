@@ -1,0 +1,3 @@
+fn rep(s, a, b) { return s.replace(a, b); }
+print("Replace");
+print("DONE");

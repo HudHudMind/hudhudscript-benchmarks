@@ -1,0 +1,5 @@
+let parts = [];
+for (let i = 0; i < 20000; i = i + 1) { parts.push("x"); }
+let s = parts.join("");
+print("len=" + s.length);
+print("DONE");

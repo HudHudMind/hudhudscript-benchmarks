@@ -1,0 +1,4 @@
+let s = 0; let i = 0;
+while (i < 100000) { i = i + 1; if (i % 2 == 0) { continue; } s = s + i; }
+print("s=" + s);
+print("DONE");

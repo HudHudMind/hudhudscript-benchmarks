@@ -1,0 +1,3 @@
+fn is_pal(s) { let r=""; for(let i=s.length-1; i>=0; i=i-1){r=r+s[i];} return r == s; }
+print(is_pal("radar"));
+print("DONE");

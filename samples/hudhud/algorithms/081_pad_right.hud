@@ -1,0 +1,3 @@
+fn pad(s, n, c) { while(s.length<n){s=s+c;} return s; }
+print(pad("1", 3, "0"));
+print("DONE");

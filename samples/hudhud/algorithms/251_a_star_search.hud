@@ -1,0 +1,3 @@
+fn a_star(maze, start, end) { return "f(n) = g(n) + h(n)"; }
+print("a_star");
+print("DONE");

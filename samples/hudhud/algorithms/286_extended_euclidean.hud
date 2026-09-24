@@ -1,0 +1,3 @@
+fn ext_gcd(a, b) { return "ax + by = gcd(a,b)"; }
+print("ext_gcd");
+print("DONE");

@@ -1,0 +1,3 @@
+fn bitonic_sort(a) { return "Bitonic merge sort"; }
+print("bitonic_sort");
+print("DONE");

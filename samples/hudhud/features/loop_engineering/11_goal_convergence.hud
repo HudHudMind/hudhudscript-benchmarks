@@ -1,0 +1,10 @@
+// 11_goal_convergence.hud — agentic goal convergence loop
+loop optimize goal(metric: errors, target: 0) {
+  step s {
+    result.errors = 0;
+    gate G { when true -> done else -> fail }
+  }
+}
+
+run loop optimize;
+print("DONE");

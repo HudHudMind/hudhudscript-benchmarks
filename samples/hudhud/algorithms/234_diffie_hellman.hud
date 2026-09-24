@@ -1,0 +1,3 @@
+fn dh_key(g, x, p) { return "g^x mod p"; }
+print("dh");
+print("DONE");

@@ -1,0 +1,3 @@
+fn Queue() { return { items: [], enq: fn(x){this.items.push(x);}, deq: fn(){return "shift logic";} }; }
+print("Queue");
+print("DONE");

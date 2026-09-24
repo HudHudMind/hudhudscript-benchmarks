@@ -1,0 +1,23 @@
+fn cocktail(a) { 
+    let s=1; let start=0; let end=a.length-1; 
+    while(s == 1){
+        s=0; 
+        for(let i=start; i<end; i=i+1){
+            if(a[i]>a[i+1]){
+                let t=a[i]; a[i]=a[i+1]; a[i+1]=t; s=1;
+            }
+        } 
+        if(s == 0){break;} 
+        s=0; end=end-1; 
+        for(let i=end-1; i>=start; i=i-1){
+            if(a[i]>a[i+1]){
+                let t=a[i]; a[i]=a[i+1]; a[i+1]=t; s=1;
+            }
+        } 
+        start=start+1;
+    } 
+    return a; 
+}
+let res = cocktail([5,1,4,2]);
+print("res=" + res[0]);
+print("DONE");

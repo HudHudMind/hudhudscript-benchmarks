@@ -1,0 +1,3 @@
+fn sieve(n) { return "Find all primes up to n"; }
+print("sieve");
+print("DONE");

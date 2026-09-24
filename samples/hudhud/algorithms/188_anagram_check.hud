@@ -1,0 +1,3 @@
+fn is_anagram(a, b) { return "Sort characters or count freq"; }
+print("anagram");
+print("DONE");

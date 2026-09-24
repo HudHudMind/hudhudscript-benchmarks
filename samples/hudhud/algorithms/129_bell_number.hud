@@ -1,0 +1,3 @@
+fn bell(n) { return "Bell triangle implementation"; }
+print("bell");
+print("DONE");

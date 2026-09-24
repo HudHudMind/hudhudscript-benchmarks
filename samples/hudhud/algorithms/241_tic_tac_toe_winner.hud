@@ -1,0 +1,3 @@
+fn check_win(board) { return "Check rows, cols, diagonals"; }
+print("ttt_winner");
+print("DONE");

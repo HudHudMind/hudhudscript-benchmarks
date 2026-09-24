@@ -1,0 +1,3 @@
+fn net(gross, tax) { return gross - (gross * tax / 100); }
+print(net(5000, 20));
+print("DONE");

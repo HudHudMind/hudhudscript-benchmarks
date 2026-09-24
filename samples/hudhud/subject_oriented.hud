@@ -1,0 +1,13 @@
+role Fighter { can attack, can defend }
+subject Knight has Fighter { state health: 100, state power: 30 }
+effect on Damage(target, amount) { target.health = target.health - amount }
+on attack(self, target) { Damage(target, self.power) }
+let total = 0;
+for (let i = 0; i < 5000; i = i + 1) {
+    let hero = spawn Knight;
+    let boss = spawn Knight;
+    hero.attack(boss);
+    total = total + boss.health;
+}
+print("total=" + total);
+print("DONE");

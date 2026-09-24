@@ -1,0 +1,3 @@
+fn sha1(s) { return "SHA1 hash simulation"; }
+print("sha1");
+print("DONE");

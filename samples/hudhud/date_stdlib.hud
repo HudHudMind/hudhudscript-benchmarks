@@ -1,0 +1,9 @@
+let start = Date.to_millis();
+let sum = 0;
+for (let i = 0; i < 100000; i = i + 1) { sum = sum + i; }
+let end = Date.to_millis();
+let ok = 0;
+if (end >= start) { ok = 1; }
+print("sum=" + sum);
+print("ok=" + ok);
+print("DONE");

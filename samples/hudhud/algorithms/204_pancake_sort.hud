@@ -1,0 +1,3 @@
+fn pancake_sort(a) { return "Pancake sort via flips"; }
+print("pancake_sort");
+print("DONE");

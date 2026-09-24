@@ -1,0 +1,4 @@
+fn home(req) { return Web.html("hello", 200); }
+fn about(req) { return Web.html("about", 200); }
+var app = Web.serve({ host: "127.0.0.1", port: 8080 });
+print("DONE");

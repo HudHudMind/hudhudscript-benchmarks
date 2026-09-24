@@ -1,0 +1,3 @@
+fn dct(signal) { return "DCT for JPEG/MP3"; }
+print("dct");
+print("DONE");

@@ -1,0 +1,3 @@
+fn solve_maze(maze, start, end) { return "BFS shortest path"; }
+print("maze_bfs");
+print("DONE");

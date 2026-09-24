@@ -1,0 +1,3 @@
+fn comb(arr) { let n=arr.length; let gap=n; let swapped=true; while(gap!=1 || swapped){gap=(gap*10)/13; if(gap<1){gap=1;} swapped=false; for(let i=0; i<n-gap; i=i+1){if(arr[i]>arr[i+gap]){let t=arr[i]; arr[i]=arr[i+gap]; arr[i+gap]=t; swapped=true;}}} return arr; }
+print(comb([5,1,4,2]));
+print("DONE");

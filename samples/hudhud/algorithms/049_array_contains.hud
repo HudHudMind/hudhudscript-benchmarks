@@ -1,0 +1,3 @@
+fn contains(arr, x) { for(let i=0; i<arr.length; i=i+1){if(arr[i]==x){return true;}} return false; }
+print(contains([1,2,3], 2));
+print("DONE");

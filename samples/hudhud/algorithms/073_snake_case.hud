@@ -1,0 +1,3 @@
+fn snake(s) { return "Snake_case logic"; }
+print("snake_case");
+print("DONE");

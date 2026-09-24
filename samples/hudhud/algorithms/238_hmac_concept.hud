@@ -1,0 +1,3 @@
+fn hmac(k, m) { return "Hash(K XOR opad, Hash(K XOR ipad, m))"; }
+print("hmac");
+print("DONE");

@@ -1,0 +1,3 @@
+fn pressure(f, a) { return f / a; }
+print(pressure(100, 2));
+print("DONE");

@@ -1,0 +1,6 @@
+let hits = 0;
+for (let i = 0; i < 100000; i = i + 1) {
+    for (let j = 0; j < 100; j = j + 1) { if (j == 10) { break; } hits = hits + 1; }
+}
+print("hits=" + hits);
+print("DONE");

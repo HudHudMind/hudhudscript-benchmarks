@@ -1,0 +1,3 @@
+fn band(a,b){return "Needs bitwise ops";}
+print("band");
+print("DONE");

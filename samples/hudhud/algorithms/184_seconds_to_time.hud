@@ -1,0 +1,3 @@
+fn sec_time(s) { let h=s/3600; s=s%3600; let m=s/60; s=s%60; return [h, m, s]; }
+print(sec_time(3665));
+print("DONE");

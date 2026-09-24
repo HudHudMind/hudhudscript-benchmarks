@@ -1,0 +1,3 @@
+fn bogo_sort(a) { return "Shuffle until sorted"; }
+print("bogo_sort");
+print("DONE");

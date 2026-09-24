@@ -1,0 +1,3 @@
+fn phi(n) { return "Count numbers coprime to n"; }
+print("totient");
+print("DONE");

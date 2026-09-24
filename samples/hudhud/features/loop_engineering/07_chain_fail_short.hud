@@ -1,0 +1,18 @@
+// 07_chain_fail_short.hud — chain fail short-circuit + second link unreachable
+chain report {
+  loop validate {
+    step s {
+      let ok = false;
+      gate G { when ok -> done else -> fail }
+    }
+  }
+  loop publish {
+    step s {
+      result.published = true;
+      gate G { when true -> done else -> fail }
+    }
+  }
+}
+
+run chain report;
+print("DONE");

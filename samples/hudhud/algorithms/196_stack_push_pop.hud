@@ -1,0 +1,3 @@
+fn Stack() { return { items: [], push: fn(x){this.items.push(x);}, pop: fn(){return "pop logic";} }; }
+print("Stack");
+print("DONE");

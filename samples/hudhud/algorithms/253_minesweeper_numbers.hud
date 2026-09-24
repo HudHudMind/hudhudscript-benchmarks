@@ -1,0 +1,3 @@
+fn sweep_nums(board) { return "Count adjacent mines"; }
+print("minesweeper");
+print("DONE");

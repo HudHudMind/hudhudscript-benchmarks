@@ -1,0 +1,3 @@
+fn roi(inv, ret) { return ((ret - inv) / inv) * 100; }
+print(roi(1000, 1200));
+print("DONE");

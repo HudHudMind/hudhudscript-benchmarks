@@ -1,0 +1,3 @@
+fn set_bits(n) { let c=0; while(n>0){if(n%2!=0){c=c+1;} n=n/2;} return c; }
+print(set_bits(7));
+print("DONE");

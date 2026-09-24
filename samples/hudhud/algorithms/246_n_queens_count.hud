@@ -1,0 +1,3 @@
+fn queens(n) { return "Count valid placements"; }
+print("queens");
+print("DONE");

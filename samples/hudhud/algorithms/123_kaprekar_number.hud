@@ -1,0 +1,3 @@
+fn kaprekar(n) { return "Needs string splitting of square"; }
+print("kaprekar");
+print("DONE");

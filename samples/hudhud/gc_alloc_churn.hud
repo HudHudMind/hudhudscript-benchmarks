@@ -1,0 +1,9 @@
+let sink = 0;
+for (let i = 0; i < 100000; i = i + 1) {
+    let tmp = [i, i + 1, i + 2];
+    let obj = { a: i, b: tmp };
+    let s = "k" + i;
+    sink = sink + tmp[2] + obj.a + s.length;
+}
+print("sink=" + sink);
+print("DONE");

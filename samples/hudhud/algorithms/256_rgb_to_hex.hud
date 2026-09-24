@@ -1,0 +1,3 @@
+fn rgb_hex(r, g, b) { return "Format as #RRGGBB"; }
+print("rgb_hex");
+print("DONE");

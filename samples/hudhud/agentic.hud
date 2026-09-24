@@ -1,0 +1,6 @@
+provider DeepSeek { type: "deepseek" model: "deepseek-chat" api_key: env("DEEPSEEK_API_KEY") }
+agent Translator { role: "translator" intent: "translate" provider: DeepSeek }
+agent Analyst { role: "analyst" intent: "analyze" provider: DeepSeek }
+print("role=" + Translator["role"]);
+print("intent=" + Analyst["intent"]);
+print("DONE");

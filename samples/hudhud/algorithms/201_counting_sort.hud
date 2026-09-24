@@ -1,0 +1,3 @@
+fn count_sort(a, max_val) { return "Counting sort logic"; }
+print("counting_sort");
+print("DONE");

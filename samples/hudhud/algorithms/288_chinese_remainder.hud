@@ -1,0 +1,3 @@
+fn crt(n_arr, a_arr) { return "Chinese Remainder Theorem"; }
+print("crt");
+print("DONE");

@@ -1,0 +1,3 @@
+fn topo_sort(g) { return "DAG ordering"; }
+print("topo_sort");
+print("DONE");

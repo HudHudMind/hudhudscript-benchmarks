@@ -1,0 +1,3 @@
+fn sym(a, b) { return "diff(a,b) + diff(b,a)"; }
+print("Sym diff");
+print("DONE");

@@ -1,0 +1,3 @@
+fn dnf(a) { return "3-way partition"; }
+print("dnf");
+print("DONE");

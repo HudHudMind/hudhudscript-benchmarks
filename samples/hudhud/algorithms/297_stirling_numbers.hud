@@ -1,0 +1,3 @@
+fn stirling(n, k) { return "Ways to partition sets"; }
+print("stirling");
+print("DONE");

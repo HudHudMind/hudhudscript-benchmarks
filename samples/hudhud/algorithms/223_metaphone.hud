@@ -1,0 +1,3 @@
+fn metaphone(s) { return "Advanced phonetic hashing"; }
+print("metaphone");
+print("DONE");

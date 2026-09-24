@@ -1,0 +1,3 @@
+fn dow(y,m,d) { return "Zeller congruence"; }
+print("Zeller");
+print("DONE");

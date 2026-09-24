@@ -1,0 +1,71 @@
+// 17_mid_loop_gate_transition.hud — Gate placed in middle of multi-step loop with dynamic branching
+let audit_trail = [];
+let final_status = "UNKNOWN";
+
+loop MidLoopPipeline {
+    step step_ingest {
+        result.batch_id = 404;
+        result.records = 10;
+        result.errors = 0;
+        audit_trail.push("INGEST");
+        gate g_ingest {
+            when result.batch_id > 0 -> step_validate
+            else -> step_abort
+        }
+    }
+
+    step step_validate {
+        // Middle step with validation logic and intermediate gate
+        let valid_count = 0;
+        for (let i = 0; i < result.records; i = i + 1) {
+            if (i % 2 == 0) {
+                valid_count = valid_count + 1;
+            }
+        }
+        result.valid_count = valid_count;
+        audit_trail.push("VALIDATED_" + valid_count);
+
+        // Middle gate block branching between transform, retry, and abort
+        gate g_validate_mid {
+            when result.valid_count >= 5 -> step_transform
+            else -> step_abort
+        }
+    }
+
+    step step_transform {
+        let transformed = [];
+        for (let i = 0; i < result.valid_count; i = i + 1) {
+            transformed.push("REC_" + i * 10);
+        }
+        result.transformed_count = transformed.length;
+        audit_trail.push("TRANSFORMED_" + result.transformed_count);
+        gate g_transform {
+            when result.transformed_count > 0 -> step_export
+            else -> step_abort
+        }
+    }
+
+    step step_export {
+        audit_trail.push("EXPORTED");
+        final_status = "SUCCESS";
+        gate g_export {
+            when true -> done
+            else -> fail
+        }
+    }
+
+    step step_abort {
+        audit_trail.push("ABORTED");
+        final_status = "ABORTED";
+        gate g_abort {
+            when true -> fail
+            else -> done
+        }
+    }
+}
+
+run loop MidLoopPipeline;
+
+print("Status: " + final_status);
+print("Audit Trail: " + audit_trail.join(" -> "));
+print("DONE");

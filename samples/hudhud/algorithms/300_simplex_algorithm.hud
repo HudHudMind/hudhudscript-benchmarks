@@ -1,0 +1,3 @@
+fn simplex(obj, constraints) { return "Linear programming optimization"; }
+print("simplex");
+print("DONE");

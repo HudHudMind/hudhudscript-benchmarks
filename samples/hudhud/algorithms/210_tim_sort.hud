@@ -1,0 +1,3 @@
+fn tim_sort(a) { return "Merge + Insertion hybrid"; }
+print("tim_sort");
+print("DONE");

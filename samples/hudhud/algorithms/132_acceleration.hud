@@ -1,0 +1,3 @@
+fn accel(v1, v2, t) { return (v2 - v1) / t; }
+print(accel(0, 20, 5));
+print("DONE");

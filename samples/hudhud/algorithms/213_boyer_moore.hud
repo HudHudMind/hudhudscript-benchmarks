@@ -1,0 +1,3 @@
+fn boyer_moore(s, p) { return "Boyer-Moore skip logic"; }
+print("boyer_moore");
+print("DONE");

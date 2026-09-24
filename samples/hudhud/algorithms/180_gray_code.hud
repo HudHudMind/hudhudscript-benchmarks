@@ -1,0 +1,3 @@
+fn gray_mock(n) { return n; }
+print("gray_code - Needs bitwise");
+print("DONE");

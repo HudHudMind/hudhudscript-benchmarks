@@ -1,0 +1,10 @@
+fn variance_calc(a) { 
+    let s=0; for(let i=0; i<a.length; i=i+1){s=s+a[i];} 
+    let avg=s/a.length; let v=0; 
+    for(let i=0; i<a.length; i=i+1){
+        let d=a[i]-avg; v=v+(d*d);
+    } 
+    return v/a.length; 
+}
+print(variance_calc([1,2,3,4,5]));
+print("DONE");

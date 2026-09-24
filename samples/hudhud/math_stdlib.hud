@@ -1,0 +1,7 @@
+let acc = 0.0;
+for (let i = 1; i < 50000; i = i + 1) {
+    acc = acc + Math.sqrt(i) + Math.floor(i / 3) + Math.abs(0 - i);
+}
+print("p=" + Math.pow(2, 10));
+print("mm=" + (Math.max(3, 9) + Math.min(3, 9)));
+print("DONE");

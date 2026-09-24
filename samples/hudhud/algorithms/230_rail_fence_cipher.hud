@@ -1,0 +1,3 @@
+fn rail_fence(s, rails) { return "Zig-zag string writing"; }
+print("rail_fence");
+print("DONE");

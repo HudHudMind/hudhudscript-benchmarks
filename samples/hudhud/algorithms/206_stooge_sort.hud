@@ -1,0 +1,3 @@
+fn stooge_sort(a, i, j) { return "Stooge sort recursive"; }
+print("stooge_sort");
+print("DONE");

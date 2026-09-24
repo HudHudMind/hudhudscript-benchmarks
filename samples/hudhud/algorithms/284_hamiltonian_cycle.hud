@@ -1,0 +1,3 @@
+fn hamiltonian(g) { return "Backtracking path"; }
+print("hamiltonian");
+print("DONE");

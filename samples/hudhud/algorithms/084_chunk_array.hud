@@ -1,0 +1,3 @@
+fn chunk(a, n) { let r=[]; let c=[]; for(let i=0; i<a.length; i=i+1){c.push(a[i]); if(c.length==n){r.push(c); c=[];}} if(c.length>0){r.push(c);} return r; }
+print(chunk([1,2,3], 2));
+print("DONE");

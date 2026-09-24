@@ -1,0 +1,3 @@
+fn tern(a, x) { return "Needs trisection logic"; }
+print("ternary search");
+print("DONE");

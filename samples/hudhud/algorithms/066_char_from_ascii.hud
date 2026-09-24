@@ -1,0 +1,3 @@
+fn charcode(n) { return "Requires fromCharCode in stdlib"; }
+print(charcode(65));
+print("DONE");

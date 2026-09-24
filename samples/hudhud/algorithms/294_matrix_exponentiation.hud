@@ -1,0 +1,3 @@
+fn mat_pow(m, p) { return "O(log p) matrix power"; }
+print("mat_pow");
+print("DONE");

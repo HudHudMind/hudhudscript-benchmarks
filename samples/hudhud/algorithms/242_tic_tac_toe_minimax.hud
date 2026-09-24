@@ -1,0 +1,3 @@
+fn minimax(board, depth, is_max) { return "Minimax tree traversal"; }
+print("ttt_minimax");
+print("DONE");

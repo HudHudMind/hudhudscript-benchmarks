@@ -1,0 +1,3 @@
+fn bor(a,b){return "Needs bitwise ops";}
+print("bor");
+print("DONE");

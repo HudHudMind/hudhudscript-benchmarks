@@ -1,0 +1,3 @@
+fn area_rect(w, h) { return w * h; }
+print(area_rect(4, 5));
+print("DONE");

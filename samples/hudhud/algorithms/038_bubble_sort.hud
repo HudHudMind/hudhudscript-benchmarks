@@ -1,0 +1,3 @@
+fn bubble(arr) { let n=arr.length; for(let i=0; i<n-1; i=i+1){for(let j=0; j<n-i-1; j=j+1){if(arr[j]>arr[j+1]){let t=arr[j]; arr[j]=arr[j+1]; arr[j+1]=t;}}} return arr; }
+print(bubble([3,1,4,2]));
+print("DONE");

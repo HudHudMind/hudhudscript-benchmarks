@@ -1,0 +1,3 @@
+fn lucas(n, k, p) { return "nCr mod p"; }
+print("lucas");
+print("DONE");

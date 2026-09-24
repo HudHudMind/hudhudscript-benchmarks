@@ -1,0 +1,3 @@
+fn hypotenuse(a, b) { return Math.sqrt(a*a + b*b); }
+print("Needs Math.sqrt");
+print("DONE");

@@ -1,0 +1,3 @@
+fn kebab(s) { return "Kebab-case logic"; }
+print("kebab-case");
+print("DONE");

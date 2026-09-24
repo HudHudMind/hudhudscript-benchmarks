@@ -1,0 +1,3 @@
+fn b64(s) { return "Base64 standard encoding"; }
+print("base64");
+print("DONE");

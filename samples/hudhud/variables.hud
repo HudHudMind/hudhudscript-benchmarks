@@ -1,0 +1,10 @@
+let a = 10;
+var b = 3.5;
+let c = true;
+let d = "hi";
+let e = null;
+let acc = 0;
+for (let i = 0; i < 100000; i = i + 1) { a = a + 1; b = b + 0.5; if (c) { acc = acc + 1; } }
+print("a=" + a);
+print("acc=" + acc);
+print("DONE");

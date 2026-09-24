@@ -1,0 +1,6 @@
+let b = 0;
+for (let i = 0; i < 100000; i = i + 1) {
+    if (i % 3 == 0) { b = b + 1; } else { if (i % 5 == 0) { b = b + 2; } else { b = b + 3; } }
+}
+print("b=" + b);
+print("DONE");

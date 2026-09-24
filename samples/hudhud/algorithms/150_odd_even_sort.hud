@@ -1,0 +1,3 @@
+fn oddeven(a) { let s=false; while(!s){s=true; for(let i=1; i<=a.length-2; i=i+2){if(a[i]>a[i+1]){let t=a[i]; a[i]=a[i+1]; a[i+1]=t; s=false;}} for(let i=0; i<=a.length-2; i=i+2){if(a[i]>a[i+1]){let t=a[i]; a[i]=a[i+1]; a[i+1]=t; s=false;}}} return a; }
+print(oddeven([5,1,4,2]));
+print("DONE");

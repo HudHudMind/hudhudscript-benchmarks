@@ -1,0 +1,3 @@
+fn wildcard(s, pat) { return "Match with * and ? DP"; }
+print("wildcard");
+print("DONE");

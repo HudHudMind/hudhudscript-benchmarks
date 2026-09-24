@@ -1,0 +1,3 @@
+fn pe(m, h) { return m * 9.8 * h; }
+print(pe(10, 5));
+print("DONE");

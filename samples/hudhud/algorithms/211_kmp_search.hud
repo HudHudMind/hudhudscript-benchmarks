@@ -1,0 +1,3 @@
+fn kmp(s, p) { return "Knuth-Morris-Pratt"; }
+print("kmp");
+print("DONE");

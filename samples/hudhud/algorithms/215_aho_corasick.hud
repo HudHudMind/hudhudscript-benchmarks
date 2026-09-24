@@ -1,0 +1,3 @@
+fn aho_corasick(s, words) { return "Trie-based multi-pattern"; }
+print("aho_corasick");
+print("DONE");

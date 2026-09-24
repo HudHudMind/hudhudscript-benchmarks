@@ -1,0 +1,3 @@
+fn euler_path(g) { return "Hierholzer algorithm"; }
+print("euler_path");
+print("DONE");

@@ -1,0 +1,3 @@
+fn shell(arr) { let n=arr.length; for(let gap=n/2; gap>0; gap=gap/2){for(let i=gap; i<n; i=i+1){let t=arr[i]; let j=i; while(j>=gap && arr[j-gap]>t){arr[j]=arr[j-gap]; j=j-gap;} arr[j]=t;}} return arr; }
+print(shell([5,1,4,2]));
+print("DONE");

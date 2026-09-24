@@ -1,0 +1,3 @@
+fn unzip(a) { let r1=[]; let r2=[]; for(let i=0; i<a.length; i=i+1){r1.push(a[i][0]); r2.push(a[i][1]);} return [r1, r2]; }
+print(unzip([[1,2]]));
+print("DONE");

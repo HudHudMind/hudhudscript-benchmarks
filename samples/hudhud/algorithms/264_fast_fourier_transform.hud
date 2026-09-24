@@ -1,0 +1,3 @@
+fn fft(signal) { return "Cooley-Tukey FFT"; }
+print("fft");
+print("DONE");

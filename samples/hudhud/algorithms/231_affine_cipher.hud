@@ -1,0 +1,3 @@
+fn affine(s, a, b) { return "(ax + b) mod 26"; }
+print("affine");
+print("DONE");

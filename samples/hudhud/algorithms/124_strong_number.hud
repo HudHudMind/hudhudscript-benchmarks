@@ -1,0 +1,3 @@
+fn fact(n){if(n<=1){return 1;}return n*fact(n-1);} fn is_strong(n){let s=0; let t=n; while(t>0){s=s+fact(t%10); t=t/10;} return s==n;}
+print(is_strong(145));
+print("DONE");

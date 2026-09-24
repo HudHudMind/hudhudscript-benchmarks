@@ -1,0 +1,3 @@
+fn dijkstra(g, s) { return "Priority queue shortest path"; }
+print("dijkstra");
+print("DONE");

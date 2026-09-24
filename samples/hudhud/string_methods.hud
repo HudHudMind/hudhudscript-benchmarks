@@ -1,0 +1,11 @@
+let s = "hello,world,foo,bar";
+let count = 0;
+for (let i = 0; i < 20000; i = i + 1) {
+    let parts = s.split(",");
+    let up = s.toUpperCase();
+    let sub = s.substring(0, 5);
+    let idx = s.indexOf("world");
+    count = count + parts.length + up.length + sub.length + idx;
+}
+print("count=" + count);
+print("DONE");

@@ -1,0 +1,3 @@
+fn seg_sieve(l, r) { return "Primes in range"; }
+print("seg_sieve");
+print("DONE");

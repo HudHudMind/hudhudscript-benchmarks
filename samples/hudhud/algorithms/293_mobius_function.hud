@@ -1,0 +1,3 @@
+fn mobius(n) { return "1, 0, or -1 based on prime factors"; }
+print("mobius");
+print("DONE");

@@ -1,0 +1,12 @@
+// 08_retry_bounded.hud — bounded retry with escalate after max attempts
+loop resilient {
+  step s {
+    gate G {
+      when true -> retry
+      else -> done
+    }
+  }
+}
+
+run loop resilient;
+print("DONE");

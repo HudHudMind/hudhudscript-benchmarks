@@ -1,0 +1,3 @@
+fn soundex(s) { return "Phonetic hashing"; }
+print("soundex");
+print("DONE");

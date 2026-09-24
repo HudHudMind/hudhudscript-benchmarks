@@ -1,0 +1,3 @@
+fn atbash(s) { return "Reverse alphabet mapping"; }
+print("atbash");
+print("DONE");

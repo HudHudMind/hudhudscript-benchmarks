@@ -1,0 +1,3 @@
+fn gnome(a) { let pos=0; while(pos<a.length){if(pos==0 || a[pos]>=a[pos-1]){pos=pos+1;}else{let t=a[pos]; a[pos]=a[pos-1]; a[pos-1]=t; pos=pos-1;}} return a; }
+print(gnome([5,1,4,2]));
+print("DONE");

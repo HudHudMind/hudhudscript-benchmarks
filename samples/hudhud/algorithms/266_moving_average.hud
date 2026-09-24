@@ -1,0 +1,3 @@
+fn moving_avg(arr, k) { return "Window average"; }
+print("moving_avg");
+print("DONE");

@@ -1,0 +1,11 @@
+role Mayor { can propose }
+role Treasurer { can budget }
+subject CityMayor has Mayor { state term: 1 }
+subject CityTreasurer has Treasurer { state budget: 1000 }
+council CityCouncil { quorum: 2, members: ["CityMayor", "CityTreasurer"], rules: ["majority-vote"] }
+swarm AuditTeam { agents: ["CityMayor", "CityTreasurer"], strategy: "parallel" }
+spawn CityMayor;
+spawn CityTreasurer;
+print(CityCouncil["quorum"]);
+print(AuditTeam["strategy"]);
+print("DONE");

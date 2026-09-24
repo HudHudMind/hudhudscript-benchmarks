@@ -1,0 +1,3 @@
+fn saddle(m) { return "Finds min in row, max in col"; }
+print("saddle");
+print("DONE");

@@ -1,0 +1,3 @@
+fn Graph() { return { nodes: [] }; }
+print("Graph");
+print("DONE");

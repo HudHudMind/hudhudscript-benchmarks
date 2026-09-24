@@ -1,0 +1,3 @@
+fn solve_maze_dfs(maze, start, end) { return "DFS path finding"; }
+print("maze_dfs");
+print("DONE");

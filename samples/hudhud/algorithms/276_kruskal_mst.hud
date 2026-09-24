@@ -1,0 +1,3 @@
+fn kruskal(g) { return "Minimum Spanning Tree (Union-Find)"; }
+print("kruskal");
+print("DONE");

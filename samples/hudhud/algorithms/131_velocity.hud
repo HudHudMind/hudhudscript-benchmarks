@@ -1,0 +1,3 @@
+fn velocity(d, t) { return d / t; }
+print(velocity(100, 10));
+print("DONE");

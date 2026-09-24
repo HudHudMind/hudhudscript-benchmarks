@@ -1,0 +1,3 @@
+fn zip(a, b) { let r=[]; let m=a.length; if(b.length<m){m=b.length;} for(let i=0; i<m; i=i+1){r.push([a[i], b[i]]);} return r; }
+print(zip([1], [2]));
+print("DONE");

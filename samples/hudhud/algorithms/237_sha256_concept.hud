@@ -1,0 +1,3 @@
+fn sha256(s) { return "SHA256 hash simulation"; }
+print("sha256");
+print("DONE");

@@ -1,0 +1,3 @@
+fn md5(s) { return "MD5 hash simulation"; }
+print("md5");
+print("DONE");

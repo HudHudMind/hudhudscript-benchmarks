@@ -1,0 +1,3 @@
+fn rep(s, n) { let r=""; for(let i=0; i<n; i=i+1){r=r+s;} return r; }
+print(rep("a", 3));
+print("DONE");

@@ -1,0 +1,3 @@
+fn split(s, d) { return s.split(d); }
+print("Native split");
+print("DONE");

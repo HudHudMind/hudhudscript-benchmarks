@@ -1,0 +1,3 @@
+fn count_v(s) { let c=0; for(let i=0; i<s.length; i=i+1){let ch=s[i]; if(ch=="a"||ch=="e"||ch=="i"||ch=="o"||ch=="u"){c=c+1;}} return c; }
+print(count_v("hello"));
+print("DONE");

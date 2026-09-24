@@ -1,0 +1,3 @@
+fn is_pronic(n) { for(let i=0; i*i<=n; i=i+1){if(i*(i+1)==n){return true;}} return false; }
+print(is_pronic(12));
+print("DONE");
