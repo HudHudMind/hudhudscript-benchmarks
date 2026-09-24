@@ -33,13 +33,9 @@ Benchmark kategorileri:
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
-
-if sys.stdout.encoding.lower() != 'utf-8':
-    sys.stdout.reconfigure(encoding='utf-8')
-if sys.stderr.encoding.lower() != 'utf-8':
-    sys.stderr.reconfigure(encoding='utf-8')
 import tempfile
 import time
 import hashlib
@@ -56,22 +52,13 @@ if _cargo_bin.exists() and str(_cargo_bin) not in os.environ.get("PATH", ""):
 # ── Paths ─────────────────────────────────────────────────────────
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-
-def _find_hhs_repo() -> Path:
-    for name in ("hudhudscript", "hudhud-script"):
-        p = SCRIPT_DIR.parent / name
-        if p.exists():
-            return p
-    return SCRIPT_DIR.parent / "hudhudscript"
-
-HHS_REPO = _find_hhs_repo()
+HHS_REPO = SCRIPT_DIR.parent / "hudhud-script"
 DATA_DIR = SCRIPT_DIR / "data"
 
 
 def find_binary() -> Path:
     """Find the hudhud binary: release only (no silent fallback)."""
-    exe_name = "hudhud.exe" if os.name == "nt" else "hudhud"
-    path = HHS_REPO / "target" / "release" / exe_name
+    path = HHS_REPO / "target" / "release" / "hudhud"
     if path.exists() and os.access(path, os.X_OK):
         return path
     # No fallback — if release is missing/broken, caller handles the error
@@ -86,6 +73,7 @@ def get_binary_profile(binary_path: Path) -> str:
 
 BINARY = find_binary()
 RESULTS_FILE = DATA_DIR / "benchmark_results.json"
+DEBUG = False
 
 # ── ANSI colors ───────────────────────────────────────────────────
 
@@ -416,7 +404,7 @@ BENCHMARKS = {
 
 # ── Source loader ───────────────────────────────────────────────
 
-SOURCE_DIR = SCRIPT_DIR / "benchmark" / "src"
+SOURCE_DIR = SCRIPT_DIR / "benchmarks" / "src"
 LANG_SUFFIXES = {
     "hudhud": ".hud",
     "python": ".py",
@@ -429,13 +417,35 @@ LANG_SUFFIXES = {
     "tcl": ".tcl",
 }
 
+# JIT/alternatif varyant dilleri → kaynak dosyaların okunacağı temel dil dizini.
+# (php-jit, benchmarks/src/php/ altındaki aynı .php dosyalarını çalıştırır.)
+VARIANT_BASE = {
+    "php-jit": "php",
+    "ruby-yjit": "ruby",
+    "luajit": "lua",
+    "pypy3": "python",
+}
+
+# Baz dil → JIT varyantı (--jit bu eşlemeyle değiştirir: php→php-jit ...)
+BASE_VARIANT = {base: vl for vl, base in VARIANT_BASE.items()}
+
+
+def resolve_source_path(bench_name: str, lang: str) -> Path:
+    """Kaynak dosya yolu: önce dile özel dizin (ör. benchmarks/src/luajit/
+    uyarlamaları), yoksa temel dilin dizini (ör. benchmarks/src/lua/)."""
+    name = f"{bench_name}{LANG_SUFFIXES[lang]}"
+    specific = SOURCE_DIR / lang / name
+    if specific.exists():
+        return specific
+    return SOURCE_DIR / VARIANT_BASE.get(lang, lang) / name
+
 
 def benchmark_source(bench_name: str, lang: str) -> str:
     """Load benchmark source code from file."""
     suffix = LANG_SUFFIXES.get(lang)
     if suffix is None:
         raise KeyError(f"Unknown language: {lang}")
-    path = SOURCE_DIR / lang / f"{bench_name}{suffix}"
+    path = resolve_source_path(bench_name, lang)
     if not path.exists():
         raise FileNotFoundError(
             f"Source not found: {path} (benchmark={bench_name}, lang={lang})"
@@ -454,7 +464,7 @@ RUNNERS = {
         "timeout": 600,
     },
     "python": {
-        "cmd": lambda path: [sys.executable, path],
+        "cmd": lambda path: ["python3", path],
         "suffix": ".py",
         "timeout": 600,
     },
@@ -495,6 +505,40 @@ RUNNERS = {
     },
 }
 
+# ── JIT / alternatif motor varyantları ────────────────────────────
+# --jit ile kullanılabilir olanlar dile listesine eklenir; --languages php-jit
+# şeklinde tek tek de seçilebilir. probe: koşu öncesi kullanılabilirlik testi.
+JIT_VARIANTS = {
+    "php-jit": {
+        "cmd": lambda path: ["php", "-d", "opcache.enable_cli=1",
+                             "-d", "opcache.jit_buffer_size=64M",
+                             "-d", "opcache.jit=tracing", path],
+        "probe": ["php", "-d", "opcache.enable_cli=1", "-d", "opcache.jit_buffer_size=4M",
+                  "-d", "opcache.jit=tracing",
+                  "-r", '$s = @opcache_get_status(false); if (!($s["jit"]["on"] ?? false)) { exit(1); }'],
+        "ver_cmd": ["php", "-v"],
+    },
+    "ruby-yjit": {
+        "cmd": lambda path: ["ruby", "--yjit", path],
+        "probe": ["ruby", "--yjit", "-e", "exit 0"],
+        "ver_cmd": ["ruby", "--yjit", "-v"],
+    },
+    "luajit": {
+        "cmd": lambda path: ["luajit", path],
+        "probe": ["luajit", "-e", "os.exit(0)"],
+        "ver_cmd": ["luajit", "-v"],
+    },
+    "pypy3": {
+        "cmd": lambda path: ["pypy3", path],
+        "probe": ["pypy3", "-c", "pass"],
+        "ver_cmd": ["pypy3", "--version"],
+    },
+}
+for _vl, _meta in JIT_VARIANTS.items():
+    _suffix = LANG_SUFFIXES[VARIANT_BASE[_vl]]
+    RUNNERS[_vl] = {"cmd": _meta["cmd"], "suffix": _suffix, "timeout": 600}
+    LANG_SUFFIXES[_vl] = _suffix
+
 # ── Utility functions ─────────────────────────────────────────────
 
 
@@ -503,7 +547,7 @@ def detect_versions() -> dict:
     versions = {}
     cmds = {
         "hudhud": [str(BINARY), "--version"],
-        "python": [sys.executable, "--version"],
+        "python": ["python3", "--version"],
         "lua": ["lua", "-v"],
         "ruby": ["ruby", "--version"],
         "nodejs": ["node", "--version"],
@@ -639,8 +683,11 @@ def _make_default_runner(code: str, runner: dict, env: dict, golden, bench_name:
         try:
             start = time.time()
             try:
+                cmd = runner["cmd"](tmp_path)
+                if DEBUG:
+                    print(f"    {GRAY}$ {' '.join(cmd)}{NC}")
                 proc = subprocess.run(
-                    runner["cmd"](tmp_path),
+                    cmd,
                     capture_output=True,
                     text=True,
                     timeout=runner["timeout"],
@@ -923,6 +970,8 @@ def main():
   python3 run_benchmarks.py --only fib,fact    # Sadece fibonacci + factorial
   python3 run_benchmarks.py --languages python,lua  # Sadece Python ve Lua
   python3 run_benchmarks.py --no-build         # Build etmeden çalıştır
+  python3 run_benchmarks.py --jit              # JIT ligi: her dil JIT formlarıyla (hudhud --engine=jit)
+  python3 run_benchmarks.py --jit --languages hudhud,nodejs   # Sadece hudhud(jit) vs nodejs
         """,
     )
     parser.add_argument(
@@ -997,6 +1046,23 @@ def main():
         help="Kullanılacak hudhud binary'sinin absolute path'i (varsayılan: auto-detect)",
     )
     parser.add_argument(
+        "--engine", choices=["vm", "jit"], default=None,
+        help="HudHud motoru: verilirse hudhud run'a --engine olarak iletilir, verilmezse gönderilmez",
+    )
+    parser.add_argument(
+        "--backend", choices=["auto", "cranelift", "gccjit", "llvm"], default=None,
+        help="HudHud native backend (--engine jit ile kullanılır): verilirse iletilir, verilmezse gönderilmez",
+    )
+    parser.add_argument(
+        "--jit", action="store_true",
+        help="JIT ligi: seçili dillerin JIT formları koşar (php→php-jit, ruby→ruby-yjit, "
+             "lua→luajit, python→pypy3; hazır olmayan baz hâline döner) ve hudhud --engine=jit ile koşar",
+    )
+    parser.add_argument(
+        "--debug", action="store_true",
+        help="Çalıştırılacak komutları göster ve başlamadan önce onay iste",
+    )
+    parser.add_argument(
         "--output-dir", type=str, default=None,
         help="Timing/profiling artifact'larının yazılacağı absolute dizin (varsayılan: auto)",
     )
@@ -1035,16 +1101,98 @@ def main():
     # ── Determine languages ──
     if args.languages:
         selected = [l.strip() for l in args.languages.split(",")]
-        unknown = set(selected) - set(LANGUAGES)
+        unknown = set(selected) - set(LANGUAGES) - set(JIT_VARIANTS)
         if unknown:
             print(f"{RED}✗  Bilinmeyen dil(ler): {', '.join(sorted(unknown))}{NC}")
-            print(f"   Kullanılabilir: {', '.join(LANGUAGES)}")
+            print(f"   Kullanılabilir: {', '.join(LANGUAGES)} (+ JIT varyantları: {', '.join(JIT_VARIANTS)})")
             sys.exit(1)
         langs = selected
     elif args.skip_hudhud:
         langs = [l for l in LANGUAGES if l != "hudhud"]
     else:
         langs = list(LANGUAGES)
+
+    if args.jit:
+        # JIT ligi: seçili dillerin JIT formları koşar — hudhud --engine=jit ile,
+        # diğerleri hazır JIT varyantıyla (php→php-jit, ruby→ruby-yjit, ...).
+        # Hazır olmayan varyant probe sonrası baz dile döner.
+        if args.engine is None and "hudhud" in langs:
+            args.engine = "jit"
+        substituted = set()
+        jit_langs = []
+        for l in langs:
+            variant = BASE_VARIANT.get(l)
+            if variant and variant in JIT_VARIANTS and variant not in langs:
+                substituted.add(variant)
+                jit_langs.append(variant)
+            else:
+                jit_langs.append(l)
+        langs = jit_langs
+    else:
+        substituted = set()
+
+    # ── JIT varyantları: kullanılabilirlik kontrolü ──
+    if any(l in JIT_VARIANTS for l in langs):
+        print(f"{CYAN}══ JIT varyantları kontrol ediliyor...{NC}")
+        final_langs = []
+        for l in langs:
+            if l not in JIT_VARIANTS:
+                final_langs.append(l)
+                continue
+            meta = JIT_VARIANTS[l]
+            available = shutil.which(meta["probe"][0]) is not None
+            if available:
+                try:
+                    r = subprocess.run(meta["probe"], capture_output=True, text=True, timeout=30)
+                    available = r.returncode == 0
+                except Exception:
+                    available = False
+            if available:
+                print(f"  {GREEN}✓{NC} {l:>10}: hazır")
+                final_langs.append(l)
+            elif l in substituted:
+                print(f"  {YELLOW}⚠{NC} {l:>10}: hazır değil → {VARIANT_BASE[l]} (JIT'siz) kullanılacak")
+                final_langs.append(VARIANT_BASE[l])
+            else:
+                print(f"  {YELLOW}⚠{NC} {l:>10}: kurulu değil / JIT desteklenmiyor → atlandı")
+        langs = final_langs
+        print(f"  {GRAY}nodejs: V8 JIT her zaman açık · raku: MoarVM JIT varsayılan açık · "
+              f"perl/tcl: JIT yok{NC}")
+        print()
+        if not langs:
+            print(f"{RED}✗  Çalıştırılacak dil kalmadı.{NC}")
+            sys.exit(1)
+
+    # ── --engine / --backend pass-through: verilirse hudhud run'a iletilir, verilmezse gönderilmez ──
+    # (--jit args.engine'i yukarıda "jit" olarak set edebildiği için burada uygulanır)
+    if args.backend and args.backend != "auto":
+        # Binary bu backend'i derlemiş mi? (feature eksikse anlaşılır hata ver)
+        try:
+            probe = subprocess.run([str(BINARY), "run", "/dev/null", "--engine", "jit",
+                                    "--backend", args.backend],
+                                   capture_output=True, text=True, timeout=10)
+            combined = probe.stdout + probe.stderr
+            if f"{args.backend} backend requires --features" in combined or \
+               f"not implemented in {args.backend}" in combined:
+                print(f"{RED}✗  Binary --backend {args.backend} desteklemiyor "
+                      f"(yeniden derle: cargo build --release -p hudhudscript-cli "
+                      f"--features jit,aot,{args.backend}){NC}")
+                sys.exit(1)
+        except FileNotFoundError:
+            pass
+    if args.engine or args.backend:
+        if args.backend and not args.engine:
+            print(f"{YELLOW}⚠  --backend yalnızca --engine jit ile anlamlı — yine de iletilecek.{NC}")
+
+        def _hudhud_cmd(path):
+            cmd = [str(BINARY), "run"]
+            if args.engine:
+                cmd += ["--engine", args.engine]
+            if args.backend:
+                cmd += ["--backend", args.backend]
+            return cmd + [path]
+
+        RUNNERS["hudhud"]["cmd"] = _hudhud_cmd
 
     # ── Header ──
     total_tasks = len(bench_keys) * len(langs) * args.runs
@@ -1063,6 +1211,31 @@ def main():
     if args.dry_run:
         print(f"{YELLOW}══ DRY RUN — hiçbir şey çalıştırılmadı ══{NC}")
         return
+
+    # ── --debug: çalıştırılacak komutları göster + onay iste ──
+    global DEBUG
+    DEBUG = args.debug
+    if args.debug:
+        print(f"{BOLD}{MAGENTA}══ DEBUG: çalıştırılacak komutlar ══{NC}")
+        for lang in langs:
+            runner = RUNNERS.get(lang)
+            if not runner:
+                continue
+            example = runner["cmd"](f"/tmp/<benchmark>{runner['suffix']}")
+            print(f"  {lang:>8s}: {' '.join(example)}")
+        if args.engine:
+            print(f"  {GREEN}✓ --engine {args.engine} hudhud komutuna ekleniyor{NC}")
+        else:
+            print(f"  {GRAY}--engine verilmedi → hudhud'a --engine gönderilmiyor{NC}")
+        if args.backend:
+            print(f"  {GREEN}✓ --backend {args.backend} hudhud komutuna ekleniyor{NC}")
+        try:
+            resp = input(f"{BOLD}Devam etmek istiyor musunuz? [e/H] {NC}")
+        except EOFError:
+            resp = ""
+        if resp.strip().lower() not in ("e", "evet", "y", "yes"):
+            print(f"{YELLOW}İptal edildi.{NC}")
+            sys.exit(0)
 
     # ── Build / version-check hudhud ──
     if "hudhud" in langs:
@@ -1101,6 +1274,12 @@ def main():
     # ── Detect versions ──
     print(f"{CYAN}══ Dil versiyonları tespit ediliyor...{NC}")
     versions = detect_versions()
+    for vl in (l for l in langs if l in JIT_VARIANTS and l not in versions):
+        try:
+            out = subprocess.run(JIT_VARIANTS[vl]["ver_cmd"], capture_output=True, text=True, timeout=5)
+            versions[vl] = (out.stdout + out.stderr).strip().split("\n")[0]
+        except Exception:
+            versions[vl] = "not found"
     for lang in langs:
         ver_str = versions.get(lang, "bilinmiyor")
         print(f"  {lang:>8s}: {ver_str}")
@@ -1184,7 +1363,7 @@ def main():
                     print(f"  {GRAY}{lang:>8s}: bilinmeyen dil{NC}")
                     continue
 
-                source_path = SOURCE_DIR / lang / f"{bench_key}{LANG_SUFFIXES[lang]}"
+                source_path = resolve_source_path(bench_key, lang)
                 if not source_path.exists():
                     lang_results.append(_canonical_result(
                         lang, "", False, False, [], [], 0, 0, 0, 0,
