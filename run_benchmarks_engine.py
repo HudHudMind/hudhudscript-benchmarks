@@ -36,8 +36,14 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 HHS_REPO = SCRIPT_DIR.parent / "hudhud-script"
 DATA_DIR = SCRIPT_DIR / "data"
-SOURCE_DIR = SCRIPT_DIR / "benchmarks" / "src" / "hudhud"
-BINARY = HHS_REPO / "target" / "release" / "hudhud"
+def _find_binary_path() -> Path:
+    base = HHS_REPO / "target" / "release" / "hudhud"
+    if sys.platform == "win32" or os.name == "nt":
+        exe = base.with_suffix(".exe")
+        return exe if exe.exists() else base
+    return base
+
+BINARY = _find_binary_path()
 
 # ── ANSI Colors ────────────────────────────────────────────────────────
 BOLD = "\033[1m"
@@ -92,7 +98,10 @@ except ImportError:
 
 
 def find_binary() -> Path:
-    if BINARY.exists() and os.access(BINARY, os.X_OK):
+    global BINARY
+    BINARY = _find_binary_path()
+    is_win = sys.platform == "win32" or os.name == "nt"
+    if BINARY.exists() and (is_win or os.access(BINARY, os.X_OK)):
         return BINARY
     print(f"{RED}✗  hudhud release binary bulunamadı: {BINARY}{NC}")
     print(f"   Lütfen önce derleyin: cargo build --release --features jit,aot,gccjit")

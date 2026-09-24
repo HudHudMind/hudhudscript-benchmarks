@@ -58,11 +58,11 @@ DATA_DIR = SCRIPT_DIR / "data"
 
 def find_binary() -> Path:
     """Find the hudhud binary: release only (no silent fallback)."""
-    path = HHS_REPO / "target" / "release" / "hudhud"
-    if path.exists() and os.access(path, os.X_OK):
-        return path
-    # No fallback — if release is missing/broken, caller handles the error
-    return path
+    base = HHS_REPO / "target" / "release" / "hudhud"
+    if sys.platform == "win32" or os.name == "nt":
+        exe = base.with_suffix(".exe")
+        return exe if exe.exists() else base
+    return base
 
 
 def get_binary_profile(binary_path: Path) -> str:
@@ -594,9 +594,12 @@ def get_binary_version(binary: Path) -> str:
 
 def ensure_binary() -> bool:
     """Build hudhud binary if missing or version-mismatched."""
+    global BINARY
+    BINARY = find_binary()
     expected = get_cargo_version()
 
-    if BINARY.exists() and os.access(BINARY, os.X_OK):
+    is_win = sys.platform == "win32" or os.name == "nt"
+    if BINARY.exists() and (is_win or os.access(BINARY, os.X_OK)):
         actual = get_binary_version(BINARY)
         if actual == expected:
             return True
@@ -619,6 +622,7 @@ def ensure_binary() -> bool:
             check=True,
             timeout=600,
         )
+        BINARY = find_binary()
         if BINARY.exists():
             actual = get_binary_version(BINARY)
             if actual != expected:
